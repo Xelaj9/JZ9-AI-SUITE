@@ -683,7 +683,7 @@ async function geminiText(system, userMsg) {
 }
 
 async function geminiVision(system, userMsg, base64, mime='image/png') {
-  const d = await callProxy('gemini-2.5-flash-preview-04-17', {
+  const d = await callProxy('gemini-2.5-flash', {
     contents: [{ parts: [{ text: userMsg }, { inlineData: { mimeType: mime, data: base64 } }] }],
     systemInstruction: { parts: [{ text: system }] },
     generationConfig: {
