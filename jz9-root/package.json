@@ -1,8 +1,0 @@
-{
-  "name": "jz9-ai-suite",
-  "version": "1.0.0",
-  "private": true,
-  "scripts": {
-    "build": "echo 'No build needed'"
-  }
-}
