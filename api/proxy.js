@@ -6,7 +6,8 @@
 
 const ALLOWED_MODELS = [
   "gemini-2.0-flash",
-  "gemini-2.5-flash-preview-09-2025",
+  "gemini-2.5-flash-preview-04-17",
+  "gemini-2.5-flash",
   "imagen-4.0-generate-001",
   "imagen-3.0-generate-002",
 ];
