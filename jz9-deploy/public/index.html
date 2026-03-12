@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JZ9 AI — Tools Suite</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Kanit:wght@300;400;500;600;700;800;900&family=Mitr:wght@500&family=Chakra+Petch:wght@400;600;700&family=Sarabun:wght@400;700&family=Noto+Serif+Thai:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --lime: #b8ff00;
+  --lime-dim: rgba(184,255,0,0.12);
+  --lime-glow: 0 0 24px rgba(184,255,0,0.35);
+  --bg: #050505;
+  --surface: #0d0d0d;
+  --border: rgba(184,255,0,0.1);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: var(--bg); color: #f0f0f0; font-family: 'Kanit', sans-serif; }
+
+/* NAV */
+#nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 9999;
+  height: 60px; background: rgba(5,5,5,0.95); backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between; padding: 0 20px;
+}
+.nav-brand { display: flex; align-items: center; gap: 10px; }
+.nav-badge {
+  background: var(--lime); color: #000; font-weight: 900;
+  padding: 4px 10px; border-radius: 6px; font-size: 14px;
+  font-family: 'Chakra Petch', sans-serif; letter-spacing: 1px;
+  box-shadow: var(--lime-glow);
+}
+.nav-title { font-family: 'Chakra Petch', sans-serif; font-size: 14px; font-weight: 700; color: #fff; letter-spacing: 2px; }
+.nav-sub { font-size: 9px; color: rgba(255,255,255,0.25); letter-spacing: 4px; font-family: 'Fira Code', monospace; }
+.nav-tabs { display: flex; gap: 4px; }
+.nav-tab {
+  display: flex; align-items: center; gap: 6px;
+  padding: 7px 14px; border-radius: 8px; font-size: 10px; font-weight: 700;
+  letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer;
+  border: 1px solid rgba(255,255,255,0.07); background: transparent;
+  color: rgba(255,255,255,0.35); font-family: 'Fira Code', monospace;
+  transition: all 0.2s; white-space: nowrap;
+}
+.nav-tab:hover { border-color: var(--lime); color: var(--lime); background: var(--lime-dim); }
+.nav-tab.on { background: var(--lime); color: #000; border-color: var(--lime); box-shadow: var(--lime-glow); }
+
+/* SECTIONS */
+body { padding-top: 60px; }
+.sec { display: none; min-height: calc(100vh - 60px); }
+.sec.on { display: block; animation: fadeUp 0.3s ease; }
+@keyframes fadeUp { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+
+/* SCROLLBAR */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: #050505; }
+::-webkit-scrollbar-thumb { background: #1a3a1a; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: var(--lime); }
+
+/* ── TOOL 1 STYLES ── */
+#t1 { background: #000; padding: 28px 24px; }
+.t1-card { background: #0f0f0f; border: 1px solid #1a1a1a; border-radius: 20px; padding: 22px; transition: border-color 0.2s; }
+.t1-card:hover { border-color: rgba(184,255,0,0.25); }
+.t1-tag { display: inline-flex; align-items: center; padding: 3px 14px; background: rgba(184,255,0,0.08); color: var(--lime); border: 1px solid rgba(184,255,0,0.15); border-radius: 999px; font-size: 9px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; font-family: 'Fira Code', monospace; }
+.t1-btn { width: 100%; padding: 14px; border-radius: 14px; font-weight: 700; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; border: none; transition: all 0.2s; font-family: 'Fira Code', monospace; display: flex; align-items: center; justify-content: center; gap: 8px; }
+.t1-btn.primary { background: var(--lime); color: #000; box-shadow: 0 0 18px rgba(184,255,0,0.3); }
+.t1-btn.primary:hover:not(:disabled) { background: var(--lime); box-shadow: 0 0 30px rgba(184,255,0,0.5); }
+.t1-btn:disabled { background: #1a1a1a; color: #333; cursor: not-allowed; box-shadow: none; }
+.t1-label { font-size: 9px; font-weight: 700; color: var(--lime); text-transform: uppercase; letter-spacing: 3px; font-family: 'Fira Code', monospace; display: flex; align-items: center; gap: 6px; margin-bottom: 12px; }
+.t1-small-card { background: #0f0f0f; border: 1px solid #1a1a1a; padding: 16px; border-radius: 16px; transition: border-color 0.2s; }
+.t1-small-card:hover { border-color: rgba(184,255,0,0.25); }
+@keyframes t1pulse { 0%,100%{opacity:1}50%{opacity:0.3} }
+
+/* ── TOOL 2 STYLES ── */
+#t2 {
+  background: #050505;
+  background-image: linear-gradient(rgba(184,255,0,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(184,255,0,0.015) 1px, transparent 1px);
+  background-size: 40px 40px;
+  padding: 28px 24px; min-height: calc(100vh - 60px);
+  color: var(--lime); font-family: 'Fira Code', monospace;
+}
+.t2-panel { background: #09090b; border: 1px solid rgba(184,255,0,0.12); border-radius: 28px; overflow: hidden; }
+.t2-panel-head { background: rgba(9,9,11,0.9); padding: 12px 22px; border-bottom: 1px solid rgba(184,255,0,0.12); display: flex; justify-content: space-between; align-items: center; }
+.t2-textarea { width: 100%; background: transparent; font-family: 'Fira Code', monospace; font-size: 12px; color: rgba(184,255,0,0.65); outline: none; resize: none; border: none; line-height: 1.6; padding: 22px; }
+.t2-btn { display: flex; align-items: center; gap: 8px; padding: 11px 18px; border-radius: 12px; font-weight: 700; font-size: 10px; cursor: pointer; border: none; font-family: 'Fira Code', monospace; text-transform: uppercase; letter-spacing: 1px; transition: all 0.2s; }
+.t2-btn.green { background: rgba(184,255,0,0.08); color: var(--lime); border: 1px solid rgba(184,255,0,0.2); }
+.t2-btn.green:hover:not(:disabled) { background: var(--lime); color: #000; }
+.t2-btn.blue { background: rgba(184,255,0,0.12); color: var(--lime); border: 1px solid rgba(184,255,0,0.12); }
+.t2-btn.blue:hover:not(:disabled) { background: var(--lime); color: #fff; }
+.t2-btn.copy { background: var(--lime); color: #000; border: none; width: 100%; padding: 18px; font-size: 11px; letter-spacing: 3px; border-radius: 20px; margin-top: 12px; }
+.t2-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+.t2-field { margin-bottom: 18px; border-left: 2px solid rgba(184,255,0,0.08); padding-left: 16px; margin-left: 6px; }
+.t2-field:hover { border-left-color: rgba(184,255,0,0.3); }
+.t2-field-key { font-size: 8px; color: var(--lime-text); font-weight: 700; text-transform: uppercase; letter-spacing: 3px; }
+.t2-field-label { font-size: 13px; font-weight: 700; color: var(--lime); display: flex; align-items: center; gap: 4px; margin-top: 2px; margin-bottom: 6px; font-family: 'Kanit', sans-serif; }
+.t2-field-textarea { width: 100%; background: rgba(0,0,0,0.5); border: 1px solid rgba(184,255,0,0.1); border-radius: 8px; padding: 10px 12px; font-size: 12px; color: #f0fdf4; outline: none; resize: vertical; font-family: 'Kanit', sans-serif; line-height: 1.5; }
+.t2-field-textarea:focus { border-color: rgba(184,255,0,0.4); background: rgba(0,0,0,0.8); }
+.t2-tab-btn { padding: 5px 12px; border-radius: 999px; font-size: 8px; font-weight: 700; cursor: pointer; text-transform: uppercase; letter-spacing: 2px; transition: all 0.2s; font-family: 'Fira Code', monospace; border: none; }
+.t2-tab-btn.on { background: var(--lime); color: #000; }
+.t2-tab-btn.off { background: transparent; color: rgba(184,255,0,0.3); }
+.t2-tab-btn.blue-on { background: var(--lime); color: #fff; }
+.t2-tab-btn.blue-off { background: transparent; color: rgba(184,255,0,0.3); border: 1px solid rgba(184,255,0,0.3); }
+.t2-kb-card { padding: 14px; background: rgba(0,0,0,0.4); border: 1px solid rgba(184,255,0,0.08); border-radius: 12px; }
+.t2-kb-card:hover { border-color: rgba(184,255,0,0.12); }
+
+/* ── TOOL 3 STYLES ── */
+@keyframes t3pulse{0%,100%{box-shadow:0 0 10px rgba(184,255,0,0.1)}50%{box-shadow:0 0 25px rgba(184,255,0,0.3)}}
+@keyframes t3spin{to{transform:rotate(360deg)}}
+@keyframes t3float{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+@keyframes t3scan{0%{transform:translateY(-100%)}100%{transform:translateY(100vh)}}
+
+#t3 {
+  background: #050505;
+  background-image: radial-gradient(circle at 50% 50%, rgba(184,255,0,0.04) 0%, transparent 70%),
+    linear-gradient(rgba(184,255,0,0.01) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(184,255,0,0.01) 1px, transparent 1px);
+  background-size: 100% 100%, 40px 40px, 40px 40px;
+  padding: 24px 28px 40px; color: var(--white); font-family: 'Kanit', sans-serif;
+}
+.t3-glass {
+  background: rgba(22,27,34,0.85); backdrop-filter: blur(12px);
+  border: 1px solid rgba(184,255,0,0.13); border-radius: 24px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.6); transition: all 0.3s;
+}
+.t3-glass:hover { border-color: rgba(184,255,0,0.35); }
+.t3-ti { background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.1); color: var(--lime); outline: none; transition: all 0.2s; font-family: 'Kanit', sans-serif; }
+.t3-ti:focus { border-color: var(--lime); box-shadow: 0 0 12px rgba(184,255,0,0.3); background: rgba(0,0,0,0.85); }
+.t3-ti option { background: var(--bg); color: var(--lime); }
+.t3-btn-p {
+  background: var(--lime); color: #000; font-weight: 800; text-transform: uppercase;
+  letter-spacing: 2px; border: none; cursor: pointer; transition: all 0.25s;
+  box-shadow: 0 0 15px rgba(184,255,0,0.35); animation: t3pulse 3s infinite;
+}
+.t3-btn-p:hover:not(:disabled) { background: #fff; box-shadow: 0 0 35px var(--lime); transform: translateY(-2px); }
+.t3-btn-p:disabled { opacity: 0.4; cursor: not-allowed; }
+.t3-btn-s {
+  border: 1px solid var(--lime); color: var(--lime); background: rgba(184,255,0,0.05);
+  cursor: pointer; transition: all 0.2s; font-family: 'Fira Code', monospace;
+  text-transform: uppercase; letter-spacing: 1px;
+}
+.t3-btn-s:hover { background: rgba(184,255,0,0.18); box-shadow: 0 0 12px rgba(184,255,0,0.3); }
+.t3-fc { border: 1px solid rgba(255,255,255,0.1); cursor: pointer; transition: all 0.2s; background: rgba(0,0,0,0.4); text-align: center; border-radius: 8px; }
+.t3-fc:hover { border-color: var(--lime); transform: translateY(-2px); }
+.t3-fc.on { border-color: var(--lime); background: rgba(184,255,0,0.1); box-shadow: inset 0 0 12px rgba(184,255,0,0.15); }
+.t3-spinner { border:3px solid rgba(184,255,0,0.1); border-top-color:var(--lime); border-radius: 50%; width: 24px; height: 24px; animation: t3spin 1s linear infinite; display: none; }
+.t3-switch { position: relative; display: inline-block; width: 44px; height: 22px; }
+.t3-switch input { opacity: 0; width: 0; height: 0; }
+.t3-slider { position: absolute; cursor: pointer; inset: 0; background: rgba(255,255,255,0.1); border-radius: 20px; transition: .3s; }
+.t3-slider::before { position: absolute; content: ""; height: 16px; width: 16px; left: 3px; bottom: 3px; background: #fff; border-radius: 50%; transition: .3s; }
+.t3-switch input:checked + .t3-slider { background: var(--lime); }
+.t3-switch input:checked + .t3-slider::before { transform: translateX(22px); background: #000; }
+.t3-qr { background: rgba(48,54,61,0.5); border: 1px solid rgba(184,255,0,0.12); padding: 4px 10px; border-radius: 4px; font-size: 10px; color: rgba(255,255,255,0.4); cursor: pointer; font-family: 'Fira Code', monospace; }
+.t3-qr:hover { border-color: var(--lime); color: var(--lime); }
+.t3-badge { display: inline-block; background: rgba(184,255,0,0.08); border: 1px solid rgba(184,255,0,0.25); color: var(--lime); font-size: 8px; padding: 2px 7px; border-radius: 4px; font-family: 'Fira Code', monospace; text-transform: uppercase; margin-left: 6px; vertical-align: middle; }
+.t3-hi { border-left: 3px solid rgba(255,255,255,0.1); margin-bottom: 8px; padding: 10px; cursor: pointer; background: rgba(255,255,255,0.02); border-radius: 0 6px 6px 0; transition: all 0.2s; font-size: 12px; }
+.t3-hi:hover { border-left-color: var(--lime); background: rgba(184,255,0,0.06); transform: translateX(4px); }
+#t3-err { display: none; background: rgba(255,50,50,0.12); border: 1px solid rgba(255,50,50,0.3); color: #ff6b6b; padding: 10px 16px; border-radius: 10px; font-family: 'Fira Code', monospace; font-size: 11px; margin-bottom: 14px; }
+
+/* TOAST */
+#toast {
+  position: fixed; bottom: 28px; right: 28px;
+  background: var(--lime); color: #000; padding: 12px 24px; border-radius: 999px;
+  font-weight: 900; font-family: 'Fira Code', monospace; font-size: 11px;
+  box-shadow: var(--lime-glow); transform: translateY(100px);
+  transition: all 0.45s cubic-bezier(0.68,-0.55,0.27,1.55);
+  z-index: 99999; text-transform: uppercase; pointer-events: none;
+}
+
+@media(max-width:640px){
+  .nav-tab span.num{display:none}
+  .nav-tab{padding:6px 10px;font-size:9px}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-brand">
+    <span class="nav-badge">JZ9</span>
+    <div>
+      <div class="nav-title">AI SUITE</div>
+      <div class="nav-sub">v3.tools</div>
+    </div>
+  </div>
+  <div class="nav-tabs">
+    <button class="nav-tab on" onclick="switchTool(1)" id="tab1"><span class="num">[01]</span> 🧬 Visual DNA</button>
+    <button class="nav-tab" onclick="switchTool(2)" id="tab2"><span class="num">[02]</span> ⌨️ Prompt Editor</button>
+    <button class="nav-tab" onclick="switchTool(3)" id="tab3"><span class="num">[03]</span> 🎨 Graphic</button>
+  </div>
+</nav>
+
+<!-- ══ TOOL 1: VISUAL DNA ══ -->
+<div class="sec on" id="t1">
+  <div style="max-width:1400px;margin:0 auto">
+    <!-- Header -->
+    <div style="text-align:center;margin-bottom:28px">
+      <svg width="64" height="64" viewBox="0 0 100 100" style="margin:0 auto 10px;display:block;filter:drop-shadow(0 0 8px rgba(184,255,0,0.5))">
+        <path d="M30 20 Q 50 50, 70 80 M70 20 Q 50 50, 30 80" fill="none" stroke="var(--lime)" stroke-width="4" stroke-linecap="round" opacity="0.2"/>
+        <line x1="44" y1="25" x2="56" y2="25" stroke="var(--lime)" stroke-width="2"/>
+        <line x1="41" y1="35" x2="59" y2="35" stroke="var(--lime)" stroke-width="2"/>
+        <line x1="40" y1="45" x2="60" y2="45" stroke="var(--lime)" stroke-width="2"/>
+        <line x1="41" y1="55" x2="59" y2="55" stroke="var(--lime)" stroke-width="2"/>
+        <line x1="44" y1="65" x2="56" y2="65" stroke="var(--lime)" stroke-width="2"/>
+        <line x1="48" y1="75" x2="52" y2="75" stroke="var(--lime)" stroke-width="2"/>
+        <path d="M30 20 C 40 40, 60 60, 70 80" fill="none" stroke="var(--lime)" stroke-width="3" stroke-dasharray="4 2"/>
+        <path d="M70 20 C 60 40, 40 60, 30 80" fill="none" stroke="var(--lime)" stroke-width="3" stroke-dasharray="4 2"/>
+        <rect x="25" y="42" width="50" height="16" rx="4" fill="#000" opacity="0.9"/>
+        <text x="50" y="54" text-anchor="middle" fill="var(--lime)" font-size="12" font-weight="900" font-family="monospace">JZ9</text>
+      </svg>
+      <div class="t1-tag" style="margin-bottom:10px">JZ9 Visual DNA Protocol</div>
+      <h1 style="font-size:clamp(24px,5vw,44px);font-weight:900;background:linear-gradient(to right,var(--lime),var(--lime),var(--lime-text));-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-1px;margin-bottom:6px">JZ9 Visual DNA Extractor</h1>
+      <p style="color:#3d3d3d;font-size:14px;font-style:italic">สกัด DNA สไตล์ภาพ เพื่อสร้าง Prompt Components ที่สมบูรณ์แบบ</p>
+    </div>
+
+    <div id="t1-error" style="display:none;margin-bottom:16px;padding:14px;background:rgba(127,29,29,0.25);border:1px solid rgba(239,68,68,0.35);color:#f87171;border-radius:14px;font-size:11px;font-family:'Fira Code',monospace"></div>
+
+    <div style="display:grid;grid-template-columns:minmax(280px,1fr) minmax(280px,2fr);gap:20px;align-items:start">
+      <!-- LEFT -->
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div class="t1-card">
+          <div class="t1-label">📤 Source Engine</div>
+          <label style="display:block;cursor:pointer">
+            <div id="t1-dropzone" style="border:2px dashed #2a2a2a;border-radius:14px;padding:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:210px;transition:all 0.2s">
+              <img id="t1-preview" src="" alt="" style="display:none;max-height:170px;border-radius:10px;object-fit:contain;box-shadow:0 0 20px rgba(184,255,0,0.15)">
+              <div id="t1-placeholder" style="text-align:center;color:#2e2e2e">
+                <div style="font-size:36px;margin-bottom:8px">🖼️</div>
+                <p style="font-size:9px;letter-spacing:2px;text-transform:uppercase;font-family:'Fira Code',monospace">Inject Visual Source</p>
+              </div>
+            </div>
+            <input type="file" id="t1-file" accept="image/*" style="display:none">
+          </label>
+          <button class="t1-btn primary" id="t1-extractBtn" disabled style="margin-top:14px">🧬 EXTRACT DNA</button>
+        </div>
+
+        <div id="t1-promptBox" style="display:none" class="t1-card" style="border-color:rgba(184,255,0,0.2)">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+            <div class="t1-label" style="margin-bottom:0">✨ Modular Style Block</div>
+            <button id="t1-copyPrompt" onclick="t1CopyPrompt()" style="background:none;border:none;cursor:pointer;font-size:18px;color:var(--lime)">📋</button>
+          </div>
+          <p id="t1-promptText" style="font-size:10px;font-family:'Fira Code',monospace;color:#525252;line-height:1.7;font-style:italic;border-left:2px solid rgba(184,255,0,0.25);padding-left:10px;margin:0"></p>
+        </div>
+      </div>
+
+      <!-- RIGHT -->
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+          <!-- Simulation -->
+          <div class="t1-card" style="min-height:300px;display:flex;flex-direction:column">
+            <div class="t1-label">🎭 Style Simulation</div>
+            <div id="t1-simBox" style="flex:1;background:#000;border-radius:12px;border:1px solid #1a1a1a;overflow:hidden;display:flex;align-items:center;justify-content:center;min-height:230px">
+              <div id="t1-simPlaceholder" style="text-align:center;opacity:0.12;color:#fff">
+                <div style="font-size:44px;margin-bottom:6px">🖼️</div>
+                <p style="font-size:8px;font-family:'Fira Code',monospace;letter-spacing:2px;text-transform:uppercase">Awaiting Simulation</p>
+              </div>
+              <div id="t1-simLoader" style="display:none;text-align:center;color:var(--lime)">
+                <div style="font-size:28px;margin-bottom:6px;animation:pulse 1s infinite">⏳</div>
+                <p style="font-size:8px;font-family:'Fira Code',monospace;letter-spacing:2px;text-transform:uppercase">Rendering...</p>
+              </div>
+              <img id="t1-simImg" src="" style="display:none;width:100%;height:100%;object-fit:cover">
+            </div>
+            <button id="t1-regenBtn" onclick="t1Regen()" style="display:none;margin-top:8px;background:none;border:none;cursor:pointer;font-size:9px;color:var(--lime);text-align:right;text-transform:uppercase;letter-spacing:2px;font-family:'Fira Code',monospace">🔄 RE-GENERATE</button>
+          </div>
+
+          <!-- JSON Output -->
+          <div class="t1-card" style="min-height:300px;display:flex;flex-direction:column;background:#000">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+              <div style="display:flex;gap:5px">
+                <div style="width:7px;height:7px;border-radius:50%;background:rgba(184,255,0,0.4);animation:pulse 2s infinite"></div>
+                <div style="width:7px;height:7px;border-radius:50%;background:#1a1a1a"></div>
+              </div>
+              <button id="t1-copyJson" onclick="t1CopyJson()" style="display:none;background:none;border:none;cursor:pointer;font-size:9px;color:var(--lime);font-family:'Fira Code',monospace;text-transform:uppercase;letter-spacing:1px">📋 COPY_DNA_JSON</button>
+            </div>
+            <div id="t1-jsonOut" style="flex:1;overflow-y:auto;max-height:240px">
+              <pre id="t1-jsonPre" style="font-size:9px;font-family:'Fira Code',monospace;color:rgba(74,222,128,0.75);line-height:1.5;white-space:pre-wrap;word-break:break-all;display:none"></pre>
+              <div id="t1-jsonStandby" style="height:100%;display:flex;align-items:center;justify-content:center;color:#1a1a1a;font-family:'Fira Code',monospace;font-size:8px;letter-spacing:4px;font-style:italic">// SYSTEM_STANDBY</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Color / Style cards -->
+        <div id="t1-cards" style="display:none;grid-template-columns:1fr 1fr 1fr;gap:12px">
+          <div class="t1-small-card">
+            <div class="t1-label" style="margin-bottom:10px">🎨 Color Tone</div>
+            <div id="t1-colors" style="display:flex;flex-wrap:wrap;gap:6px"></div>
+            <p style="font-size:8px;color:var(--muted);margin-top:8px;text-transform:uppercase;letter-spacing:1px">คลิกเพื่อคัดลอก</p>
+          </div>
+          <div class="t1-small-card">
+            <div class="t1-label" style="margin-bottom:10px">🖊️ Visual Lines</div>
+            <p id="t1-typo" style="font-size:10px;font-family:'Fira Code',monospace;color:#3a3a3a;line-height:1.6;border-left:2px solid rgba(184,255,0,0.2);padding-left:8px;margin:0"></p>
+          </div>
+          <div class="t1-small-card">
+            <div class="t1-label" style="margin-bottom:10px">🎭 Art Technique</div>
+            <p id="t1-art" style="font-size:10px;font-family:'Fira Code',monospace;color:#3a3a3a;line-height:1.6;border-left:2px solid rgba(184,255,0,0.2);padding-left:8px;margin:0"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ TOOL 2: PROMPT EDITOR ══ -->
+<div class="sec" id="t2">
+  <div style="max-width:1600px;margin:0 auto">
+    <!-- Header -->
+    <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;margin-bottom:28px;border-bottom:1px solid rgba(184,255,0,0.15);padding-bottom:24px;gap:16px">
+      <div style="display:flex;align-items:center;gap:16px">
+        <div style="background:var(--lime);padding:12px 14px;border-radius:18px;box-shadow:0 0 30px rgba(184,255,0,0.4);font-size:26px">⌨️</div>
+        <div>
+          <h1 style="font-size:clamp(22px,4vw,40px);font-weight:900;letter-spacing:-2px;color:var(--lime);font-family:'Chakra Petch',sans-serif">JZ9 PROMPT EDITOR</h1>
+          <div style="display:flex;align-items:center;gap:8px;margin-top:4px">
+            <span style="font-size:8px;background:rgba(184,255,0,0.15);color:var(--lime);padding:2px 8px;border-radius:5px;border:1px solid rgba(184,255,0,0.25);font-weight:700;letter-spacing:3px;text-transform:uppercase">Learning AI Bridge</span>
+            <span style="width:7px;height:7px;background:var(--lime);border-radius:50%;display:inline-block;animation:pulse 2s infinite"></span>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:10px">
+        <button class="btn-outline" id="t2-thaiBtn" onclick="t2TranslateThai()" disabled>🌏 1. แปลเป็นไทย</button>
+        <button class="btn-outline" id="t2-backBtn" onclick="t2TranslateBack()" disabled>📤 2. แปลกลับ (AI)</button>
+      </div>
+    </div>
+
+    <div id="t2-error" style="display:none;margin-bottom:14px;padding:10px 16px;background:rgba(127,29,29,0.25);border:1px solid rgba(239,68,68,0.3);color:#f87171;border-radius:8px;font-size:11px"></div>
+
+    <div style="display:grid;grid-template-columns:minmax(280px,5fr) minmax(280px,7fr);gap:22px;align-items:start">
+      <!-- Source -->
+      <div>
+        <div class="panel">
+          <div class="panel-head">
+            <span style="font-size:8px;font-weight:900;color:var(--lime-text);text-transform:uppercase;letter-spacing:3px">📄 JSON_SOURCE</span>
+            <span id="t2-syntaxErr" style="display:none;font-size:8px;color:#f87171;padding:2px 7px;background:rgba(127,29,29,0.25);border-radius:99px"></span>
+          </div>
+          <textarea class="mono-input" id="t2-input" rows="22" placeholder="// วาง JSON ที่นี่..." spellcheck="false"></textarea>
+        </div>
+        <button class="btn-copy" id="t2-copyBtn" onclick="t2Copy()" disabled>📋 COPY RESULT JSON</button>
+      </div>
+
+      <!-- Editor -->
+      <div class="panel" style="min-height:500px;display:flex;flex-direction:column">
+        <div class="panel-head">
+          <h2 style="font-size:16px;font-weight:900;color:var(--lime);display:flex;align-items:center;gap:8px;font-family:'Kanit',sans-serif">📊 Thai Editor</h2>
+          <div style="display:flex;gap:6px">
+            <button class="tab-btn on" id="t2-tabEditor" onclick="t2Tab('editor')">EDITOR</button>
+            <button class="tab-btn off" id="t2-tabKnow" onclick="t2Tab('knowledge')">KNOWLEDGE</button>
+          </div>
+        </div>
+        <div id="t2-editorPane" style="padding:22px;overflow-y:auto;max-height:660px;flex:1">
+          <div id="t2-fields"></div>
+          <div id="t2-standby" style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:360px;color:rgba(184,255,0,0.08)">
+            <div style="font-size:64px;margin-bottom:12px;animation:pulse 3s infinite">💻</div>
+            <p style="font-size:14px;font-weight:900;letter-spacing:4px;text-transform:uppercase">Awaiting Data...</p>
+          </div>
+          <div id="t2-knowledge" style="display:none;flex-direction:column;gap:20px">
+            <div style="padding:18px;background:rgba(30,58,138,0.08);border:1px solid rgba(184,255,0,0.12);border-radius:18px">
+              <h3 style="color:var(--lime);font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:6px;font-size:13px;font-family:'Kanit',sans-serif">💡 เทคนิคระดับโปร</h3>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px" id="t2-kb"></div>
+            </div>
+            <div style="background:rgba(0,0,0,0.35);border:1px solid rgba(184,255,0,0.08);border-radius:18px;padding:18px">
+              <h3 style="color:var(--lime);font-weight:700;font-size:13px;margin-bottom:14px;display:flex;align-items:center;gap:6px;font-family:'Kanit',sans-serif">⌨️ PROMPT_STRUCTURE_DOCS</h3>
+              <div style="display:flex;flex-direction:column;gap:12px;font-family:'Kanit',sans-serif" id="t2-steps"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer style="margin-top:24px;padding-top:14px;border-top:1px solid rgba(184,255,0,0.08)">
+      <span style="font-size:8px;background:var(--lime);color:#000;padding:2px 7px;border-radius:4px;text-transform:uppercase;font-weight:900">Tips</span>
+      <span style="font-size:8px;color:rgba(184,255,0,0.2);margin-left:10px;letter-spacing:2px;text-transform:uppercase;font-weight:700">JSON Prompt ช่วยลดการบิดเบือนข้อมูล (Hallucination) // ใช้ "examples" เพื่อผลลัพธ์ที่แม่นยำขึ้น 300%</span>
+    </footer>
+  </div>
+</div>
+
+<!-- ══ TOOL 3: GRAPHIC ══ -->
+<div class="sec" id="t3">
+  <div style="max-width:1700px;margin:0 auto">
+    <div id="t3-err" class="err-box"></div>
+
+    <!-- Header -->
+    <header style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;margin-bottom:28px;border-bottom:1px solid rgba(184,255,0,0.1);padding-bottom:20px;gap:14px">
+      <div style="display:flex;align-items:center;gap:16px;animation:float 4s ease-in-out infinite">
+        <svg width="64" height="64" viewBox="0 0 100 100" fill="none">
+          <rect x="5" y="5" width="90" height="90" rx="15" stroke="var(--lime)" stroke-width="2" fill="rgba(184,255,0,0.04)"/>
+          <text x="50" y="58" text-anchor="middle" fill="white" font-family="Chakra Petch" font-size="24" font-weight="900">JZ9</text>
+          <path d="M65 25L75 25L75 35" stroke="var(--lime)" stroke-width="2"/><circle cx="75" cy="25" r="3" fill="var(--lime)"/>
+          <rect x="25" y="65" width="15" height="10" rx="2" fill="var(--lime)" opacity="0.25"/>
+        </svg>
+        <div>
+          <h1 style="font-size:clamp(28px,5vw,54px);font-weight:900;font-family:'Chakra Petch',sans-serif;color:#fff;letter-spacing:-2px">JZ9<span style="color:var(--lime)">_</span>GRAPHIC</h1>
+          <div style="display:flex;align-items:center;gap:10px;margin-top:4px">
+            <div style="height:3px;width:50px;background:var(--lime);border-radius:99px;box-shadow:0 0 8px var(--lime)"></div>
+            <p style="font-size:9px;color:rgba(255,255,255,0.3);font-family:'Fira Code',monospace;text-transform:uppercase;letter-spacing:4px;font-weight:700">Visual Master Engine v10.1</p>
+            <span class="badge">Gemini 2.0 + Imagen 3</span>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px">
+        <button onclick="t3ExportCSV()" class="btn-outline" style="padding:10px 18px;border-radius:10px;font-size:10px;font-weight:900">SAVE_CSV</button>
+        <button onclick="document.getElementById('t3-csvIn').click()" class="btn-outline" style="padding:10px 18px;border-radius:10px;font-size:10px;font-weight:900">LOAD_CSV</button>
+        <input type="file" id="t3-csvIn" accept=".csv" style="display:none" onchange="t3ImportCSV(this)">
+      </div>
+    </header>
+
+    <div style="display:grid;grid-template-columns:minmax(300px,8fr) minmax(260px,4fr);gap:20px">
+      <!-- LEFT -->
+      <div style="display:flex;flex-direction:column;gap:16px">
+
+        <!-- Ideator -->
+        <div class="glass" style="padding:24px;position:relative;overflow:hidden">
+          <div style="position:absolute;top:-60px;right:-60px;width:180px;height:180px;background:var(--lime);opacity:0.02;filter:blur(40px);border-radius:50%"></div>
+          <h2 style="font-size:10px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px;color:var(--lime);font-family:'Fira Code',monospace;text-transform:uppercase;letter-spacing:3px">
+            <span style="padding:6px;background:rgba(184,255,0,0.08);border-radius:6px">⚡</span> INTELLIGENT_IDEATOR
+            <span class="badge">Gemini 2.0 Flash</span>
+          </h2>
+          <div style="display:flex;flex-wrap:wrap;gap:12px">
+            <input id="t3sp" type="text" class="field-input" style="flex:1;min-width:200px;padding:14px 16px;border-radius:14px;font-size:13px" placeholder="ระบุสิ่งที่อยากขายเพื่อให้ AI ช่วยคิดคอนเทนต์...">
+            <button id="t3-ideaBtn" class="btn-primary" style="padding:14px 24px;border-radius:14px;font-size:11px;display:flex;align-items:center;gap:8px;min-width:180px;justify-content:center">
+              GENERATE_IDEAS <div class="spinner" id="t3-ideaLoader" style="border-top-color:#000"></div>
+            </button>
+          </div>
+        </div>
+
+        <!-- Visual Core -->
+        <div class="glass" style="padding:24px">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;border-bottom:1px solid rgba(184,255,0,0.1);padding-bottom:14px">
+            <h2 style="font-size:15px;font-weight:700;font-family:'Chakra Petch',sans-serif;text-transform:uppercase;display:flex;align-items:center;gap:10px">
+              <span style="color:var(--lime)">[01]</span> VISUAL_CORE_CONFIG
+            </h2>
+            <div style="display:flex;align-items:center;gap:16px">
+              <div style="display:flex;align-items:center;gap:6px">
+                <span style="font-size:9px;color:rgba(255,255,255,0.3);font-family:'Fira Code',monospace;text-transform:uppercase;font-weight:700">MODE:</span>
+                <select id="t3mode" class="field-input" style="background:transparent;font-size:9px;cursor:pointer;font-weight:700;border:none;outline:none;font-family:'Fira Code',monospace">
+                  <option value="Generate">FRESH_GEN</option><option value="Reference">IMAGE_REF</option>
+                </select>
+              </div>
+              <div style="display:flex;align-items:center;gap:6px">
+                <span style="font-size:9px;color:rgba(255,255,255,0.3);font-family:'Fira Code',monospace;text-transform:uppercase;font-weight:700">STYLE_LOCK:</span>
+                <label class="sw"><input type="checkbox" id="t3lock"><span class="sw-track"></span></label>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px">
+            <div style="display:flex;flex-direction:column;gap:14px">
+              <div>
+                <label style="display:block;font-size:9px;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:6px;font-family:'Fira Code',monospace;font-weight:700;letter-spacing:2px">Project Type</label>
+                <select id="t3gtype" class="field-input" style="width:100%;padding:10px 12px;border-radius:10px;font-size:11px">
+                  <option>Movie Poster</option><option>Promotion Image</option>
+                  <option>Announcement Image</option><option>Game Ad</option>
+                  <option>Luxury Ad</option><option>Logo Design</option>
+                </select>
+              </div>
+              <div>
+                <label style="display:block;font-size:9px;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:6px;font-family:'Fira Code',monospace;font-weight:700;letter-spacing:2px">Visual Style</label>
+                <select id="t3vstyle" class="field-input" style="width:100%;padding:10px 12px;border-radius:10px;font-size:11px">
+                  <option value="Cinematic High Fidelity">Cinematic</option>
+                  <option value="3D Cartoon Pixar Style">3D Cartoon (Pixar)</option>
+                  <option value="2D Cartoon Style">การ์ตูน 2D</option>
+                  <option value="PG Slot Game Style">PG Slot Style</option>
+                  <option value="Cyberpunk Neon">Cyberpunk</option>
+                  <option value="Luxury Gold/Dark">Luxury Gold</option>
+                  <option value="3D Realistic Render">3D Realistic</option>
+                </select>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:14px">
+              <div>
+                <label style="display:block;font-size:9px;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:6px;font-family:'Fira Code',monospace;font-weight:700;letter-spacing:2px">Background</label>
+                <select id="t3bg" class="field-input" style="width:100%;padding:10px 12px;border-radius:10px;font-size:11px">
+                  <option value="None/Auto">None (อัตโนมัติ)</option><option value="Solid / Minimal">Solid</option>
+                  <option value="Gradient">Gradient</option><option value="Texture">Texture</option>
+                  <option value="Photo Background">Photo</option><option value="Blur / Bokeh">Bokeh</option>
+                  <option value="Neon / Glow">Neon</option><option value="Dark Luxury">Dark Luxury</option>
+                  <option value="3D Scene">3D Scene</option><option value="Studio">Studio</option>
+                </select>
+              </div>
+              <div>
+                <label style="display:block;font-size:9px;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:6px;font-family:'Fira Code',monospace;font-weight:700;letter-spacing:2px">Color Tone</label>
+                <input id="t3tone" type="text" class="field-input" style="width:100%;padding:10px 12px;border-radius:10px;font-size:11px" placeholder="เขียว-ดำ, แดง-ทอง">
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:14px">
+              <div>
+                <label style="display:block;font-size:9px;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:6px;font-family:'Fira Code',monospace;font-weight:700;letter-spacing:2px">Aspect Ratio</label>
+                <div style="display:flex;gap:4px;margin-bottom:6px">
+                  <button onclick="t3SetRatio('1:1')" class="ratio-btn">1:1</button>
+                  <button onclick="t3SetRatio('9:16')" class="ratio-btn">9:16</button>
+                  <button onclick="t3SetRatio('16:9')" class="ratio-btn">16:9</button>
+                  <button onclick="t3SetRatio('4:3')" class="ratio-btn">4:3</button>
+                </div>
+                <select id="t3ratio" class="field-input" style="width:100%;padding:10px 12px;border-radius:10px;font-size:11px">
+                  <option value="1:1">1:1 Square</option><option value="9:16">9:16 Portrait</option>
+                  <option value="16:9">16:9 Landscape</option><option value="4:3">4:3</option>
+                </select>
+              </div>
+              <div>
+                <label style="display:block;font-size:9px;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:6px;font-family:'Fira Code',monospace;font-weight:700;letter-spacing:2px">Festival</label>
+                <select id="t3fest" class="field-input" style="width:100%;padding:10px 12px;border-radius:10px;font-size:11px">
+                  <option value="General">None</option><option value="Valentine's Day">Valentine's Day</option>
+                  <option value="Songkran Festival">Songkran</option><option value="Chinese New Year">Chinese New Year</option>
+                  <option value="New Year">New Year</option>
+                </select>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:14px">
+              <div>
+                <label style="display:block;font-size:9px;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:6px;font-family:'Fira Code',monospace;font-weight:700;letter-spacing:2px">Action</label>
+                <select id="t3action" class="field-input" style="width:100%;padding:10px 12px;border-radius:10px;font-size:11px">
+                  <option value="None/Auto">Auto</option>
+                  <option value="Smiling and looking at camera">ยิ้มให้กล้อง</option>
+                  <option value="Holding a product/item">ถือสินค้า</option>
+                  <option value="Pointing to the text">ชี้ข้อความ</option>
+                </select>
+              </div>
+              <div>
+                <label style="display:block;font-size:9px;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:6px;font-family:'Fira Code',monospace;font-weight:700;letter-spacing:2px">Lighting</label>
+                <select id="t3light" class="field-input" style="width:100%;padding:10px 12px;border-radius:10px;font-size:11px">
+                  <option value="None/Auto">None</option><option value="Studio Professional">สตูดิโอ</option>
+                  <option value="Neon Glow">นีออน</option><option value="Dramatic Shadows">ดราม่า</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Typography -->
+          <div style="margin-top:18px;padding-top:18px;border-top:1px solid rgba(184,255,0,0.1)">
+            <label style="display:block;font-size:9px;text-transform:uppercase;color:var(--lime);margin-bottom:12px;font-family:'Fira Code',monospace;font-weight:700;letter-spacing:3px;display:flex;align-items:center;gap:6px">
+              <span style="width:8px;height:8px;background:var(--lime);border-radius:50%;animation:pulse 2s infinite;display:inline-block"></span> TYPOGRAPHY_ARCHITECT
+            </label>
+            <div id="t3-fontList" style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px">
+              <div class="font-card on" data-font="None/Auto"><div style="padding:10px;font-size:9px;opacity:0.4;font-weight:700;font-family:'Fira Code',monospace;color:#f0f0f0">AUTO</div></div>
+              <div class="font-card" data-font="TH_CLEAN_UI"><div style="padding:10px;font-family:'Sarabun';font-size:12px;color:#f0f0f0">สะอาดตา</div></div>
+              <div class="font-card" data-font="TH_PROMO_BOLD"><div style="padding:10px;font-family:'Kanit';font-weight:700;font-size:12px;color:#f0f0f0">พาดหัวแรง</div></div>
+              <div class="font-card" data-font="TH_ROUNDED_FRIENDLY"><div style="padding:10px;font-family:'Mitr';font-size:12px;color:#f0f0f0">เป็นกันเอง</div></div>
+              <div class="font-card" data-font="TH_LUXE_SERIF"><div style="padding:10px;font-family:'Noto Serif Thai';font-size:12px;color:#f0f0f0">หรูหรา</div></div>
+              <div class="font-card" data-font="MIX_CLEAN_GLOBAL"><div style="padding:10px;font-family:'Sarabun';font-size:10px;color:#f0f0f0">Global Mix</div></div>
+              <div class="font-card" data-font="MIX_PROMO_IMPACT"><div style="padding:10px;font-family:'Kanit';font-weight:700;font-size:10px;color:#f0f0f0">PROMO IMPACT</div></div>
+            </div>
+          </div>
+
+          <!-- Depth inputs -->
+          <div style="margin-top:18px;padding-top:18px;border-top:1px solid rgba(184,255,0,0.1);display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px">
+            <div>
+              <label style="display:block;font-size:9px;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:6px;font-family:'Fira Code',monospace;font-weight:700;letter-spacing:2px">Visual Subject</label>
+              <textarea id="t3subj" rows="3" class="field-input" style="width:100%;padding:12px;border-radius:14px;font-size:12px;resize:vertical" placeholder="ระบุสิ่งที่ต้องการในภาพ..."></textarea>
+            </div>
+            <div>
+              <label style="display:block;font-size:9px;text-transform:uppercase;color:var(--lime);margin-bottom:6px;font-family:'Fira Code',monospace;font-weight:700;letter-spacing:2px">Target Insight</label>
+              <textarea id="t3insight" rows="3" class="field-input" style="width:100%;padding:12px;border-radius:14px;font-size:12px;resize:vertical" placeholder="กลุ่มเป้าหมาย, อารมณ์..."></textarea>
+            </div>
+            <div>
+              <label style="display:block;font-size:9px;text-transform:uppercase;color:rgba(184,255,0,0.5);margin-bottom:6px;font-family:'Fira Code',monospace;font-weight:700;letter-spacing:2px">Visual DNA</label>
+              <textarea id="t3dna" rows="3" class="field-input" style="width:100%;padding:12px;border-radius:14px;font-size:12px;resize:vertical" placeholder="อัตลักษณ์ทางศิลปะ..."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Text layers -->
+        <div class="glass" style="padding:24px">
+          <h3 style="font-size:9px;font-weight:700;color:rgba(255,255,255,0.3);margin-bottom:18px;font-family:'Fira Code',monospace;text-transform:uppercase;letter-spacing:3px">// TEXT_RENDER_LAYERS</h3>
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+              <input id="t3hl" type="text" class="field-input" style="padding:12px 14px;border-radius:12px;font-size:12px;width:100%" placeholder="Headline">
+              <input id="t3sub" type="text" class="field-input" style="padding:12px 14px;border-radius:12px;font-size:12px;width:100%" placeholder="Sub-headline">
+            </div>
+            <input id="t3ben" type="text" class="field-input" style="padding:12px 14px;border-radius:12px;font-size:12px;width:100%" placeholder="Benefits (แยกด้วย | เช่น สินค้าคุณภาพ | ราคาดี)">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+              <input id="t3cta" type="text" class="field-input" style="padding:12px 14px;border-radius:12px;font-size:12px;width:100%" placeholder="CTA Button (หากว่างจะไม่แสดง)">
+              <input id="t3foot" type="text" class="field-input" style="padding:12px 14px;border-radius:12px;font-size:12px;width:100%" placeholder="URL / Footer">
+            </div>
+          </div>
+        </div>
+
+        <!-- Negative -->
+        <div class="glass" style="padding:24px;border-color:rgba(239,68,68,0.08)">
+          <h3 style="font-size:9px;font-weight:700;color:#f87171;margin-bottom:12px;font-family:'Fira Code',monospace;text-transform:uppercase;letter-spacing:3px">// NEGATIVE_CONSTRAINTS</h3>
+          <textarea id="t3neg" rows="3" class="field-input" style="width:100%;padding:12px;border-radius:14px;font-size:12px;resize:vertical" placeholder="ระบุสิ่งที่ไม่ต้องการในภาพ..."></textarea>
+        </div>
+      </div>
+
+      <!-- RIGHT -->
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div class="glass" style="padding:18px">
+          <div id="t3-imgWrap" style="position:relative;width:100%;max-width:280px;margin:0 auto 14px;border-radius:20px;overflow:hidden;border:1px solid rgba(184,255,0,0.1);background:rgba(0,0,0,0.5);aspect-ratio:1/1">
+            <div id="t3-ph" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--muted);font-size:11px">
+              <div style="font-size:28px;margin-bottom:6px;opacity:0.3">🖼️</div>
+              <p style="font-family:'Fira Code',monospace;font-size:7px;opacity:0.2;text-transform:uppercase;letter-spacing:2px" id="t3-ratioLabel">Imagen 3 · 1:1</p>
+            </div>
+            <img id="t3-outImg" src="" style="display:none;width:100%;height:100%;object-fit:contain">
+            <div id="t3-genStatus" style="display:none;position:absolute;inset:0;background:rgba(0,0,0,0.95);display:none;flex-direction:column;align-items:center;justify-content:center;z-index:10">
+              <div class="spinner" style="display:block;width:36px;height:36px;margin-bottom:10px"></div>
+              <span style="font-family:'Fira Code',monospace;color:var(--lime);font-size:8px;animation:pulse 1.5s infinite;text-transform:uppercase;letter-spacing:4px">Synthesizing...</span>
+              <div id="t3-stepTxt" style="font-size:7px;color:rgba(255,255,255,0.3);margin-top:8px;font-family:'Fira Code',monospace;text-transform:uppercase"></div>
+            </div>
+          </div>
+
+          <div id="t3-dlBar" style="display:none;justify-content:center;margin-bottom:12px">
+            <button onclick="t3DlImg()" class="btn-outline" style="padding:8px 22px;border-radius:10px;font-size:10px;font-weight:900">⬇ DOWNLOAD_IMAGE</button>
+          </div>
+
+          <button id="t3-execBtn" class="btn-primary" style="width:100%;padding:18px;border-radius:20px;font-size:14px;display:flex;align-items:center;justify-content:center;gap:12px">
+            <span style="font-weight:900;letter-spacing:2px">Execute_Job</span>
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+          </button>
+        </div>
+
+        <!-- History -->
+        <div class="glass" style="padding:16px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;border-bottom:1px solid rgba(184,255,0,0.1);padding-bottom:10px">
+            <span style="font-size:9px;font-weight:700;color:var(--lime);font-family:'Fira Code',monospace;text-transform:uppercase;letter-spacing:3px">SESSION_BUFFER</span>
+            <span style="font-size:8px;color:rgba(255,255,255,0.3)">v10.1</span>
+          </div>
+          <div id="t3-hist" style="max-height:140px;overflow-y:auto">
+            <p style="font-style:italic;padding:10px;text-align:center;opacity:0.2;font-size:10px;font-family:'Fira Code',monospace">Memory buffer empty.</p>
+          </div>
+        </div>
+
+        <!-- Console -->
+        <div class="glass" style="padding:16px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+            <span style="font-size:9px;color:var(--lime);font-family:'Fira Code',monospace;font-weight:700;text-transform:uppercase;letter-spacing:3px">CONSOLE_STREAM</span>
+            <button onclick="t3CpJson()" style="font-size:9px;color:var(--lime);background:none;border:none;cursor:pointer;font-family:'Fira Code',monospace;font-weight:700;text-transform:uppercase">Copy</button>
+          </div>
+          <pre id="t3-jsonOut" style="background:rgba(0,0,0,0.7);padding:12px;border-radius:12px;font-size:10px;color:var(--lime);font-family:'Fira Code',monospace;height:110px;overflow:auto;border:1px solid rgba(56,189,248,0.08)">{}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast">SYSTEM_READY</div>
+
+<!-- ══════════════════════════════════════════ -->
+<script>
+// API Key ถูกเก็บ Server-side ใน Vercel Environment Variable
+
+// ── NAV ──
+function switchTool(n) {
+  [1,2,3].forEach(i => {
+    document.getElementById('t'+i).classList.toggle('on', i===n);
+    document.getElementById('tab'+i).classList.toggle('on', i===n);
+  });
+}
+
+// ── TOAST ──
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.style.transform = 'translateY(0)';
+  setTimeout(() => el.style.transform = 'translateY(100px)', 2600);
+}
+
+// ── FETCH HELPER ──
+// ── API PROXY (Key is server-side in Vercel env) ──
+async function callProxy(model, body, action='generateContent', tries=4, delay=800) {
+  for (let i=0; i<tries; i++) {
+    try {
+      const r = await fetch('/api/proxy', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ model, action, body })
+      });
+      if (!r.ok) {
+        const e = await r.json().catch(()=>({}));
+        throw new Error(e.error || `HTTP ${r.status}`);
+      }
+      return await r.json();
+    } catch(err) {
+      if (i === tries-1) throw err;
+      await new Promise(r => setTimeout(r, delay * Math.pow(2, i)));
+    }
+  }
+}
+
+async function geminiText(system, userMsg) {
+  const d = await callProxy('gemini-2.0-flash', {
+    contents: [{ parts: [{ text: userMsg }] }],
+    systemInstruction: { parts: [{ text: system }] },
+    generationConfig: { responseMimeType: 'application/json' }
+  });
+  return JSON.parse(d.candidates?.[0]?.content?.parts?.[0]?.text);
+}
+
+async function geminiVision(system, userMsg, base64, mime='image/png') {
+  const d = await callProxy('gemini-2.5-flash-preview-09-2025', {
+    contents: [{ parts: [{ text: userMsg }, { inlineData: { mimeType: mime, data: base64 } }] }],
+    systemInstruction: { parts: [{ text: system }] },
+    generationConfig: {
+      responseMimeType: 'application/json',
+      responseSchema: { type:'OBJECT', properties: {
+        visual_subject_definition: { type:'OBJECT', properties: {
+          colors: { type:'ARRAY', items: { type:'STRING' } },
+          typography_style: { type:'STRING' },
+          lighting_and_atmosphere: { type:'STRING' },
+          artistic_style: { type:'STRING' },
+          composition_rules: { type:'STRING' }
+        }},
+        tuned_ai_prompt: { type:'STRING' }
+      }}
+    }
+  });
+  return JSON.parse(d.candidates?.[0]?.content?.parts?.[0]?.text);
+}
+
+async function imagen4(prompt) {
+  const d = await callProxy('imagen-4.0-generate-001', { instances: { prompt }, parameters: { sampleCount: 1 } }, 'predict');
+  return d.predictions?.[0]?.bytesBase64Encoded;
+}
+
+async function imagen3(prompt, ratio) {
+  const d = await callProxy('imagen-3.0-generate-002', { instances: [{ prompt }], parameters: { sampleCount: 1, aspectRatio: ratio || '1:1' } }, 'predict');
+  return d.predictions?.[0]?.bytesBase64Encoded;
+}
+
+// ══════════════════════
+//   TOOL 1 LOGIC
+// ══════════════════════
+let t1_b64 = null, t1_prompt = null, t1_result = null;
+
+document.getElementById('t1-file').addEventListener('change', function(e) {
+  const file = e.target.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onloadend = () => {
+    t1_b64 = reader.result.split(',')[1];
+    const img = document.getElementById('t1-preview');
+    img.src = URL.createObjectURL(file);
+    img.style.display = 'block';
+    document.getElementById('t1-placeholder').style.display = 'none';
+    document.getElementById('t1-dropzone').style.borderColor = 'rgba(184,255,0,0.35)';
+    document.getElementById('t1-extractBtn').disabled = false;
+    document.getElementById('t1-extractBtn').style.background = 'var(--lime)';
+    document.getElementById('t1-extractBtn').style.color = '#000';
+    document.getElementById('t1-extractBtn').style.boxShadow = '0 0 18px rgba(184,255,0,0.3)';
+    toast('IMAGE_LOADED');
+  };
+  reader.readAsDataURL(file);
+});
+
+document.getElementById('t1-extractBtn').addEventListener('click', async () => {
+  if (!t1_b64) return;
+  const btn = document.getElementById('t1-extractBtn');
+  btn.disabled = true; btn.textContent = '⏳ SEQUENCING...';
+  const errBox = document.getElementById('t1-error');
+  errBox.style.display = 'none';
+  try {
+    const out = await geminiVision(
+      `คุณคือ AI Prompt Architect ผู้เชี่ยวชาญการสกัด Visual DNA เพื่อสร้าง Modular Style Prompts สำหรับ AI Image Generators ห้ามมีเนื้อหาเรื่องมาสคอตหรือข้อความ`,
+      `วิเคราะห์ภาพนี้แล้วสกัดองค์ประกอบสไตล์ออกมาในรูปแบบ JSON: visual_subject_definition (สกัดสไตล์ฟ้อนต์เป็นลักษณะเส้น, โทนสี, สไตล์ภาพ) และ tuned_ai_prompt (สร้างคำบรรยายสไตล์ภาษาอังกฤษที่เข้มข้น เพื่อใช้เป็น Style Reference)`,
+      t1_b64
+    );
+    t1_result = out; t1_prompt = out.tuned_ai_prompt;
+    // Show JSON
+    document.getElementById('t1-jsonPre').textContent = JSON.stringify(out, null, 2);
+    document.getElementById('t1-jsonPre').style.display = 'block';
+    document.getElementById('t1-jsonStandby').style.display = 'none';
+    document.getElementById('t1-copyJson').style.display = 'inline-flex';
+    // Prompt box
+    document.getElementById('t1-promptText').textContent = out.tuned_ai_prompt;
+    document.getElementById('t1-promptBox').style.display = 'block';
+    // Color cards
+    const vsd = out.visual_subject_definition;
+    const colEl = document.getElementById('t1-colors');
+    colEl.innerHTML = '';
+    (vsd.colors||[]).forEach(c => {
+      const b = document.createElement('button');
+      b.title = c; b.style.cssText = `width:28px;height:28px;border-radius:8px;border:1px solid rgba(255,255,255,0.1);cursor:pointer;font-size:10px;transition:transform 0.15s;`;
+      b.style.backgroundColor = c.startsWith('#') ? c : '#333';
+      b.textContent = '';
+      b.onclick = () => { navigator.clipboard.writeText(c).catch(()=>{}); b.textContent='✓'; setTimeout(()=>b.textContent='',1200); toast('COLOR_COPIED: '+c); };
+      colEl.appendChild(b);
+    });
+    document.getElementById('t1-typo').textContent = vsd.typography_style || '';
+    document.getElementById('t1-art').textContent = vsd.artistic_style || '';
+    document.getElementById('t1-cards').style.display = 'grid';
+    // Generate preview
+    t1GenPreview();
+    toast('DNA_EXTRACTED');
+  } catch(err) {
+    errBox.textContent = '[SYSTEM_ERROR]: ' + err.message; errBox.style.display = 'block';
+  } finally {
+    btn.disabled = false; btn.textContent = '🧬 EXTRACT DNA';
+  }
+});
+
+async function t1GenPreview() {
+  if (!t1_prompt) return;
+  const loader = document.getElementById('t1-simLoader');
+  const ph = document.getElementById('t1-simPlaceholder');
+  const img = document.getElementById('t1-simImg');
+  loader.style.display = 'block'; ph.style.display = 'none'; img.style.display = 'none';
+  try {
+    const b64 = await imagen4(`A futuristic minimalist sculpture, ${t1_prompt}`);
+    if (b64) { img.src = `data:image/png;base64,${b64}`; img.style.display = 'block'; document.getElementById('t1-regenBtn').style.display = 'block'; }
+  } catch(e) { document.getElementById('t1-error').textContent = 'Simulation Error: '+e.message; document.getElementById('t1-error').style.display='block'; }
+  finally { loader.style.display = 'none'; }
+}
+
+function t1Regen() { if (t1_prompt) t1GenPreview(); }
+function t1CopyPrompt() { if (!t1_prompt) return; navigator.clipboard.writeText(t1_prompt).catch(()=>{}); document.getElementById('t1-copyPrompt').textContent='✅'; setTimeout(()=>document.getElementById('t1-copyPrompt').textContent='📋', 2000); toast('PROMPT_COPIED'); }
+function t1CopyJson() { if (!t1_result) return; navigator.clipboard.writeText(JSON.stringify(t1_result,null,2)).catch(()=>{}); toast('JSON_COPIED'); }
+
+// ══════════════════════
+//   TOOL 2 LOGIC
+// ══════════════════════
+const T2_SCHEMA = {
+  role:"บทบาทของ AI",task:"งานที่ต้องทำ",context:"บริบทข้อมูล",format:"รูปแบบคำตอบ",
+  constraints:"ข้อจำกัด/กฎ",audience:"กลุ่มเป้าหมาย",examples:"ตัวอย่าง",temperature:"ความสร้างสรรค์",
+  system_instruction:"คำสั่งระบบ",input:"ข้อมูลนำเข้า",output:"โครงสร้างขาออก",steps:"ขั้นตอน",
+  tone:"น้ำเสียง",language:"ภาษาที่ใช้",goal:"เป้าหมาย",style:"สไตล์การเขียน",persona:"บุคลิกตัวละคร"
+};
+const T2_KB = [
+  {t:"ทำไมต้องใช้ JSON Prompt?",c:"JSON ช่วยให้ AI เข้าใจโครงสร้างคำสั่งได้ชัดเจนกว่าข้อความยาวๆ ลดการเกิด Hallucination และควบคุม Output ได้ง่ายขึ้น"},
+  {t:"เทคนิค Few-Shot Prompting",c:"การใส่ 'examples' หรือตัวอย่างคำตอบใน JSON จะช่วยให้ AI เข้าใจสไตล์ที่คุณต้องการได้แม่นยำขึ้นมาก (ใส่ 2-3 ตัวอย่างเพื่อผลลัพธ์ที่ดีที่สุด)"},
+  {t:"การใช้ Delimiters",c:"ใช้เครื่องหมาย ### หรือ --- เพื่อแยกส่วนย่อยของเนื้อหา ช่วยให้ AI ไม่สับสนระหว่างคำสั่งกับข้อมูลนำเข้า"},
+  {t:"Temperature Control",c:"ค่า 0.0-0.3 เหมาะสำหรับงานวิเคราะห์/ความแม่นยำ ค่า 0.7-1.0 เหมาะสำหรับงานเขียนเชิงสร้างสรรค์"}
+];
+const T2_STEPS = [
+  ["STEP 1","ระบุ role ให้ชัดเจน เช่น 'Senior Copywriter' แทนที่จะเป็น 'Writer'"],
+  ["STEP 2","ใน constraints ให้ใช้ประโยคเชิงบวก 'ทำ...' ดีกว่าเชิงลบ 'ห้าม...'"],
+  ["STEP 3","ใช้ output เพื่อระบุ Schema ที่ต้องการให้ AI ส่งกลับมา"]
+];
+
+let t2_data = null;
+
+// Build KB
+document.getElementById('t2-kb').innerHTML = T2_KB.map(k=>`
+  <div class="card" style="padding:14px">
+    <h4 style="color:var(--lime);font-size:10px;font-weight:700;margin-bottom:6px;text-transform:uppercase;letter-spacing:1px;font-family:'Kanit',sans-serif">${k.t}</h4>
+    <p style="font-size:11px;color:rgba(184,255,0,0.45);line-height:1.6;font-family:'Kanit',sans-serif">${k.c}</p>
+  </div>`).join('');
+document.getElementById('t2-steps').innerHTML = T2_STEPS.map(([s,t])=>`
+  <div style="display:flex;gap:12px;align-items:flex-start">
+    <span style="color:var(--lime);font-weight:700;min-width:52px;font-size:11px">${s}:</span>
+    <p style="font-size:12px;color:rgba(184,255,0,0.45);margin:0;line-height:1.6;font-family:'Kanit',sans-serif">${t}</p>
+  </div>`).join('');
+
+document.getElementById('t2-input').addEventListener('input', function() {
+  const v = this.value.trim();
+  const err = document.getElementById('t2-syntaxErr');
+  const en = document.getElementById('t2-error');
+  if (!v) { t2_data=null; t2UpdateUI(); err.style.display='none'; return; }
+  try {
+    t2_data = JSON.parse(v); err.style.display='none'; en.style.display='none';
+    t2UpdateUI();
+  } catch(e) {
+    t2_data=null; err.textContent='SYNTAX ERROR'; err.style.display='inline-block';
+    document.getElementById('t2-fields').innerHTML='';
+    document.getElementById('t2-standby').style.display='flex';
+    document.getElementById('t2-copyBtn').disabled=true;
+    document.getElementById('t2-thaiBtn').disabled=true;
+    document.getElementById('t2-backBtn').disabled=true;
+  }
+});
+
+function t2UpdateUI() {
+  const has = !!t2_data;
+  document.getElementById('t2-copyBtn').disabled = !has;
+  document.getElementById('t2-thaiBtn').disabled = !has;
+  document.getElementById('t2-backBtn').disabled = !has;
+  document.getElementById('t2-standby').style.display = has ? 'none' : 'flex';
+  if (has) t2RenderFields(t2_data, '', document.getElementById('t2-fields'));
+  else document.getElementById('t2-fields').innerHTML = '';
+}
+
+function t2RenderFields(data, path, container) {
+  container.innerHTML = '';
+  if (typeof data !== 'object' || !data) return;
+  Object.entries(data).forEach(([key, value]) => {
+    const cp = path ? `${path}.${key}` : key;
+    const isObj = typeof value==='object' && value!==null && !Array.isArray(value);
+    const isArr = Array.isArray(value);
+    const label = T2_SCHEMA[key.toLowerCase()] || `ส่วนประกอบ: ${key}`;
+
+    const div = document.createElement('div');
+    div.className = 't2-field';
+    div.innerHTML = `<div class="field-key">${key}</div><div class="field-label">› ${label}</div>`;
+
+    if (isObj) {
+      const sub = document.createElement('div');
+      sub.style.cssText = 'background:rgba(0,0,0,0.3);padding:12px;border-radius:10px;border:1px solid rgba(184,255,0,0.06);margin-top:4px';
+      div.appendChild(sub);
+      t2RenderFields(value, cp, sub);
+    } else if (isArr) {
+      value.forEach((item, idx) => {
+        const ta = document.createElement('textarea');
+        ta.className = 't2-field-textarea'; ta.rows = 2;
+        ta.value = typeof item==='object' ? JSON.stringify(item) : item;
+        ta.style.marginBottom = '6px';
+        ta.addEventListener('input', () => {
+          const arr = [...value]; arr[idx] = ta.value;
+          t2SetPath(t2_data, cp, arr);
+          document.getElementById('t2-input').value = JSON.stringify(t2_data, null, 2);
+        });
+        div.appendChild(ta);
+      });
+    } else {
+      const ta = document.createElement('textarea');
+      ta.className = 't2-field-textarea';
+      ta.rows = Math.max(2, Math.ceil(String(value).length / 60));
+      ta.value = value;
+      ta.addEventListener('input', () => {
+        t2SetPath(t2_data, cp, typeof value==='number' ? Number(ta.value) : ta.value);
+        document.getElementById('t2-input').value = JSON.stringify(t2_data, null, 2);
+      });
+      div.appendChild(ta);
+    }
+    container.appendChild(div);
+  });
+}
+
+function t2SetPath(obj, path, val) {
+  const keys = path.split('.');
+  let cur = obj;
+  for (let i=0;i<keys.length-1;i++) cur = cur[keys[i]];
+  cur[keys[keys.length-1]] = val;
+}
+
+function t2Tab(name) {
+  const isEditor = name==='editor';
+  document.getElementById('t2-tabEditor').className = 't2-tab-btn ' + (isEditor?'on':'off');
+  document.getElementById('t2-tabKnow').className = 't2-tab-btn ' + (isEditor?'blue-off':'blue-on');
+  document.getElementById('t2-fields').style.display = isEditor&&t2_data ? 'block' : 'none';
+  document.getElementById('t2-standby').style.display = isEditor&&!t2_data ? 'flex' : 'none';
+  document.getElementById('t2-knowledge').style.display = isEditor ? 'none' : 'flex';
+}
+
+function t2Copy() {
+  if (!t2_data) return;
+  navigator.clipboard.writeText(JSON.stringify(t2_data,null,2)).catch(()=>{});
+  const b = document.getElementById('t2-copyBtn');
+  b.textContent = '✅ COPIED!'; setTimeout(()=>b.textContent='📋 COPY RESULT JSON', 2000);
+  toast('JSON_COPIED');
+}
+
+async function t2TranslateThai() {
+  if (!t2_data) return;
+  const b = document.getElementById('t2-thaiBtn');
+  b.disabled=true; b.textContent='⏳ กำลังแปล...';
+  try {
+    const result = await geminiText(
+      `คุณคือผู้เชี่ยวชาญด้าน Prompt Engineering แปล "ค่า (Value)" ใน JSON นี้ให้เป็นภาษาไทยที่อ่านง่ายสำหรับผู้ใช้ ห้ามเปลี่ยน "คีย์ (Key)" โดยเด็ดขาด และส่งกลับเป็น JSON เท่านั้น`,
+      JSON.stringify(t2_data)
+    );
+    t2_data = result;
+    document.getElementById('t2-input').value = JSON.stringify(result, null, 2);
+    t2RenderFields(t2_data, '', document.getElementById('t2-fields'));
+    toast('TRANSLATED_TO_THAI');
+  } catch(e) { document.getElementById('t2-error').textContent='การแปลเป็นไทยล้มเหลว: '+e.message; document.getElementById('t2-error').style.display='block'; }
+  finally { b.disabled=false; b.textContent='🌏 1. แปลเป็นไทย'; }
+}
+
+async function t2TranslateBack() {
+  if (!t2_data) return;
+  const b = document.getElementById('t2-backBtn');
+  b.disabled=true; b.textContent='⏳ กำลังแปล...';
+  try {
+    const result = await geminiText(
+      `คุณคือผู้เชี่ยวชาญด้าน AI Prompt แปล "ค่า (Value)" ใน JSON นี้จากภาษาไทยกลับเป็นภาษาอังกฤษที่ใช้ในทางเทคนิคสำหรับ AI Prompt ห้ามเปลี่ยน "คีย์ (Key)" และส่งกลับเป็น JSON เท่านั้น`,
+      JSON.stringify(t2_data)
+    );
+    t2_data = result;
+    document.getElementById('t2-input').value = JSON.stringify(result, null, 2);
+    t2RenderFields(t2_data, '', document.getElementById('t2-fields'));
+    toast('TRANSLATED_TO_EN');
+  } catch(e) { document.getElementById('t2-error').textContent='การแปลกลับล้มเหลว: '+e.message; document.getElementById('t2-error').style.display='block'; }
+  finally { b.disabled=false; b.textContent='📤 2. แปลกลับ (AI)'; }
+}
+
+// ══════════════════════
+//   TOOL 3 LOGIC
+// ══════════════════════
+let t3_font = 'None/Auto', t3_ratio = '1:1', t3_hist = [], t3_lastImg = null;
+
+const t3FontCards = document.querySelectorAll('#t3-fontList .t3-fc');
+t3FontCards.forEach(c => c.addEventListener('click', () => {
+  t3FontCards.forEach(x => x.classList.remove('on'));
+  c.classList.add('on'); t3_font = c.dataset.font;
+}));
+
+document.getElementById('t3ratio').addEventListener('change', function() { t3SetRatio(this.value); });
+
+function t3SetRatio(r) {
+  t3_ratio = r;
+  document.getElementById('t3ratio').value = r;
+  const map = {'1:1':'1/1','9:16':'9/16','16:9':'16/9','4:3':'4/3','3:4':'3/4'};
+  document.getElementById('t3-imgWrap').style.aspectRatio = map[r]||'1/1';
+  document.getElementById('t3-ratioLabel').textContent = `Imagen 3 · ${r}`;
+}
+
+function t3ShowErr(msg) {
+  const el = document.getElementById('t3-err'); el.style.display='block'; el.textContent='⚠ ERROR: '+msg;
+  setTimeout(()=>el.style.display='none', 8000);
+}
+
+function t3SetLoading(on, txt) {
+  const s = document.getElementById('t3-genStatus'); s.style.display = on ? 'flex' : 'none';
+  if (on && txt) document.getElementById('t3-stepTxt').textContent = txt;
+  document.getElementById('t3-execBtn').disabled = on;
+}
+
+function t3GetData() {
+  const g = id => (document.getElementById(id)||{}).value||'';
+  return { sp:g('t3sp'),hl:g('t3hl'),sub:g('t3sub'),ben:g('t3ben'),cta:g('t3cta'),foot:g('t3foot'),
+    subj:g('t3subj'),insight:g('t3insight'),dna:g('t3dna'),neg:g('t3neg'),
+    mode:g('t3mode'),gtype:g('t3gtype'),vstyle:g('t3vstyle'),bg:g('t3bg'),
+    tone:g('t3tone'),ratio:t3_ratio,fest:g('t3fest'),action:g('t3action'),light:g('t3light'),
+    font:t3_font,lock:(document.getElementById('t3lock')||{}).checked?'true':'false' };
+}
+
+function t3SetData(d) {
+  ['sp','hl','sub','ben','cta','foot','subj','insight','dna','neg','mode','gtype','vstyle','bg','fest','action','light'].forEach(k=>{
+    const el = document.getElementById('t3'+k); if(el&&d[k]!==undefined) el.value=d[k];
+  });
+  const te = document.getElementById('t3tone'); if(te&&d.tone) te.value=d.tone;
+  if(d.ratio) t3SetRatio(d.ratio);
+  const lk=document.getElementById('t3lock'); if(lk) lk.checked=d.lock==='true';
+  if(d.font){t3_font=d.font;t3FontCards.forEach(c=>c.classList.toggle('on',c.dataset.font===d.font));}
+}
+
+window.t3ExportCSV = function() {
+  const d=t3GetData(),keys=Object.keys(d),vals=Object.values(d).map(v=>`"${String(v).replace(/"/g,'""')}"`);
+  const blob=new Blob([keys.join(',')+'\n'+vals.join(',')],{type:'text/csv'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`JZ9_${Date.now()}.csv`;a.click();
+  toast('CSV_SAVED');
+};
+
+window.t3ImportCSV = function(input) {
+  const file=input.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    try{
+      const lines=e.target.result.split(/\r?\n/).filter(l=>l.trim());
+      if(lines.length<2)throw new Error('Format error');
+      const headers=lines[0].split(',');
+      const vals=lines[1].match(/(\".*?\"|[^,]+)/g).map(v=>v.replace(/^"|"$/g,'').replace(/""/g,'"'));
+      const data={};headers.forEach((h,i)=>data[h.trim()]=vals[i]);
+      t3SetData(data);toast('CSV_LOADED');
+    }catch(e){toast('ERR: CSV_FAIL');}
+  };
+  reader.readAsText(file);input.value='';
+};
+
+window.t3DlImg = function() {
+  if(!t3_lastImg)return;
+  const a=document.createElement('a');a.href=t3_lastImg;a.download=`JZ9_${Date.now()}.png`;a.click();
+  toast('DOWNLOAD_INITIATED');
+};
+
+window.t3CpJson = function() {
+  const txt=document.getElementById('t3-jsonOut').textContent;
+  navigator.clipboard.writeText(txt).catch(()=>{});toast('CLIPBOARD_SYNCED');
+};
+
+function t3UpdateHist() {
+  const el=document.getElementById('t3-hist');el.innerHTML='';
+  t3_hist.slice().reverse().forEach(item=>{
+    const d=document.createElement('div');d.className='t3-hi';
+    d.innerHTML=`<span style="color:var(--lime);font-family:'Fira Code',monospace;font-size:10px">[${new Date(item.ts).toLocaleTimeString()}]</span> <span style="font-size:11px;opacity:0.6;margin-left:6px">${item.data.hl||'NO_TITLE'}</span>`;
+    d.onclick=()=>t3SetData(item.data);el.appendChild(d);
+  });
+}
+
+document.getElementById('t3-ideaBtn').addEventListener('click', async () => {
+  const sp=(document.getElementById('t3sp')||{}).value||'';
+  if(!sp.trim())return toast('ERR: INPUT_NULL');
+  const loader=document.getElementById('t3-ideaLoader');
+  const btn=document.getElementById('t3-ideaBtn');
+  loader.style.display='block';btn.disabled=true;
+  try {
+    const r=await geminiText(
+      'You are a Thai marketing expert and Visual Design Ideator. Always respond with a valid JSON object only, no markdown, no extra text.',
+      `Create marketing content for: "${sp}". Return ONLY this JSON:\n{"hl":"Thai catchy headline (max 10 words)","sub":"Thai supporting line (max 15 words)","ben":"Thai benefit1 | Thai benefit2 | Thai benefit3","cta":"Thai CTA button text","foot":"website or brand tag","subj":"Vivid English visual description of the main image subject","insight":"Target audience and emotional tone in Thai","dna":"Artistic style, color palette, mood in English"}`
+    );
+    t3SetData(r);toast('IDEAS_SYNCED');
+  } catch(e){t3ShowErr(e.message);toast('ERR: IDEATOR_FAIL');}
+  finally{loader.style.display='none';btn.disabled=false;}
+});
+
+document.getElementById('t3-execBtn').addEventListener('click', async () => {
+  const d=t3GetData();
+  if(!d.subj.trim()&&!d.hl.trim())return toast('ERR: INSUFFICIENT_DATA');
+  t3SetLoading(true,'Consulting Gemini...');
+  try {
+    const ctaLogic=d.cta.trim()?`[CTA BUTTON]: Include a prominent button with text: "${d.cta}"`:`[NO CTA]: Do NOT include any buttons.`;
+    const q=`You are a Master Visual Architect for Imagen 3.\nCreate a detailed professional English image generation prompt:\n\nVISUAL SUBJECT: ${d.subj}\nPROJECT TYPE: ${d.gtype} | STYLE: ${d.vstyle}\nHEADLINE: "${d.hl}"\nSUB-HEADLINE: "${d.sub}"\nBENEFITS: "${d.ben}"\n${ctaLogic}\nFOOTER: "${d.foot}"\nBACKGROUND: ${d.bg} | COLOR: ${d.tone}\nLIGHTING: ${d.light} | FESTIVAL: ${d.fest}\nACTION: ${d.action}\nDNA: ${d.dna}\nINSIGHT: ${d.insight}\nTYPOGRAPHY: ${d.font}\nRATIO: ${d.ratio}\n\nReturn ONLY JSON: { "prompt": "...", "negative_prompt": "..." }`;
+    t3SetLoading(true,'Building visual architecture...');
+    const arch=await geminiText('You are a Master Visual Architect. Respond ONLY with valid JSON. No markdown.',q);
+    document.getElementById('t3-jsonOut').textContent=JSON.stringify(arch,null,2);
+    t3SetLoading(true,'Imagen 3 generating...');
+    const b64=await imagen3(arch.prompt,t3_ratio);
+    if(!b64)throw new Error('No image returned');
+    const url=`data:image/png;base64,${b64}`;
+    t3_lastImg=url;
+    const outImg=document.getElementById('t3-outImg');
+    outImg.src=url;outImg.style.display='block';
+    document.getElementById('t3-ph').style.display='none';
+    document.getElementById('t3-dlBar').style.display='flex';
+    t3_hist.push({ts:Date.now(),data:d});t3UpdateHist();
+    toast('PRECISION_JOB_COMPLETE');
+  } catch(e){t3ShowErr(e.message);toast('ERR: SYSTEM_FAIL');}
+  finally{t3SetLoading(false);}
+});
+</script>
+</body>
+</html>
