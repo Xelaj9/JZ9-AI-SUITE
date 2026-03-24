@@ -25,7 +25,9 @@ export default async function handler(req, res) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
     });
-    const data = await upstream.json();
+    const buf = await upstream.arrayBuffer();
+    const text = Buffer.from(buf).toString("utf8");
+    const data = JSON.parse(text);
     return res.status(upstream.status).json(data);
   } catch (err) {
     return res.status(500).json({ error: err.message });
