@@ -1,7 +1,7 @@
 export const config = {
   api: {
     bodyParser: { sizeLimit: '10mb' },
-    responseLimit: '10mb'
+    responseLimit: false
   }
 };
 
@@ -25,13 +25,8 @@ export default async function handler(req, res) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
     });
-    const text = await upstream.text();
-    try {
-      const data = JSON.parse(text);
-      return res.status(upstream.status).json(data);
-    } catch(e) {
-      return res.status(500).json({ error: "Parse error: " + text.slice(0, 500) });
-    }
+    const data = await upstream.json();
+    return res.status(upstream.status).json(data);
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
