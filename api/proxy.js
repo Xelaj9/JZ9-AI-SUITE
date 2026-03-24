@@ -1,3 +1,5 @@
+export const config = { api: { bodyParser: true } };
+
 export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
@@ -8,7 +10,7 @@ export default async function handler(req, res) {
     const key = process.env.GEMINI_API_KEY;
     if (!key) return res.status(500).json({ error: "No API key" });
     let { model, action, body } = req.body || {};
-    if (!model) return res.status(400).json({ error: "No model specified" });
+    if (!model) return res.status(400).json({ error: "No model" });
     if (model === "gemini-2.0-flash") model = "gemini-2.5-flash";
     const ver = model.startsWith("imagen") ? "v1" : "v1beta";
     const act = action === "predict" ? "predict" : "generateContent";
