@@ -1,4 +1,4 @@
-export const config = { api: { bodyParser: true } };
+export const config = { api: { bodyParser: true, responseLimit: '10mb' } };
 
 export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -20,7 +20,10 @@ export default async function handler(req, res) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
     });
-    const data = await upstream.json();
+    const text = await upstream.text();
+    let data;
+    try { data = JSON.parse(text); }
+    catch(e) { return res.status(500).json({ error: "Invalid JSON from upstream", raw: text.slice(0, 300) }); }
     return res.status(upstream.status).json(data);
   } catch (err) {
     return res.status(500).json({ error: err.message });
