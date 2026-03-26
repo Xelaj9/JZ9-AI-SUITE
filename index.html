@@ -468,16 +468,6 @@ body { padding-top: 60px; }
             </div>
             <div style="display:flex;flex-direction:column;gap:14px">
               <div>
-                <label style="display:block;font-size:9px;text-transform:uppercase;color:#3d4451;margin-bottom:6px;font-family:'Fira Code',monospace;font-weight:700;letter-spacing:2px">Background</label>
-                <select id="t3bg" class="t3-ti" style="width:100%;padding:10px 12px;border-radius:10px;font-size:11px">
-                  <option value="None/Auto">None (อัตโนมัติ)</option><option value="Solid / Minimal">Solid</option>
-                  <option value="Gradient">Gradient</option><option value="Texture">Texture</option>
-                  <option value="Photo Background">Photo</option><option value="Blur / Bokeh">Bokeh</option>
-                  <option value="Neon / Glow">Neon</option><option value="Dark Luxury">Dark Luxury</option>
-                  <option value="3D Scene">3D Scene</option><option value="Studio">Studio</option>
-                </select>
-              </div>
-              <div>
                 <label style="display:block;font-size:9px;text-transform:uppercase;color:#3d4451;margin-bottom:6px;font-family:'Fira Code',monospace;font-weight:700;letter-spacing:2px">Color Tone</label>
                 <input id="t3tone" type="text" class="t3-ti" style="width:100%;padding:10px 12px;border-radius:10px;font-size:11px" placeholder="เขียว-ดำ, แดง-ทอง">
               </div>
@@ -485,24 +475,20 @@ body { padding-top: 60px; }
             <div style="display:flex;flex-direction:column;gap:14px">
               <div>
                 <label style="display:block;font-size:9px;text-transform:uppercase;color:#3d4451;margin-bottom:6px;font-family:'Fira Code',monospace;font-weight:700;letter-spacing:2px">Aspect Ratio</label>
-                <div style="display:flex;gap:4px;margin-bottom:6px">
-                  <button onclick="t3SetRatio('1:1')" class="t3-qr">1:1</button>
-                  <button onclick="t3SetRatio('9:16')" class="t3-qr">9:16</button>
-                  <button onclick="t3SetRatio('16:9')" class="t3-qr">16:9</button>
-                  <button onclick="t3SetRatio('4:3')" class="t3-qr">4:3</button>
+                <div style="display:flex;gap:4px;margin-bottom:8px;flex-wrap:wrap">
+                  <button onclick="t3SetRatio('1:1')" class="t3-qr" id="t3rb-1:1">1:1</button>
+                  <button onclick="t3SetRatio('9:16')" class="t3-qr" id="t3rb-9:16">9:16</button>
+                  <button onclick="t3SetRatio('16:9')" class="t3-qr" id="t3rb-16:9">16:9</button>
+                  <button onclick="t3SetRatio('4:3')" class="t3-qr" id="t3rb-4:3">4:3</button>
+                  <button onclick="t3SetRatio('3:4')" class="t3-qr" id="t3rb-3:4">3:4</button>
                 </div>
-                <select id="t3ratio" class="t3-ti" style="width:100%;padding:10px 12px;border-radius:10px;font-size:11px">
-                  <option value="1:1">1:1 Square</option><option value="9:16">9:16 Portrait</option>
-                  <option value="16:9">16:9 Landscape</option><option value="4:3">4:3</option>
-                </select>
-              </div>
-              <div>
-                <label style="display:block;font-size:9px;text-transform:uppercase;color:#3d4451;margin-bottom:6px;font-family:'Fira Code',monospace;font-weight:700;letter-spacing:2px">Festival</label>
-                <select id="t3fest" class="t3-ti" style="width:100%;padding:10px 12px;border-radius:10px;font-size:11px">
-                  <option value="General">None</option><option value="Valentine's Day">Valentine's Day</option>
-                  <option value="Songkran Festival">Songkran</option><option value="Chinese New Year">Chinese New Year</option>
-                  <option value="New Year">New Year</option>
-                </select>
+                <div style="display:flex;gap:6px;align-items:center">
+                  <input id="t3ratio-custom" type="text" class="t3-ti"
+                    style="flex:1;padding:8px 12px;border-radius:10px;font-size:12px;font-family:'Fira Code',monospace"
+                    placeholder="กำหนดเอง เช่น 2:3, 5:4, 1920:1080"
+                    oninput="t3SetRatioCustom(this.value)"
+                    value="1:1">
+                </div>
               </div>
             </div>
             <div style="display:flex;flex-direction:column;gap:14px">
@@ -981,14 +967,39 @@ t3FontCards.forEach(c => c.addEventListener('click', () => {
   c.classList.add('on'); t3_font = c.dataset.font;
 }));
 
-document.getElementById('t3ratio').addEventListener('change', function() { t3SetRatio(this.value); });
+
 
 function t3SetRatio(r) {
   t3_ratio = r;
-  document.getElementById('t3ratio').value = r;
-  const map = {'1:1':'1/1','9:16':'9/16','16:9':'16/9','4:3':'4/3','3:4':'3/4'};
-  document.getElementById('t3-imgWrap').style.aspectRatio = map[r]||'1/1';
+  // Update custom input
+  document.getElementById('t3ratio-custom').value = r;
+  // Highlight active button
+  ['1:1','9:16','16:9','4:3','3:4'].forEach(x => {
+    const b = document.getElementById('t3rb-'+x);
+    if(b) b.style.cssText = x===r ? 'border-color:#00ff41;color:#00ff41;background:rgba(0,255,65,0.12)' : '';
+  });
+  // Update preview aspect ratio
+  const [w,h] = r.split(':').map(Number);
+  const ar = (w&&h) ? `${w}/${h}` : '1/1';
+  document.getElementById('t3-imgWrap').style.aspectRatio = ar;
   document.getElementById('t3-ratioLabel').textContent = `Imagen 3 · ${r}`;
+}
+
+function t3SetRatioCustom(val) {
+  if(!val) return;
+  const clean = val.trim();
+  // Validate format W:H
+  if(/^\d+:\d+$/.test(clean)) {
+    t3_ratio = clean;
+    const [w,h] = clean.split(':').map(Number);
+    document.getElementById('t3-imgWrap').style.aspectRatio = `${w}/${h}`;
+    document.getElementById('t3-ratioLabel').textContent = `Imagen 3 · ${clean}`;
+    // Clear button highlights
+    ['1:1','9:16','16:9','4:3','3:4'].forEach(x => {
+      const b = document.getElementById('t3rb-'+x);
+      if(b) b.style.cssText = x===clean ? 'border-color:#00ff41;color:#00ff41;background:rgba(0,255,65,0.12)' : '';
+    });
+  }
 }
 
 function t3ShowErr(msg) {
@@ -1006,8 +1017,8 @@ function t3GetData() {
   const g = id => (document.getElementById(id)||{}).value||'';
   return { sp:g('t3sp'),hl:g('t3hl'),sub:g('t3sub'),ben:g('t3ben'),cta:g('t3cta'),foot:g('t3foot'),
     subj:g('t3subj'),insight:g('t3insight'),dna:g('t3dna'),neg:g('t3neg'),
-    mode:g('t3mode'),gtype:g('t3gtype'),vstyle:g('t3vstyle'),bg:g('t3bg'),
-    tone:g('t3tone'),ratio:t3_ratio,fest:g('t3fest'),action:g('t3action'),light:g('t3light'),
+    mode:g('t3mode'),gtype:g('t3gtype'),vstyle:g('t3vstyle'),bg:'None/Auto',
+    tone:g('t3tone'),ratio:t3_ratio,fest:'None',action:g('t3action'),light:g('t3light'),
     font:t3_font,lock:(document.getElementById('t3lock')||{}).checked?'true':'false' };
 }
 
@@ -1086,7 +1097,7 @@ document.getElementById('t3-execBtn').addEventListener('click', async () => {
   t3SetLoading(true,'Consulting Gemini...');
   try {
     const ctaLogic=d.cta.trim()?`[CTA BUTTON]: Include a prominent button with text: "${d.cta}"`:`[NO CTA]: Do NOT include any buttons.`;
-    const q=`You are a Master Visual Architect for Imagen 3.\nCreate a detailed professional English image generation prompt:\n\nVISUAL SUBJECT: ${d.subj}\nPROJECT TYPE: ${d.gtype} | STYLE: ${d.vstyle}\nHEADLINE: "${d.hl}"\nSUB-HEADLINE: "${d.sub}"\nBENEFITS: "${d.ben}"\n${ctaLogic}\nFOOTER: "${d.foot}"\nBACKGROUND: ${d.bg} | COLOR: ${d.tone}\nLIGHTING: ${d.light} | FESTIVAL: ${d.fest}\nACTION: ${d.action}\nDNA: ${d.dna}\nINSIGHT: ${d.insight}\nTYPOGRAPHY: ${d.font}\nRATIO: ${d.ratio}\n\nReturn ONLY JSON: { "prompt": "...", "negative_prompt": "..." }`;
+    const q=`You are a Master Visual Architect for Imagen 3.\nCreate a detailed professional English image generation prompt:\n\nVISUAL SUBJECT: ${d.subj}\nPROJECT TYPE: ${d.gtype} | STYLE: ${d.vstyle}\nHEADLINE: "${d.hl}"\nSUB-HEADLINE: "${d.sub}"\nBENEFITS: "${d.ben}"\n${ctaLogic}\nFOOTER: "${d.foot}"\nCOLOR: ${d.tone}\nLIGHTING: ${d.light}\nACTION: ${d.action}\nDNA: ${d.dna}\nINSIGHT: ${d.insight}\nTYPOGRAPHY: ${d.font}\nRATIO: ${d.ratio}\n\nReturn ONLY JSON: { "prompt": "...", "negative_prompt": "..." }`;
     t3SetLoading(true,'Building visual architecture...');
     const arch=await geminiText('You are a Master Visual Architect. Respond ONLY with valid JSON. No markdown.',q);
     document.getElementById('t3-jsonOut').textContent=JSON.stringify(arch,null,2);
