@@ -1641,6 +1641,24 @@ document.getElementById('t3-ideaBtn').addEventListener('click', async () => {
   finally{loader.style.display='none';btn.disabled=false;}
 });
 
+// Coerce the architect's "prompt" into a plain string. gpt-4o sometimes
+// returns prompt as a nested object, which images/generations rejects
+// ("Invalid type for 'prompt': expected a string, but got an object").
+function t3PromptStr(arch) {
+  var p = (arch && arch.prompt !== undefined) ? arch.prompt : arch;
+  if (typeof p === 'string') return p;
+  if (p && typeof p === 'object') {
+    if (typeof p.prompt === 'string') return p.prompt;
+    if (typeof p.description === 'string') return p.description;
+    if (typeof p.text === 'string') return p.text;
+    try {
+      var parts = Object.values(p).filter(function(v){ return typeof v === 'string'; });
+      return parts.length ? parts.join('. ') : JSON.stringify(p);
+    } catch (e) { return JSON.stringify(p); }
+  }
+  return String(p == null ? '' : p);
+}
+
 async function t3GeneratePreview() {
   const d = t3GetData();
   if (!d.subj.trim() && !d.hl.trim()) return toast('ERR: INSUFFICIENT_DATA');
@@ -1675,7 +1693,7 @@ Return ONLY JSON: { "prompt": "..." }`;
     status.textContent = 'generating preview...';
     const b64 = await callProxy('images/generations', {
       model: 'gpt-image-1',
-      prompt: arch.prompt,
+      prompt: t3PromptStr(arch),
       size: _sizeForRatio(t3_ratio || '1:1'),
       quality: 'low',
       n: 1
@@ -1706,7 +1724,7 @@ document.getElementById('t3-execBtn').addEventListener('click', async () => {
     const arch=await gptText('You are a Master Visual Architect. Respond ONLY with valid JSON. No markdown.',q);
     document.getElementById('t3-jsonOut').textContent=JSON.stringify(arch,null,2);
     t3SetLoading(true,'GPT-Image-1 generating...');
-    const b64=await gptImageRatio(arch.prompt,t3_ratio);
+    const b64=await gptImageRatio(t3PromptStr(arch),t3_ratio);
     if(!b64)throw new Error('No image returned');
     const url=`data:image/png;base64,${b64}`;
     t3_lastImg=url;
