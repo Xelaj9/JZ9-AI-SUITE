@@ -871,7 +871,7 @@ h2, h3 {
           <div style="display:flex;align-items:center;gap:10px;margin-top:4px">
             <div style="height:3px;width:50px;background:#00ff41;border-radius:99px;box-shadow:0 0 8px #00ff41"></div>
             <p style="font-size:9px;color:#3d4451;font-family:'Fira Code',monospace;text-transform:uppercase;letter-spacing:4px;font-weight:700">Visual Master Engine v10.1</p>
-            <span class="t3-badge">Gemini 2.0 + Imagen 3</span>
+            <span class="t3-badge">GPT-4o + GPT-Image-1</span>
           </div>
         </div>
       </div>
@@ -891,7 +891,7 @@ h2, h3 {
           <div style="position:absolute;top:-60px;right:-60px;width:180px;height:180px;background:#00ff41;opacity:0.02;filter:blur(40px);border-radius:50%"></div>
           <h2 style="font-size:10px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px;color:#00ff41;font-family:'Fira Code',monospace;text-transform:uppercase;letter-spacing:3px">
             <span style="padding:6px;background:rgba(0,255,65,0.08);border-radius:6px">⚡</span> INTELLIGENT_IDEATOR
-            <span class="t3-badge">Gemini 2.0 Flash</span>
+            <span class="t3-badge">GPT-4o mini</span>
           </h2>
           <div style="display:flex;flex-wrap:wrap;gap:12px">
             <input id="t3sp" type="text" class="t3-ti" style="flex:1;min-width:200px;padding:14px 16px;border-radius:14px;font-size:13px" placeholder="ระบุสิ่งที่อยากขายเพื่อให้ AI ช่วยคิดคอนเทนต์...">
@@ -1170,7 +1170,7 @@ async function callProxy(endpoint, body, tries=3, delay=800) {
   }
 }
 
-async function geminiText(system, userMsg) {
+async function gptText(system, userMsg) {
   const d = await callProxy('chat/completions', {
     model: 'gpt-4o-mini',
     messages: [
@@ -1183,7 +1183,7 @@ async function geminiText(system, userMsg) {
   return JSON.parse(d.choices[0].message.content);
 }
 
-async function geminiVision(system, userMsg, base64, mime='image/png') {
+async function gptVision(system, userMsg, base64, mime='image/png') {
   const d = await callProxy('chat/completions', {
     model: 'gpt-4o',
     messages: [
@@ -1212,7 +1212,7 @@ function _sizeForRatio(ratio) {
   return '1024x1024';
 }
 
-async function imagen4(prompt) {
+async function gptImageSquare(prompt) {
   const d = await callProxy('images/generations', {
     model: 'gpt-image-1',
     prompt,
@@ -1222,7 +1222,7 @@ async function imagen4(prompt) {
   return d.data[0].b64_json;
 }
 
-async function imagen3(prompt, ratio) {
+async function gptImageRatio(prompt, ratio) {
   const d = await callProxy('images/generations', {
     model: 'gpt-image-1',
     prompt,
@@ -1263,7 +1263,7 @@ document.getElementById('t1-extractBtn').addEventListener('click', async () => {
   const errBox = document.getElementById('t1-error');
   errBox.style.display = 'none';
   try {
-    const out = await geminiVision(
+    const out = await gptVision(
       `คุณคือ AI Prompt Architect ผู้เชี่ยวชาญการสกัด Visual DNA เพื่อสร้าง Modular Style Prompts สำหรับ AI Image Generators ห้ามมีเนื้อหาเรื่องมาสคอตหรือข้อความ`,
       `วิเคราะห์ภาพนี้แล้วสกัดองค์ประกอบสไตล์ออกมาในรูปแบบ JSON: visual_subject_definition (สกัดสไตล์ฟ้อนต์เป็นลักษณะเส้น, โทนสี, สไตล์ภาพ) และ tuned_ai_prompt (สร้างคำบรรยายสไตล์ภาษาอังกฤษที่เข้มข้น เพื่อใช้เป็น Style Reference)`,
       t1_b64
@@ -1309,7 +1309,7 @@ async function t1GenPreview() {
   const img = document.getElementById('t1-simImg');
   loader.style.display = 'block'; ph.style.display = 'none'; img.style.display = 'none';
   try {
-    const b64 = await imagen4(`A futuristic minimalist sculpture, ${t1_prompt}`);
+    const b64 = await gptImageSquare(`A futuristic minimalist sculpture, ${t1_prompt}`);
     if (b64) { img.src = `data:image/png;base64,${b64}`; img.style.display = 'block'; document.getElementById('t1-regenBtn').style.display = 'block'; }
   } catch(e) { document.getElementById('t1-error').textContent = 'Simulation Error: '+e.message; document.getElementById('t1-error').style.display='block'; }
   finally { loader.style.display = 'none'; }
@@ -1457,7 +1457,7 @@ async function t2TranslateThai() {
   const b = document.getElementById('t2-thaiBtn');
   b.disabled=true; b.textContent='⏳ กำลังแปล...';
   try {
-    const result = await geminiText(
+    const result = await gptText(
       `คุณคือผู้เชี่ยวชาญด้าน Prompt Engineering แปล "ค่า (Value)" ใน JSON นี้ให้เป็นภาษาไทยที่อ่านง่ายสำหรับผู้ใช้ ห้ามเปลี่ยน "คีย์ (Key)" โดยเด็ดขาด และส่งกลับเป็น JSON เท่านั้น`,
       JSON.stringify(t2_data)
     );
@@ -1474,7 +1474,7 @@ async function t2TranslateBack() {
   const b = document.getElementById('t2-backBtn');
   b.disabled=true; b.textContent='⏳ กำลังแปล...';
   try {
-    const result = await geminiText(
+    const result = await gptText(
       `คุณคือผู้เชี่ยวชาญด้าน AI Prompt แปล "ค่า (Value)" ใน JSON นี้จากภาษาไทยกลับเป็นภาษาอังกฤษที่ใช้ในทางเทคนิคสำหรับ AI Prompt ห้ามเปลี่ยน "คีย์ (Key)" และส่งกลับเป็น JSON เท่านั้น`,
       JSON.stringify(t2_data)
     );
@@ -1512,7 +1512,7 @@ function t3SetRatio(r) {
   const [w,h] = r.split(':').map(Number);
   const ar = (w&&h) ? `${w}/${h}` : '1/1';
   document.getElementById('t3-imgWrap').style.aspectRatio = ar;
-  document.getElementById('t3-ratioLabel').textContent = `Imagen 3 · ${r}`;
+  document.getElementById('t3-ratioLabel').textContent = `GPT-Image-1 · ${r}`;
 }
 
 function t3SetRatioCustom(val) {
@@ -1523,7 +1523,7 @@ function t3SetRatioCustom(val) {
     t3_ratio = clean;
     const [w,h] = clean.split(':').map(Number);
     document.getElementById('t3-imgWrap').style.aspectRatio = `${w}/${h}`;
-    document.getElementById('t3-ratioLabel').textContent = `Imagen 3 · ${clean}`;
+    document.getElementById('t3-ratioLabel').textContent = `GPT-Image-1 · ${clean}`;
     // Clear button highlights
     ['1:1','9:16','16:9','4:3','3:4'].forEach(x => {
       const b = document.getElementById('t3rb-'+x);
@@ -1612,7 +1612,7 @@ document.getElementById('t3-ideaBtn').addEventListener('click', async () => {
   const btn=document.getElementById('t3-ideaBtn');
   loader.style.display='block';btn.disabled=true;
   try {
-    const r=await geminiText(
+    const r=await gptText(
       'You are a Thai marketing expert and Visual Design Ideator. Always respond with a valid JSON object only, no markdown, no extra text.',
       `Create marketing content for: "${sp}". Return ONLY this JSON:\n{"hl":"Thai catchy headline (max 10 words)","sub":"Thai supporting line (max 15 words)","ben":"Thai benefit1 | Thai benefit2 | Thai benefit3","cta":"Thai CTA button text","foot":"website or brand tag","subj":"Vivid English visual description of the main image subject","insight":"Target audience and emotional tone in Thai","dna":"Artistic style, color palette, mood in English"}`
     );
@@ -1650,7 +1650,7 @@ COLOR: ${d.tone} | LIGHTING: ${d.light}
 DNA: ${d.dna}
 TYPOGRAPHY: ${d.font}
 Return ONLY JSON: { "prompt": "..." }`;
-    const arch = await geminiText('You are a Visual Architect. Respond ONLY with valid JSON.', q);
+    const arch = await gptText('You are a Visual Architect. Respond ONLY with valid JSON.', q);
 
     status.textContent = 'generating preview...';
     const b64 = await callProxy('images/generations', {
@@ -1683,10 +1683,10 @@ document.getElementById('t3-execBtn').addEventListener('click', async () => {
     const ctaLogic=d.cta.trim()?`[CTA BUTTON]: Include a prominent button with text: "${d.cta}"`:`[NO CTA]: Do NOT include any buttons.`;
     const q=`You are a Master Visual Architect for AI Image Generation.\nCreate a detailed professional English image generation prompt:\n\nVISUAL SUBJECT: ${d.subj}\nPROJECT TYPE: ${d.gtype} | STYLE: ${d.vstyle}\nHEADLINE: "${d.hl}"\nSUB-HEADLINE: "${d.sub}"\nBENEFITS: "${d.ben}"\n${ctaLogic}\nFOOTER: "${d.foot}"\nCOLOR: ${d.tone}\nLIGHTING: ${d.light}\nACTION: ${d.action}\nDNA: ${d.dna}\nINSIGHT: ${d.insight}\nTYPOGRAPHY: ${d.font}\nRATIO: ${d.ratio}\n\nReturn ONLY JSON: { "prompt": "...", "negative_prompt": "..." }`;
     t3SetLoading(true,'Building visual architecture...');
-    const arch=await geminiText('You are a Master Visual Architect. Respond ONLY with valid JSON. No markdown.',q);
+    const arch=await gptText('You are a Master Visual Architect. Respond ONLY with valid JSON. No markdown.',q);
     document.getElementById('t3-jsonOut').textContent=JSON.stringify(arch,null,2);
     t3SetLoading(true,'GPT-Image-1 generating...');
-    const b64=await imagen3(arch.prompt,t3_ratio);
+    const b64=await gptImageRatio(arch.prompt,t3_ratio);
     if(!b64)throw new Error('No image returned');
     const url=`data:image/png;base64,${b64}`;
     t3_lastImg=url;
