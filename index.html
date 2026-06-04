@@ -63,7 +63,7 @@ body { padding-top: 60px; }
 ::-webkit-scrollbar-thumb:hover { background: #22c55e; }
 
 /* ── TOOL 1 STYLES ── */
-#t1 { background: rgba(0,0,0,0.28); padding: 28px 24px; }
+#t1 { background: rgba(0,0,0,0.58); padding: 28px 24px; }
 .t1-card { background: #0f0f0f; border: 1px solid #1a1a1a; border-radius: 20px; padding: 22px; transition: border-color 0.2s; }
 .t1-card:hover { border-color: rgba(34,197,94,0.25); }
 .t1-tag { display: inline-flex; align-items: center; padding: 3px 14px; background: rgba(34,197,94,0.08); color: #4ade80; border: 1px solid rgba(34,197,94,0.15); border-radius: 999px; font-size: 9px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; font-family: 'Fira Code', monospace; }
@@ -78,7 +78,7 @@ body { padding-top: 60px; }
 
 /* ── TOOL 2 STYLES ── */
 #t2 {
-  background: rgba(2,2,2,0.28);
+  background: rgba(2,2,2,0.58);
   background-image: linear-gradient(rgba(34,197,94,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(34,197,94,0.015) 1px, transparent 1px);
   background-size: 40px 40px;
   padding: 28px 24px; min-height: calc(100vh - 60px);
@@ -117,7 +117,7 @@ body { padding-top: 60px; }
 @keyframes t3scan{0%{transform:translateY(-100%)}100%{transform:translateY(100vh)}}
 
 #t3 {
-  background: rgba(5,7,10,0.28);
+  background: rgba(5,7,10,0.58);
   background-image: radial-gradient(circle at 50% 50%, rgba(0,255,65,0.04) 0%, transparent 70%),
     linear-gradient(rgba(0,255,65,0.01) 1px, transparent 1px),
     linear-gradient(90deg, rgba(0,255,65,0.01) 1px, transparent 1px);
@@ -517,7 +517,7 @@ input:focus, textarea:focus, select:focus {
   box-shadow: 0 0 0 3px var(--em-soft);
 }
 input::placeholder, textarea::placeholder {
-  color: var(--paper-ghost) !important;
+  color: rgba(232, 226, 207, 0.45) !important;
   font-style: italic;
 }
 
@@ -711,7 +711,7 @@ h2, h3 {
       </svg>
       <div class="t1-tag" style="margin-bottom:10px">JZ9 Visual DNA Protocol</div>
       <h1 style="font-size:clamp(24px,5vw,44px);font-weight:900;background:linear-gradient(to right,#4ade80,#22c55e,#16a34a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-1px;margin-bottom:6px">JZ9 Visual DNA Extractor</h1>
-      <p style="color:#3d3d3d;font-size:14px;font-style:italic">สกัด DNA สไตล์ภาพ เพื่อสร้าง Prompt Components ที่สมบูรณ์แบบ</p>
+      <p style="color:#9aa39c;font-size:14px;font-style:italic">สกัด DNA สไตล์ภาพ เพื่อสร้าง Prompt Components ที่สมบูรณ์แบบ</p>
     </div>
 
     <div id="t1-error" style="display:none;margin-bottom:16px;padding:14px;background:rgba(127,29,29,0.25);border:1px solid rgba(239,68,68,0.35);color:#f87171;border-radius:14px;font-size:11px;font-family:'Fira Code',monospace"></div>
@@ -724,7 +724,7 @@ h2, h3 {
           <label style="display:block;cursor:pointer">
             <div id="t1-dropzone" style="border:2px dashed #2a2a2a;border-radius:14px;padding:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:210px;transition:all 0.2s">
               <img id="t1-preview" src="" alt="" style="display:none;max-height:170px;border-radius:10px;object-fit:contain;box-shadow:0 0 20px rgba(34,197,94,0.15)">
-              <div id="t1-placeholder" style="text-align:center;color:#2e2e2e">
+              <div id="t1-placeholder" style="text-align:center;color:#7a7d76">
                 <div style="font-size:36px;margin-bottom:8px">🖼️</div>
                 <p style="font-size:9px;letter-spacing:2px;text-transform:uppercase;font-family:'Fira Code',monospace">Inject Visual Source</p>
               </div>
@@ -788,11 +788,11 @@ h2, h3 {
           </div>
           <div class="t1-small-card">
             <div class="t1-label" style="margin-bottom:10px">🖊️ Visual Lines</div>
-            <p id="t1-typo" style="font-size:10px;font-family:'Fira Code',monospace;color:#3a3a3a;line-height:1.6;border-left:2px solid rgba(34,197,94,0.2);padding-left:8px;margin:0"></p>
+            <p id="t1-typo" style="font-size:10px;font-family:'Fira Code',monospace;color:#9aa39c;line-height:1.6;border-left:2px solid rgba(34,197,94,0.2);padding-left:8px;margin:0"></p>
           </div>
           <div class="t1-small-card">
             <div class="t1-label" style="margin-bottom:10px">🎭 Art Technique</div>
-            <p id="t1-art" style="font-size:10px;font-family:'Fira Code',monospace;color:#3a3a3a;line-height:1.6;border-left:2px solid rgba(34,197,94,0.2);padding-left:8px;margin:0"></p>
+            <p id="t1-art" style="font-size:10px;font-family:'Fira Code',monospace;color:#9aa39c;line-height:1.6;border-left:2px solid rgba(34,197,94,0.2);padding-left:8px;margin:0"></p>
           </div>
         </div>
       </div>
@@ -867,7 +867,7 @@ h2, h3 {
 
     <footer style="margin-top:24px;padding-top:14px;border-top:1px solid rgba(34,197,94,0.08)">
       <span style="font-size:8px;background:#22c55e;color:#000;padding:2px 7px;border-radius:4px;text-transform:uppercase;font-weight:900">Tips</span>
-      <span style="font-size:8px;color:rgba(34,197,94,0.2);margin-left:10px;letter-spacing:2px;text-transform:uppercase;font-weight:700">JSON Prompt ช่วยลดการบิดเบือนข้อมูล (Hallucination) // ใช้ "examples" เพื่อผลลัพธ์ที่แม่นยำขึ้น 300%</span>
+      <span style="font-size:8px;color:rgba(74,222,128,0.6);margin-left:10px;letter-spacing:2px;text-transform:uppercase;font-weight:700">JSON Prompt ช่วยลดการบิดเบือนข้อมูล (Hallucination) // ใช้ "examples" เพื่อผลลัพธ์ที่แม่นยำขึ้น 300%</span>
     </footer>
   </div>
 </div>
@@ -890,7 +890,7 @@ h2, h3 {
           <h1 style="font-size:clamp(28px,5vw,54px);font-weight:900;font-family:'Chakra Petch',sans-serif;color:#fff;letter-spacing:-2px">JZ9<span style="color:#00ff41">_</span>GRAPHIC</h1>
           <div style="display:flex;align-items:center;gap:10px;margin-top:4px">
             <div style="height:3px;width:50px;background:#00ff41;border-radius:99px;box-shadow:0 0 8px #00ff41"></div>
-            <p style="font-size:9px;color:#3d4451;font-family:'Fira Code',monospace;text-transform:uppercase;letter-spacing:4px;font-weight:700">Visual Master Engine v10.1</p>
+            <p style="font-size:9px;color:#9ca9b8;font-family:'Fira Code',monospace;text-transform:uppercase;letter-spacing:4px;font-weight:700">Visual Master Engine v10.1</p>
             <span class="t3-badge">GPT-4o + GPT-Image-1</span>
           </div>
         </div>
@@ -929,13 +929,13 @@ h2, h3 {
             </h2>
             <div style="display:flex;align-items:center;gap:16px">
               <div style="display:flex;align-items:center;gap:6px">
-                <span style="font-size:9px;color:#3d4451;font-family:'Fira Code',monospace;text-transform:uppercase;font-weight:700">MODE:</span>
+                <span style="font-size:9px;color:#9ca9b8;font-family:'Fira Code',monospace;text-transform:uppercase;font-weight:700">MODE:</span>
                 <select id="t3mode" class="t3-ti" style="background:transparent;font-size:9px;cursor:pointer;font-weight:700;border:none;outline:none;font-family:'Fira Code',monospace">
                   <option value="Generate">FRESH_GEN</option><option value="Reference">IMAGE_REF</option>
                 </select>
               </div>
               <div style="display:flex;align-items:center;gap:6px">
-                <span style="font-size:9px;color:#3d4451;font-family:'Fira Code',monospace;text-transform:uppercase;font-weight:700">STYLE_LOCK:</span>
+                <span style="font-size:9px;color:#9ca9b8;font-family:'Fira Code',monospace;text-transform:uppercase;font-weight:700">STYLE_LOCK:</span>
                 <label class="t3-switch"><input type="checkbox" id="t3lock"><span class="t3-slider"></span></label>
               </div>
             </div>
@@ -944,7 +944,7 @@ h2, h3 {
           <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px">
             <div style="display:flex;flex-direction:column;gap:14px">
               <div>
-                <label style="display:block;font-size:9px;text-transform:uppercase;color:#3d4451;margin-bottom:6px;font-family:'Fira Code',monospace;font-weight:700;letter-spacing:2px">Project Type</label>
+                <label style="display:block;font-size:9px;text-transform:uppercase;color:#9ca9b8;margin-bottom:6px;font-family:'Fira Code',monospace;font-weight:700;letter-spacing:2px">Project Type</label>
                 <select id="t3gtype" class="t3-ti" style="width:100%;padding:10px 12px;border-radius:10px;font-size:11px">
                   <option>Movie Poster</option><option>Promotion Image</option>
                   <option>Announcement Image</option><option>Game Ad</option>
@@ -952,7 +952,7 @@ h2, h3 {
                 </select>
               </div>
               <div>
-                <label style="display:block;font-size:9px;text-transform:uppercase;color:#3d4451;margin-bottom:6px;font-family:'Fira Code',monospace;font-weight:700;letter-spacing:2px">Visual Style</label>
+                <label style="display:block;font-size:9px;text-transform:uppercase;color:#9ca9b8;margin-bottom:6px;font-family:'Fira Code',monospace;font-weight:700;letter-spacing:2px">Visual Style</label>
                 <select id="t3vstyle" class="t3-ti" style="width:100%;padding:10px 12px;border-radius:10px;font-size:11px">
                   <option value="Cinematic High Fidelity">Cinematic</option>
                   <option value="3D Cartoon Pixar Style">3D Cartoon (Pixar)</option>
@@ -966,13 +966,13 @@ h2, h3 {
             </div>
             <div style="display:flex;flex-direction:column;gap:14px">
               <div>
-                <label style="display:block;font-size:9px;text-transform:uppercase;color:#3d4451;margin-bottom:6px;font-family:'Fira Code',monospace;font-weight:700;letter-spacing:2px">Color Tone</label>
+                <label style="display:block;font-size:9px;text-transform:uppercase;color:#9ca9b8;margin-bottom:6px;font-family:'Fira Code',monospace;font-weight:700;letter-spacing:2px">Color Tone</label>
                 <input id="t3tone" type="text" class="t3-ti" style="width:100%;padding:10px 12px;border-radius:10px;font-size:11px" placeholder="เขียว-ดำ, แดง-ทอง">
               </div>
             </div>
             <div style="display:flex;flex-direction:column;gap:14px">
               <div>
-                <label style="display:block;font-size:9px;text-transform:uppercase;color:#3d4451;margin-bottom:6px;font-family:'Fira Code',monospace;font-weight:700;letter-spacing:2px">Aspect Ratio</label>
+                <label style="display:block;font-size:9px;text-transform:uppercase;color:#9ca9b8;margin-bottom:6px;font-family:'Fira Code',monospace;font-weight:700;letter-spacing:2px">Aspect Ratio</label>
                 <div style="display:flex;gap:4px;margin-bottom:8px;flex-wrap:wrap">
                   <button onclick="t3SetRatio('1:1')" class="t3-qr" id="t3rb-1:1">1:1</button>
                   <button onclick="t3SetRatio('9:16')" class="t3-qr" id="t3rb-9:16">9:16</button>
@@ -991,7 +991,7 @@ h2, h3 {
             </div>
             <div style="display:flex;flex-direction:column;gap:14px">
               <div>
-                <label style="display:block;font-size:9px;text-transform:uppercase;color:#3d4451;margin-bottom:6px;font-family:'Fira Code',monospace;font-weight:700;letter-spacing:2px">Action</label>
+                <label style="display:block;font-size:9px;text-transform:uppercase;color:#9ca9b8;margin-bottom:6px;font-family:'Fira Code',monospace;font-weight:700;letter-spacing:2px">Action</label>
                 <select id="t3action" class="t3-ti" style="width:100%;padding:10px 12px;border-radius:10px;font-size:11px">
                   <option value="None/Auto">Auto</option>
                   <option value="Smiling and looking at camera">ยิ้มให้กล้อง</option>
@@ -1000,7 +1000,7 @@ h2, h3 {
                 </select>
               </div>
               <div>
-                <label style="display:block;font-size:9px;text-transform:uppercase;color:#3d4451;margin-bottom:6px;font-family:'Fira Code',monospace;font-weight:700;letter-spacing:2px">Lighting</label>
+                <label style="display:block;font-size:9px;text-transform:uppercase;color:#9ca9b8;margin-bottom:6px;font-family:'Fira Code',monospace;font-weight:700;letter-spacing:2px">Lighting</label>
                 <select id="t3light" class="t3-ti" style="width:100%;padding:10px 12px;border-radius:10px;font-size:11px">
                   <option value="None/Auto">None</option><option value="Studio Professional">สตูดิโอ</option>
                   <option value="Neon Glow">นีออน</option><option value="Dramatic Shadows">ดราม่า</option>
@@ -1028,7 +1028,7 @@ h2, h3 {
           <!-- Depth inputs -->
           <div style="margin-top:18px;padding-top:18px;border-top:1px solid #21262d;display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px">
             <div>
-              <label style="display:block;font-size:9px;text-transform:uppercase;color:#3d4451;margin-bottom:6px;font-family:'Fira Code',monospace;font-weight:700;letter-spacing:2px">Visual Subject</label>
+              <label style="display:block;font-size:9px;text-transform:uppercase;color:#9ca9b8;margin-bottom:6px;font-family:'Fira Code',monospace;font-weight:700;letter-spacing:2px">Visual Subject</label>
               <textarea id="t3subj" rows="3" class="t3-ti" style="width:100%;padding:12px;border-radius:14px;font-size:12px;resize:vertical" placeholder="ระบุสิ่งที่ต้องการในภาพ..."></textarea>
             </div>
             <div>
@@ -1044,7 +1044,7 @@ h2, h3 {
 
         <!-- Text layers -->
         <div class="t3-glass" style="padding:24px">
-          <h3 style="font-size:9px;font-weight:700;color:#3d4451;margin-bottom:18px;font-family:'Fira Code',monospace;text-transform:uppercase;letter-spacing:3px">// TEXT_RENDER_LAYERS</h3>
+          <h3 style="font-size:9px;font-weight:700;color:#9ca9b8;margin-bottom:18px;font-family:'Fira Code',monospace;text-transform:uppercase;letter-spacing:3px">// TEXT_RENDER_LAYERS</h3>
           <div style="display:flex;flex-direction:column;gap:12px">
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
               <input id="t3hl" type="text" class="t3-ti" style="padding:12px 14px;border-radius:12px;font-size:12px;width:100%" placeholder="Headline">
@@ -1078,7 +1078,7 @@ h2, h3 {
             <div id="t3-genStatus" style="display:none;position:absolute;inset:0;background:rgba(0,0,0,0.95);display:none;flex-direction:column;align-items:center;justify-content:center;z-index:10">
               <div class="t3-spinner" style="display:block;width:36px;height:36px;margin-bottom:10px"></div>
               <span style="font-family:'Fira Code',monospace;color:#00ff41;font-size:8px;animation:t1pulse 1.5s infinite;text-transform:uppercase;letter-spacing:4px">Synthesizing...</span>
-              <div id="t3-stepTxt" style="font-size:7px;color:#3d4451;margin-top:8px;font-family:'Fira Code',monospace;text-transform:uppercase"></div>
+              <div id="t3-stepTxt" style="font-size:7px;color:#9ca9b8;margin-top:8px;font-family:'Fira Code',monospace;text-transform:uppercase"></div>
             </div>
           </div>
 
@@ -1096,7 +1096,7 @@ h2, h3 {
         <div class="t3-glass" style="padding:16px">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;border-bottom:1px solid #21262d;padding-bottom:10px">
             <span style="font-size:9px;font-weight:700;color:#00ff41;font-family:'Fira Code',monospace;text-transform:uppercase;letter-spacing:3px">SESSION_BUFFER</span>
-            <span style="font-size:8px;color:#3d4451">v10.1</span>
+            <span style="font-size:8px;color:#9ca9b8">v10.1</span>
           </div>
           <div id="t3-hist" style="max-height:140px;overflow-y:auto">
             <p style="font-style:italic;padding:10px;text-align:center;opacity:0.2;font-size:10px;font-family:'Fira Code',monospace">Memory buffer empty.</p>
@@ -1111,7 +1111,7 @@ h2, h3 {
           </div>
           <div id="t3-ppImgWrap" style="position:relative;width:100%;aspect-ratio:1/1;border-radius:12px;overflow:hidden;border:1px solid rgba(184,255,0,0.15);background:rgba(0,0,0,0.7);margin-bottom:10px;display:flex;align-items:center;justify-content:center">
             <img id="t3-ppImg" style="width:100%;height:100%;object-fit:cover;display:none">
-            <div id="t3-ppPh" style="color:rgba(184,255,0,0.3);font-family:'Fira Code',monospace;font-size:10px;text-align:center;padding:20px">
+            <div id="t3-ppPh" style="color:rgba(184,255,0,0.55);font-family:'Fira Code',monospace;font-size:10px;text-align:center;padding:20px">
               <div style="font-size:32px;margin-bottom:8px;opacity:0.4">🖼️</div>
               <div>กดปุ่ม PREVIEW เพื่อสร้างตัวอย่าง</div>
               <div style="font-size:8px;opacity:0.5;margin-top:4px">(ใช้โหมด Low Quality เพื่อความเร็ว)</div>
@@ -1778,17 +1778,18 @@ document.getElementById('t3-execBtn').addEventListener('click', async () => {
     if (t - last < interval) return;
     last = t;
     // Translucent dark wash leaves fading trails behind each glyph.
-    ctx.fillStyle = 'rgba(5,8,7,0.10)';
+    // Higher alpha = trails fade faster = sparser, less busy rain.
+    ctx.fillStyle = 'rgba(5,8,7,0.14)';
     ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
     ctx.font = FONT + 'px "Fira Code", monospace';
     ctx.textBaseline = 'top';
     for (var i = 0; i < cols; i++) {
       var x = i * FONT, y = drops[i] * FONT;
-      // Bright leading glyph (lime).
-      ctx.fillStyle = 'rgba(184,255,0,0.80)';
+      // Leading glyph (lime) — kept dim so foreground text stays readable.
+      ctx.fillStyle = 'rgba(184,255,0,0.45)';
       ctx.fillText(glyphs[(Math.random() * glyphs.length) | 0], x, y);
       // Dimmer trailing glyph just above for a fuller stream.
-      ctx.fillStyle = 'rgba(122,180,0,0.22)';
+      ctx.fillStyle = 'rgba(122,180,0,0.12)';
       ctx.fillText(glyphs[(Math.random() * glyphs.length) | 0], x, y - FONT);
       if (y > window.innerHeight && Math.random() > 0.975) drops[i] = Math.random() * -20;
       drops[i] += 1;
