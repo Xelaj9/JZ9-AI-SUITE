@@ -252,6 +252,50 @@ body::after {
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.9 0 0 0 0 0.85 0 0 0 0 0.6 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
+/* ═══ ANIMATED GRADIENT MESH BACKGROUND ═══ */
+#bg-mesh {
+  position: fixed; inset: -25%;
+  z-index: -1; pointer-events: none;
+  overflow: hidden;
+}
+#bg-mesh .blob {
+  position: absolute; border-radius: 50%;
+  filter: blur(90px); mix-blend-mode: screen;
+  will-change: transform;
+}
+#bg-mesh .blob-1 {
+  width: 60vw; height: 60vw; top: -12%; left: -8%;
+  background: radial-gradient(circle at center, rgba(184,255,0,0.40), transparent 68%);
+  animation: mesh-morph-1 30s ease-in-out infinite;
+}
+#bg-mesh .blob-2 {
+  width: 55vw; height: 55vw; bottom: -18%; right: -10%;
+  background: radial-gradient(circle at center, rgba(122,158,0,0.42), transparent 70%);
+  animation: mesh-morph-2 38s ease-in-out infinite;
+}
+#bg-mesh .blob-3 {
+  width: 42vw; height: 42vw; top: 22%; left: 30%;
+  background: radial-gradient(circle at center, rgba(204,255,68,0.28), transparent 72%);
+  animation: mesh-morph-3 46s ease-in-out infinite;
+}
+@keyframes mesh-morph-1 {
+  0%,100% { transform: translate(0,0) scale(1); }
+  33%     { transform: translate(8%,6%) scale(1.18); }
+  66%     { transform: translate(-5%,10%) scale(0.92); }
+}
+@keyframes mesh-morph-2 {
+  0%,100% { transform: translate(0,0) scale(1); }
+  33%     { transform: translate(-9%,-7%) scale(1.12); }
+  66%     { transform: translate(6%,-4%) scale(0.9); }
+}
+@keyframes mesh-morph-3 {
+  0%,100% { transform: translate(0,0) scale(1); }
+  50%     { transform: translate(6%,-8%) scale(1.22); }
+}
+@media (prefers-reduced-motion: reduce) {
+  #bg-mesh .blob { animation: none !important; }
+}
+
 /* ═══ NAV ═══ */
 #nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 9999;
@@ -635,6 +679,13 @@ h2, h3 {
 </style>
 </head>
 <body>
+
+<!-- Animated gradient mesh background -->
+<div id="bg-mesh" aria-hidden="true">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+</div>
 
 <!-- NAV -->
 <nav id="nav">
