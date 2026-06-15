@@ -124,6 +124,14 @@ body { padding-top: 60px; }
   background-size: 100% 100%, 40px 40px, 40px 40px;
   padding: 24px 28px 40px; color: #e6edf3; font-family: 'Kanit', sans-serif;
 }
+#t4 { background: rgba(0,0,0,0.58); padding: 28px 24px; color: #e6edf3; }
+.t4-preset {
+  background: rgba(34,197,94,0.08); border: 1px solid rgba(34,197,94,0.25);
+  color: #4ade80; border-radius: 8px; padding: 6px 10px; cursor: pointer;
+  font-size: 10px; font-family: 'Fira Code', monospace; letter-spacing: 0.5px;
+  transition: all 0.15s;
+}
+.t4-preset:hover { background: rgba(34,197,94,0.2); border-color: rgba(34,197,94,0.5); }
 .t3-glass {
   background: rgba(22,27,34,0.85); backdrop-filter: blur(12px);
   border: 1px solid rgba(0,255,65,0.13); border-radius: 24px;
@@ -669,6 +677,7 @@ h2, h3 {
     <button class="nav-tab on" onclick="switchTool(1)" id="tab1"><span class="num">[01]</span> 🧬 Visual DNA</button>
     <button class="nav-tab" onclick="switchTool(2)" id="tab2"><span class="num">[02]</span> ⌨️ Prompt Editor</button>
     <button class="nav-tab" onclick="switchTool(3)" id="tab3"><span class="num">[03]</span> 🎨 Graphic</button>
+    <button class="nav-tab" onclick="switchTool(4)" id="tab4"><span class="num">[04]</span> 📐 Smart Resize</button>
   </div>
 </nav>
 
@@ -687,6 +696,11 @@ h2, h3 {
     <span class="s-icon">🎨</span>
     <span class="s-num">[03]</span>
     <span>GRAPHIC</span>
+  </button>
+  <button class="side-tab" onclick="switchTool(4)" id="stab4">
+    <span class="s-icon">📐</span>
+    <span class="s-num">[04]</span>
+    <span>RESIZE</span>
   </button>
 </div>
 
@@ -1137,6 +1151,96 @@ h2, h3 {
   </div>
 </div>
 
+<!-- ══ TOOL 4: SMART RESIZE ══ -->
+<div class="sec" id="t4" data-num="04">
+  <div style="max-width:1400px;margin:0 auto">
+    <!-- Header -->
+    <div style="text-align:center;margin-bottom:28px">
+      <div style="font-size:48px;margin-bottom:8px;filter:drop-shadow(0 0 10px rgba(34,197,94,0.5))">📐</div>
+      <div class="t1-tag" style="margin-bottom:10px">JZ9 Smart Resize Protocol</div>
+      <h1 style="font-size:clamp(24px,5vw,44px);font-weight:900;background:linear-gradient(to right,#4ade80,#22c55e,#16a34a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-1px;margin-bottom:6px">Smart Resize &amp; Re-Layout</h1>
+      <p style="color:#9aa39c;font-size:14px;font-style:italic">อัพโหลดภาพ กำหนดขนาดใหม่ — AI จัดวางองค์ประกอบเดิมให้พอดีขนาดใหม่ โดยไม่เพิ่ม/ลด/บิดเบือนเนื้อหา</p>
+    </div>
+
+    <div id="t4-error" style="display:none;margin-bottom:16px;padding:14px;background:rgba(127,29,29,0.25);border:1px solid rgba(239,68,68,0.35);color:#f87171;border-radius:14px;font-size:11px;font-family:'Fira Code',monospace"></div>
+
+    <div style="display:grid;grid-template-columns:minmax(300px,1fr) minmax(300px,1.4fr);gap:20px;align-items:start">
+      <!-- LEFT: controls -->
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div class="t1-card">
+          <div class="t1-label">📤 อัพโหลดรูป (สูงสุด 6 รูป)</div>
+          <label style="display:block;cursor:pointer">
+            <div id="t4-dropzone" style="border:2px dashed #2a2a2a;border-radius:14px;padding:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:150px;transition:all 0.2s">
+              <div id="t4-thumbs" style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center"></div>
+              <div id="t4-placeholder" style="text-align:center;color:#7a7d76">
+                <div style="font-size:36px;margin-bottom:8px">🖼️</div>
+                <p style="font-size:9px;letter-spacing:2px;text-transform:uppercase;font-family:'Fira Code',monospace">Drop / Click to upload</p>
+              </div>
+            </div>
+            <input type="file" id="t4-file" accept="image/*" multiple style="display:none">
+          </label>
+        </div>
+
+        <div class="t1-card">
+          <div class="t1-label">📏 ขนาดใหม่ (pixels)</div>
+          <div style="display:flex;gap:10px;align-items:flex-end">
+            <div style="flex:1">
+              <label style="font-size:9px;color:#7a7d76;text-transform:uppercase;letter-spacing:1px;font-family:'Fira Code',monospace">Width</label>
+              <input type="number" id="t4-w" value="1200" min="64" max="4096" style="width:100%;margin-top:4px;background:#0a0a0a;border:1px solid #2a2a2a;border-radius:8px;padding:8px 10px;color:#e6edf3;font-family:'Fira Code',monospace;font-size:13px">
+            </div>
+            <div style="color:#7a7d76;padding-bottom:8px">×</div>
+            <div style="flex:1">
+              <label style="font-size:9px;color:#7a7d76;text-transform:uppercase;letter-spacing:1px;font-family:'Fira Code',monospace">Height</label>
+              <input type="number" id="t4-h" value="630" min="64" max="4096" style="width:100%;margin-top:4px;background:#0a0a0a;border:1px solid #2a2a2a;border-radius:8px;padding:8px 10px;color:#e6edf3;font-family:'Fira Code',monospace;font-size:13px">
+            </div>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:12px">
+            <button class="t4-preset" onclick="t4SetSize(1080,1080)">1:1 · 1080²</button>
+            <button class="t4-preset" onclick="t4SetSize(1080,1920)">9:16 Story</button>
+            <button class="t4-preset" onclick="t4SetSize(1920,1080)">16:9 FHD</button>
+            <button class="t4-preset" onclick="t4SetSize(1200,630)">OG 1200×630</button>
+            <button class="t4-preset" onclick="t4SetSize(1080,1350)">4:5 Post</button>
+          </div>
+        </div>
+
+        <div class="t1-card">
+          <div class="t1-label">⚙️ ตัวเลือกการจัดวาง</div>
+          <label style="font-size:9px;color:#7a7d76;text-transform:uppercase;letter-spacing:1px;font-family:'Fira Code',monospace">Layout preference</label>
+          <select id="t4-mode" style="width:100%;margin:4px 0 12px;background:#0a0a0a;border:1px solid #2a2a2a;border-radius:8px;padding:8px 10px;color:#e6edf3;font-family:'Kanit',sans-serif;font-size:13px">
+            <option value="AUTO">AUTO — ให้ AI เลือกเอง</option>
+            <option value="SPLIT_LEFT_RIGHT">แบ่งซ้าย/ขวา (ภาพ + ข้อความ)</option>
+            <option value="CENTER_CARD">การ์ดกึ่งกลาง</option>
+            <option value="TOP_TEXT_BOTTOM_VISUAL">ข้อความบน · ภาพล่าง</option>
+            <option value="VISUAL_TOP_TEXT_BOTTOM">ภาพบน · ข้อความล่าง</option>
+          </select>
+          <label style="font-size:9px;color:#7a7d76;text-transform:uppercase;letter-spacing:1px;font-family:'Fira Code',monospace">Fit to exact size</label>
+          <select id="t4-fit" style="width:100%;margin:4px 0 12px;background:#0a0a0a;border:1px solid #2a2a2a;border-radius:8px;padding:8px 10px;color:#e6edf3;font-family:'Kanit',sans-serif;font-size:13px">
+            <option value="cover">Cover — เต็มกรอบ (ครอปเล็กน้อย)</option>
+            <option value="contain">Contain — เห็นครบ (มีขอบ)</option>
+            <option value="stretch">Stretch — ยืดเต็มพอดี</option>
+          </select>
+          <label style="font-size:9px;color:#7a7d76;text-transform:uppercase;letter-spacing:1px;font-family:'Fira Code',monospace">Quality</label>
+          <select id="t4-quality" style="width:100%;margin:4px 0 0;background:#0a0a0a;border:1px solid #2a2a2a;border-radius:8px;padding:8px 10px;color:#e6edf3;font-family:'Kanit',sans-serif;font-size:13px">
+            <option value="high">High (คมชัด · ช้ากว่า)</option>
+            <option value="medium" selected>Medium (สมดุล)</option>
+            <option value="low">Low (เร็ว · ประหยัด)</option>
+          </select>
+        </div>
+
+        <button class="t1-btn primary" id="t4-runBtn" onclick="t4Run()" disabled>📐 RESIZE &amp; RE-LAYOUT</button>
+      </div>
+
+      <!-- RIGHT: results -->
+      <div class="t1-card" style="min-height:300px">
+        <div class="t1-label">🖼️ ผลลัพธ์</div>
+        <div id="t4-results" style="display:flex;flex-direction:column;gap:14px">
+          <div id="t4-resultsStandby" style="height:240px;display:flex;align-items:center;justify-content:center;color:#1a1a1a;font-family:'Fira Code',monospace;font-size:9px;letter-spacing:4px;font-style:italic;text-align:center">// อัพโหลดรูปแล้วกด RESIZE</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- TOAST -->
 <div id="toast">SYSTEM_READY</div>
 
@@ -1146,18 +1250,13 @@ h2, h3 {
 
 // ── NAV ──
 function switchTool(n) {
-  [1,2,3].forEach(i => {
+  [1,2,3,4].forEach(i => {
     const st = document.getElementById('stab'+i);
     if(st) st.classList.toggle('on', i===n);
-  });
-  // Update side tabs
-  [1,2,3].forEach(i => {
-    const st = document.getElementById('stab'+i);
-    if(st) st.classList.toggle('on', i===n);
-  });
-  [1,2,3].forEach(i => {
-    document.getElementById('t'+i).classList.toggle('on', i===n);
-    document.getElementById('tab'+i).classList.toggle('on', i===n);
+    const sec = document.getElementById('t'+i);
+    if(sec) sec.classList.toggle('on', i===n);
+    const tab = document.getElementById('tab'+i);
+    if(tab) tab.classList.toggle('on', i===n);
   });
 }
 
@@ -1250,6 +1349,192 @@ async function gptImageRatio(prompt, ratio) {
     n: 1
   });
   return d.data[0].b64_json;
+}
+
+// ══════════════════════
+//   TOOL 4 LOGIC — SMART RESIZE
+// ══════════════════════
+let t4Items = [];
+
+function t4Err(msg) {
+  const el = document.getElementById('t4-error');
+  if (!msg) { el.style.display = 'none'; el.textContent = ''; return; }
+  el.style.display = 'block'; el.textContent = msg;
+}
+
+function t4SetSize(w, h) {
+  document.getElementById('t4-w').value = w;
+  document.getElementById('t4-h').value = h;
+}
+
+function t4Downscale(dataUrl, maxSide, cb) {
+  const img = new Image();
+  img.onload = () => {
+    let w = img.naturalWidth, h = img.naturalHeight;
+    const scale = Math.min(1, maxSide / Math.max(w, h));
+    w = Math.round(w * scale); h = Math.round(h * scale);
+    const c = document.createElement('canvas');
+    c.width = w; c.height = h;
+    c.getContext('2d').drawImage(img, 0, 0, w, h);
+    cb(c.toDataURL('image/png'));
+  };
+  img.src = dataUrl;
+}
+
+function t4RenderThumbs() {
+  const box = document.getElementById('t4-thumbs');
+  const items = t4Items.filter(Boolean);
+  const ph = document.getElementById('t4-placeholder');
+  if (!items.length) {
+    box.innerHTML = ''; ph.style.display = 'block';
+    document.getElementById('t4-runBtn').disabled = true;
+    return;
+  }
+  ph.style.display = 'none';
+  box.innerHTML = items.map(it =>
+    `<img src="${it.dataUrl}" style="width:52px;height:52px;object-fit:cover;border-radius:8px;border:1px solid rgba(34,197,94,0.3)">`
+  ).join('');
+  document.getElementById('t4-dropzone').style.borderColor = 'rgba(34,197,94,0.35)';
+  document.getElementById('t4-runBtn').disabled = false;
+}
+
+document.getElementById('t4-file').addEventListener('change', function(e) {
+  const arr = Array.from(e.target.files || []).slice(0, 6);
+  if (!arr.length) return;
+  t4Items = []; let done = 0;
+  arr.forEach((f, idx) => {
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      t4Downscale(reader.result, 1536, (small) => {
+        t4Items[idx] = { name: f.name, dataUrl: small };
+        if (++done === arr.length) { t4RenderThumbs(); toast('IMAGES_LOADED'); }
+      });
+    };
+    reader.readAsDataURL(f);
+  });
+});
+
+function t4NearestSize(W, H) {
+  const target = W / H;
+  const opts = [['1024x1024', 1], ['1536x1024', 1.5], ['1024x1536', 1024 / 1536]];
+  let best = opts[0], bd = Infinity;
+  for (const o of opts) {
+    const d = Math.abs(Math.log(target / o[1]));
+    if (d < bd) { bd = d; best = o; }
+  }
+  return best[0];
+}
+
+function t4BuildPrompt(W, H, mode, margin) {
+  const layoutMap = {
+    AUTO: 'Automatically choose the best balanced layout for the new aspect ratio.',
+    SPLIT_LEFT_RIGHT: 'Use a left/right split layout: place the main visual subject on one side and the text block on the other side.',
+    CENTER_CARD: 'Center the main content as a card with balanced margins all around.',
+    TOP_TEXT_BOTTOM_VISUAL: 'Place the text in the top area and the main visual in the bottom area.',
+    VISUAL_TOP_TEXT_BOTTOM: 'Place the main visual in the top area and the text in the bottom area.'
+  };
+  return [
+    `Re-layout this image onto a new canvas with an aspect ratio of ${(W / H).toFixed(3)} (target ${W}x${H} pixels).`,
+    `Preserve ALL existing elements from the original exactly: every text string, headline, logo, product, person, icon and graphic must stay — same wording, same spelling, same colors, same fonts and same style. Do NOT add any new element. Do NOT remove any element. Do NOT invent or alter text. Do NOT change the meaning or content.`,
+    `Only reposition, regroup and rescale the existing elements so they fit naturally and look balanced in the new dimensions while keeping the original visual hierarchy and readability.`,
+    `Keep a safe margin of about ${margin}px from every edge; nothing important may be cropped or touch the edges.`,
+    `Layout preference: ${layoutMap[mode] || layoutMap.AUTO}`,
+    `Preserve the original art style, lighting and color palette. Where new empty space appears, extend or fill the background naturally to match the original background.`,
+    `Do not distort, stretch or skew any element. Do not add watermarks, borders, frames, captions or any text that was not in the original.`,
+    `Output a clean, professional, production-ready graphic.`
+  ].join(' ');
+}
+
+function t4FitCanvas(url, W, H, fit) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => {
+      const c = document.createElement('canvas');
+      c.width = W; c.height = H;
+      const ctx = c.getContext('2d');
+      ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, W, H);
+      const iw = img.naturalWidth, ih = img.naturalHeight;
+      if (fit === 'stretch') {
+        ctx.drawImage(img, 0, 0, W, H);
+      } else {
+        const s = (fit === 'cover') ? Math.max(W / iw, H / ih) : Math.min(W / iw, H / ih);
+        const dw = iw * s, dh = ih * s;
+        ctx.drawImage(img, (W - dw) / 2, (H - dh) / 2, dw, dh);
+      }
+      resolve(c.toDataURL('image/png'));
+    };
+    img.src = url;
+  });
+}
+
+function t4ResultCard(item, i) {
+  const el = document.createElement('div');
+  el.className = 't1-small-card';
+  el.style.cssText = 'display:flex;flex-direction:column;gap:8px';
+  el.innerHTML =
+    `<div class="t1-label" style="margin-bottom:0;font-size:10px">#${i + 1} · ${(item.name || 'image').slice(0, 24)}</div>` +
+    `<div style="display:flex;gap:10px;align-items:flex-start">` +
+      `<img src="${item.dataUrl}" title="original" style="width:64px;height:64px;object-fit:cover;border-radius:8px;opacity:0.6">` +
+      `<div class="t4-out" style="flex:1;min-height:80px;display:flex;align-items:center;justify-content:center;background:#000;border-radius:8px;border:1px solid #1a1a1a;overflow:hidden">` +
+        `<span class="t4-status" style="font-size:10px;color:#22c55e;font-family:'Fira Code',monospace;animation:t1pulse 1s infinite">⏳ rendering...</span>` +
+      `</div>` +
+    `</div>`;
+  const out = el.querySelector('.t4-out');
+  return {
+    el,
+    done(finalUrl, W, H) {
+      out.innerHTML =
+        `<a href="${finalUrl}" download="resized_${W}x${H}_${i + 1}.png" style="display:block;width:100%;text-decoration:none">` +
+          `<img src="${finalUrl}" style="width:100%;display:block">` +
+          `<div style="text-align:center;font-size:9px;color:#22c55e;font-family:'Fira Code',monospace;padding:5px;text-transform:uppercase;letter-spacing:1px">⬇ ${W}×${H} · DOWNLOAD</div>` +
+        `</a>`;
+    },
+    fail(msg) {
+      out.innerHTML = `<span style="font-size:9px;color:#f87171;font-family:'Fira Code',monospace;padding:8px;text-align:center">⚠ ${msg}</span>`;
+    }
+  };
+}
+
+async function t4Run() {
+  const items = t4Items.filter(Boolean);
+  if (!items.length) { t4Err('กรุณาอัพโหลดรูปอย่างน้อย 1 รูป'); return; }
+  const W = parseInt(document.getElementById('t4-w').value, 10);
+  const H = parseInt(document.getElementById('t4-h').value, 10);
+  if (!W || !H || W < 64 || H < 64 || W > 4096 || H > 4096) {
+    t4Err('ขนาดไม่ถูกต้อง — กรุณาใส่ค่าระหว่าง 64–4096 px'); return;
+  }
+  t4Err('');
+  const mode = document.getElementById('t4-mode').value;
+  const fit = document.getElementById('t4-fit').value;
+  const quality = document.getElementById('t4-quality').value;
+  const margin = Math.max(8, Math.round(Math.min(W, H) * 0.05));
+  const size = t4NearestSize(W, H);
+  const prompt = t4BuildPrompt(W, H, mode, margin);
+
+  const btn = document.getElementById('t4-runBtn');
+  btn.disabled = true; btn.textContent = '⏳ PROCESSING...';
+  const grid = document.getElementById('t4-results');
+  grid.innerHTML = '';
+
+  for (let i = 0; i < items.length; i++) {
+    const card = t4ResultCard(items[i], i);
+    grid.appendChild(card.el);
+    try {
+      const res = await callProxy('images/edits', {
+        model: 'gpt-image-1', prompt, size, quality, n: 1,
+        image: [items[i].dataUrl]
+      });
+      const b64 = res && res.data && res.data[0] && res.data[0].b64_json;
+      if (!b64) throw new Error('ไม่ได้รับภาพกลับมา');
+      const genUrl = 'data:image/png;base64,' + b64;
+      const finalUrl = await t4FitCanvas(genUrl, W, H, fit);
+      card.done(finalUrl, W, H);
+    } catch (e) {
+      card.fail((e && e.message) ? e.message : String(e));
+    }
+  }
+  btn.disabled = false; btn.textContent = '📐 RESIZE & RE-LAYOUT';
+  toast('RESIZE_DONE');
 }
 
 // ══════════════════════
