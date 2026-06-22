@@ -926,6 +926,12 @@ html.light .nav-badge {
 }
 html.light .nav-badge::before { display: none !important; }
 
+/* t3 header SVG logo — white "JZ9" text & faint lime frame are invisible on white */
+html.light #t3 header svg text { fill: #0d2417 !important; }
+html.light #t3 header svg rect[stroke], html.light #t3 header svg path[stroke] { stroke: #15803d !important; }
+html.light #t3 header svg [fill="#00ff41"] { fill: #15803d !important; }
+html.light #t3 header svg rect[fill^="rgba(0,255,65"] { fill: rgba(34,197,94,0.10) !important; }
+
 /* ── LIGHT-MODE ANIMATED BACKGROUND ── */
 #bg-light { position: fixed; inset: 0; z-index: -1; pointer-events: none; display: none; }
 html.light #bg-light {
