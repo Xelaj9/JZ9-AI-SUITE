@@ -3155,8 +3155,8 @@ document.getElementById('t3-execBtn').addEventListener('click', async () => {
     for (var l = 0; l < n; l++){
       var base = l * gap;
       ctx.beginPath();
-      ctx.strokeStyle = palette[l % palette.length] + (0.26 + (l % 3) * 0.06) + ')';
-      ctx.lineWidth = 1.6;
+      ctx.strokeStyle = palette[l % palette.length] + (0.42 + (l % 3) * 0.08) + ')';
+      ctx.lineWidth = 1.8;
       for (var x = 0; x <= W; x += 8){
         var y = base
           + Math.sin(x * 0.006 + phase + l * 0.5) * 16
