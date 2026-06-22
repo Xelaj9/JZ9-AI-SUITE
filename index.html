@@ -932,25 +932,9 @@ html.light #t3 header svg rect[stroke], html.light #t3 header svg path[stroke] {
 html.light #t3 header svg [fill="#00ff41"] { fill: #15803d !important; }
 html.light #t3 header svg rect[fill^="rgba(0,255,65"] { fill: rgba(34,197,94,0.10) !important; }
 
-/* ── LIGHT-MODE ANIMATED BACKGROUND ── */
+/* ── LIGHT-MODE ANIMATED BACKGROUND (flow lines, drawn on canvas) ── */
 #bg-light { position: fixed; inset: 0; z-index: -1; pointer-events: none; display: none; }
-html.light #bg-light {
-  display: block;
-  background:
-    radial-gradient(48% 44% at 16% 26%, rgba(34,197,94,0.55), transparent 60%),
-    radial-gradient(46% 42% at 84% 20%, rgba(132,204,22,0.5), transparent 60%),
-    radial-gradient(52% 48% at 76% 82%, rgba(16,185,129,0.5), transparent 62%),
-    radial-gradient(44% 40% at 24% 84%, rgba(74,222,128,0.5), transparent 60%);
-  background-size: 200% 200%, 200% 200%, 200% 200%, 200% 200%;
-  background-repeat: no-repeat;
-  animation: lightDrift 16s ease-in-out infinite alternate;
-}
-@keyframes lightDrift {
-  0%   { background-position: 0% 0%, 100% 0%, 100% 100%, 0% 100%; }
-  50%  { background-position: 60% 40%, 40% 55%, 45% 50%, 55% 45%; }
-  100% { background-position: 100% 100%, 0% 100%, 0% 0%, 100% 0%; }
-}
-@media (prefers-reduced-motion: reduce) { html.light #bg-light { animation: none; } }
+html.light #bg-light { display: block; }
 
 /* scrollbar */
 html.light ::-webkit-scrollbar-track { background: #e0e4df; }
@@ -962,8 +946,8 @@ html.light ::-webkit-scrollbar-thumb { background: #9fc4a8; }
 
 <!-- Digital rain (Matrix) background -->
 <canvas id="bg-rain" aria-hidden="true"></canvas>
-<!-- Light-mode animated gradient background -->
-<div id="bg-light" aria-hidden="true"></div>
+<!-- Light-mode animated flow-lines background -->
+<canvas id="bg-light" aria-hidden="true"></canvas>
 
 <!-- NAV -->
 <nav id="nav">
@@ -3140,6 +3124,63 @@ document.getElementById('t3-execBtn').addEventListener('click', async () => {
     }
   }
   requestAnimationFrame(draw);
+})();
+</script>
+
+<!-- ═══ LIGHT-MODE FLOW-LINES BACKGROUND ANIMATION ═══ -->
+<script>
+(function(){
+  var c = document.getElementById('bg-light');
+  if (!c || !c.getContext) return;
+  var ctx = c.getContext('2d');
+  if (!ctx) return;
+  var dpr = Math.min(window.devicePixelRatio || 1, 2);
+  var W = 0, H = 0;
+  function resize(){
+    W = window.innerWidth; H = window.innerHeight;
+    c.width = Math.floor(W * dpr); c.height = Math.floor(H * dpr);
+    c.style.width = W + 'px'; c.style.height = H + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  resize();
+  var rt;
+  window.addEventListener('resize', function(){ clearTimeout(rt); rt = setTimeout(resize, 150); });
+
+  var palette = ['rgba(34,197,94,', 'rgba(132,204,22,', 'rgba(16,185,129,', 'rgba(74,222,128,'];
+  var phase = 0;
+  function drawLines(){
+    ctx.clearRect(0, 0, W, H);
+    var gap = 34;
+    var n = Math.ceil(H / gap) + 2;
+    for (var l = 0; l < n; l++){
+      var base = l * gap;
+      ctx.beginPath();
+      ctx.strokeStyle = palette[l % palette.length] + (0.26 + (l % 3) * 0.06) + ')';
+      ctx.lineWidth = 1.6;
+      for (var x = 0; x <= W; x += 8){
+        var y = base
+          + Math.sin(x * 0.006 + phase + l * 0.5) * 16
+          + Math.sin(x * 0.013 + phase * 0.6 + l) * 9;
+        if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+    }
+  }
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce){
+    if (document.documentElement.classList.contains('light')) drawLines();
+    return;
+  }
+  function loop(){
+    requestAnimationFrame(loop);
+    if (!document.documentElement.classList.contains('light')){
+      if (W && H) ctx.clearRect(0, 0, W, H);
+      return;
+    }
+    phase += 0.015;
+    drawLines();
+  }
+  requestAnimationFrame(loop);
 })();
 </script>
 </body>
