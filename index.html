@@ -132,6 +132,23 @@ body { padding-top: 60px; }
   transition: all 0.15s;
 }
 .t4-preset:hover { background: rgba(34,197,94,0.2); border-color: rgba(34,197,94,0.5); }
+#t5 { background: rgba(0,0,0,0.58); padding: 28px 24px; color: #e6edf3; }
+.t5-fl { font-size:9px;color:#7a7d76;text-transform:uppercase;letter-spacing:1px;font-family:'Fira Code',monospace;display:block;margin-bottom:4px; }
+.t5-inp { width:100%;background:#0a0a0a;border:1px solid #2a2a2a;border-radius:8px;padding:8px 10px;color:#e6edf3;font-family:'Kanit',sans-serif;font-size:13px;margin-bottom:10px;box-sizing:border-box; }
+.t5-inp:focus { outline:none;border-color:rgba(34,197,94,0.5); }
+.t5-grid2 { display:grid;grid-template-columns:1fr 1fr;gap:0 10px; }
+.t5-sec-title { display:flex;align-items:center;font-size:12px;font-weight:700;color:#4ade80;font-family:'Fira Code',monospace;text-transform:uppercase;letter-spacing:1px;margin:0 0 12px; }
+.t5-badge { display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:#22c55e;color:#000;font-weight:900;font-size:12px;margin-right:8px;font-family:'Fira Code',monospace;flex-shrink:0; }
+.t5-chip { background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.25);color:#4ade80;border-radius:8px;padding:6px 10px;cursor:pointer;font-size:10px;font-family:'Fira Code',monospace;transition:all .15s; }
+.t5-chip:hover { background:rgba(34,197,94,0.2);border-color:rgba(34,197,94,0.5); }
+.t5-drop { border:2px dashed #2a2a2a;border-radius:14px;padding:14px;min-height:96px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;justify-content:center;transition:all .2s;cursor:pointer; }
+.t5-drop:hover { border-color:rgba(34,197,94,0.4); }
+.t5-thumb { width:56px;height:56px;object-fit:cover;border-radius:8px;border:1px solid rgba(34,197,94,0.3); }
+.t5-item-row { background:#0a0a0a;border:1px solid #1f1f1f;border-radius:10px;padding:10px;margin-bottom:10px;position:relative; }
+.t5-x { position:absolute;top:6px;right:8px;background:none;border:none;color:#f87171;cursor:pointer;font-size:14px;line-height:1; }
+.t5-sw { width:34px;height:34px;border-radius:8px;border:1px solid #2a2a2a;padding:0;cursor:pointer;background:#0a0a0a; }
+.t5-out { width:100%;background:#000;border:1px solid rgba(34,197,94,0.15);border-radius:12px;padding:14px;color:rgba(74,222,128,0.85);font-family:'Fira Code',monospace;font-size:10px;line-height:1.5;resize:vertical;white-space:pre;box-sizing:border-box; }
+.t5-out.txt { white-space:pre-wrap;color:#cfe9d6; }
 .t3-glass {
   background: rgba(22,27,34,0.85); backdrop-filter: blur(12px);
   border: 1px solid rgba(0,255,65,0.13); border-radius: 24px;
@@ -678,6 +695,7 @@ h2, h3 {
     <button class="nav-tab" onclick="switchTool(2)" id="tab2"><span class="num">[02]</span> ⌨️ Prompt Editor</button>
     <button class="nav-tab" onclick="switchTool(3)" id="tab3"><span class="num">[03]</span> 🎨 Graphic</button>
     <button class="nav-tab" onclick="switchTool(4)" id="tab4"><span class="num">[04]</span> 📐 Smart Resize</button>
+    <button class="nav-tab" onclick="switchTool(5)" id="tab5"><span class="num">[05]</span> 🧠 Prompt Builder</button>
   </div>
 </nav>
 
@@ -701,6 +719,11 @@ h2, h3 {
     <span class="s-icon">📐</span>
     <span class="s-num">[04]</span>
     <span>RESIZE</span>
+  </button>
+  <button class="side-tab" onclick="switchTool(5)" id="stab5">
+    <span class="s-icon">🧠</span>
+    <span class="s-num">[05]</span>
+    <span>BUILDER</span>
   </button>
 </div>
 
@@ -1252,6 +1275,218 @@ h2, h3 {
   </div>
 </div>
 
+<!-- ══ TOOL 5: UNIVERSAL GRAPHIC PROMPT BUILDER ══ -->
+<div class="sec" id="t5" data-num="05">
+  <div style="max-width:1400px;margin:0 auto">
+    <!-- Header -->
+    <div style="text-align:center;margin-bottom:24px">
+      <div style="font-size:48px;margin-bottom:8px;filter:drop-shadow(0 0 10px rgba(34,197,94,0.5))">🧠</div>
+      <div class="t1-tag" style="margin-bottom:10px">JZ9 Universal Graphic Prompt Builder</div>
+      <h1 style="font-size:clamp(24px,5vw,44px);font-weight:900;background:linear-gradient(to right,#4ade80,#22c55e,#16a34a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-1px;margin-bottom:6px">ระบบสร้าง Prompt งานกราฟิกอัตโนมัติ</h1>
+      <p style="color:#9aa39c;font-size:14px;font-style:italic">แนบรูป Reference → AI วิเคราะห์สไตล์ → กรอกฟอร์มง่าย ๆ → ได้ JSON Prompt + final_prompt พร้อมใช้ (ครอบคลุมงานกราฟิกทุกประเภท)</p>
+    </div>
+
+    <div id="t5-error" style="display:none;margin-bottom:16px;padding:14px;background:rgba(127,29,29,0.25);border:1px solid rgba(239,68,68,0.35);color:#f87171;border-radius:14px;font-size:11px;font-family:'Fira Code',monospace"></div>
+
+    <div style="display:grid;grid-template-columns:minmax(320px,1fr) minmax(320px,1.1fr);gap:20px;align-items:start">
+      <!-- LEFT COLUMN -->
+      <div style="display:flex;flex-direction:column;gap:14px">
+
+        <!-- STEP 1: References -->
+        <div class="t1-card">
+          <div class="t5-sec-title"><span class="t5-badge">1</span> แนบรูป Reference</div>
+          <label class="t5-fl">🎨 Style Reference (วิเคราะห์สไตล์ · หลายรูปได้)</label>
+          <label style="display:block;cursor:pointer;margin-bottom:12px">
+            <div class="t5-drop" id="t5-styleDrop">
+              <div id="t5-styleThumbs" style="display:contents"></div>
+              <div id="t5-stylePh" style="text-align:center;color:#7a7d76;font-size:10px;font-family:'Fira Code',monospace">+ STYLE REF</div>
+            </div>
+            <input type="file" id="t5-styleFiles" accept="image/*" multiple style="display:none">
+          </label>
+          <label class="t5-fl">📦 Subject Reference (วัตถุจริง เช่น สินค้า/อาหาร/โลโก้ · รักษาหน้าตาเดิม)</label>
+          <label style="display:block;cursor:pointer;margin-bottom:12px">
+            <div class="t5-drop" id="t5-subjectDrop">
+              <div id="t5-subjectThumbs" style="display:contents"></div>
+              <div id="t5-subjectPh" style="text-align:center;color:#7a7d76;font-size:10px;font-family:'Fira Code',monospace">+ SUBJECT REF</div>
+            </div>
+            <input type="file" id="t5-subjectFiles" accept="image/*" multiple style="display:none">
+          </label>
+          <button class="t1-btn primary" id="t5-analyzeBtn" onclick="t5AnalyzeReference()">🔍 ANALYZE REFERENCE</button>
+          <p style="font-size:9px;color:#7a7d76;margin:8px 0 0;line-height:1.6;font-family:'Kanit',sans-serif">* Reference ใช้เป็นแรงบันดาลใจด้านสไตล์เท่านั้น — ระบบจะไม่ก๊อปโลโก้/ตัวละคร/ข้อความตรง ๆ</p>
+        </div>
+
+        <!-- STEP 2: AI Analysis -->
+        <div class="t1-card" id="t5-analysisCard" style="display:none;border-color:rgba(34,197,94,0.25)">
+          <div class="t5-sec-title"><span class="t5-badge">2</span> ผลวิเคราะห์สไตล์ (AI)</div>
+          <div id="t5-analysisBody"></div>
+          <button class="t1-btn primary" onclick="t5UseStyle()" style="margin-top:12px">✨ USE THIS STYLE → เติมฟอร์ม</button>
+        </div>
+
+        <!-- Presets -->
+        <div class="t1-card">
+          <div class="t5-sec-title"><span class="t5-badge">★</span> Preset สำเร็จรูป</div>
+          <div style="display:flex;gap:8px;margin-bottom:10px">
+            <select id="t5-presetSel" class="t5-inp" style="margin-bottom:0"></select>
+            <button class="t5-chip" onclick="t5LoadPreset()" style="white-space:nowrap">LOAD</button>
+          </div>
+          <div style="display:flex;gap:8px">
+            <button class="t5-chip" onclick="t5SavePreset()">💾 Save current as preset</button>
+            <button class="t5-chip" onclick="t5Reset()">↺ Reset</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT COLUMN: FORM -->
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div class="t1-card">
+          <div class="t5-sec-title"><span class="t5-badge">3</span> กรอกข้อมูล (แก้ได้ทุกช่อง)</div>
+
+          <!-- A. project type + canvas -->
+          <label class="t5-fl">ประเภทงาน *</label>
+          <select id="t5-projectType" class="t5-inp"></select>
+          <div class="t5-grid2">
+            <div><label class="t5-fl">Canvas size *</label><input id="t5-canvasSize" class="t5-inp" placeholder="1:1, 4:5, 9:16, 1080x1080, A4" value="1:1"></div>
+            <div><label class="t5-fl">Orientation</label>
+              <select id="t5-orientation" class="t5-inp">
+                <option value="square">สี่เหลี่ยมจัตุรัส</option>
+                <option value="portrait">แนวตั้ง</option>
+                <option value="landscape">แนวนอน</option>
+              </select>
+            </div>
+          </div>
+          <label class="t5-fl">Platform</label>
+          <input id="t5-platform" class="t5-inp" placeholder="Facebook / Instagram / TikTok / Line OA / Website / Print / Storefront" value="Facebook / Line OA">
+
+          <!-- C. brand -->
+          <div style="border-top:1px solid #1f1f1f;margin:6px 0 12px"></div>
+          <div class="t5-grid2">
+            <div><label class="t5-fl">Brand name</label><input id="t5-brandName" class="t5-inp" placeholder="ชื่อแบรนด์"></div>
+            <div><label class="t5-fl">Brand style</label><input id="t5-brandStyle" class="t5-inp" placeholder="แนวแบรนด์"></div>
+          </div>
+          <label class="t5-fl">โลโก้ (แนบไฟล์ · optional)</label>
+          <label style="display:block;cursor:pointer;margin-bottom:10px">
+            <div class="t5-drop" id="t5-logoDrop" style="min-height:60px">
+              <div id="t5-logoThumb" style="display:contents"></div>
+              <div id="t5-logoPh" style="color:#7a7d76;font-size:10px;font-family:'Fira Code',monospace">+ LOGO</div>
+            </div>
+            <input type="file" id="t5-logoFile" accept="image/*" style="display:none">
+          </label>
+          <label class="t5-fl">สีหลัก / รอง / เน้น / ไฮไลต์</label>
+          <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap">
+            <input type="color" id="t5-mainColor" class="t5-sw" value="#003300" title="main">
+            <input type="color" id="t5-secondaryColor" class="t5-sw" value="#000000" title="secondary">
+            <input type="color" id="t5-accentColor" class="t5-sw" value="#ffffff" title="accent">
+            <input type="color" id="t5-highlightColor" class="t5-sw" value="#cc0000" title="highlight">
+            <input id="t5-colorNote" class="t5-inp" style="flex:1;margin-bottom:0" placeholder="หรือพิมพ์ชื่อสี เช่น dark green">
+          </div>
+
+          <!-- objective + subject -->
+          <div style="border-top:1px solid #1f1f1f;margin:6px 0 12px"></div>
+          <div class="t5-grid2">
+            <div><label class="t5-fl">Main goal</label><input id="t5-mainGoal" class="t5-inp" placeholder="เป้าหมายงาน"></div>
+            <div><label class="t5-fl">Target audience</label><input id="t5-targetAudience" class="t5-inp" placeholder="กลุ่มเป้าหมาย"></div>
+          </div>
+          <div class="t5-grid2">
+            <div><label class="t5-fl">Subject type</label><input id="t5-subjectType" class="t5-inp" placeholder="เกม/สินค้า/อาหาร..."></div>
+            <div><label class="t5-fl">Subject name</label><input id="t5-subjectName" class="t5-inp" placeholder="ชื่อวัตถุหลัก"></div>
+          </div>
+          <label class="t5-fl">Subject description</label>
+          <input id="t5-subjectDescription" class="t5-inp" placeholder="คำอธิบายวัตถุหลัก">
+
+          <!-- D. text on image -->
+          <div style="border-top:1px solid #1f1f1f;margin:6px 0 12px"></div>
+          <div class="t5-sec-title" style="font-size:10px"><span class="t5-badge" style="width:16px;height:16px;font-size:9px">T</span> ข้อความบนภาพ (คงภาษาไทยตามที่พิมพ์)</div>
+          <label class="t5-fl">Main headline *</label>
+          <input id="t5-mainHeadline" class="t5-inp" placeholder="หัวข้อใหญ่">
+          <div class="t5-grid2">
+            <div><label class="t5-fl">Sub headline</label><input id="t5-subHeadline" class="t5-inp"></div>
+            <div><label class="t5-fl">Offer text</label><input id="t5-offerText" class="t5-inp" placeholder="โบนัส/ส่วนลด"></div>
+            <div><label class="t5-fl">Price text</label><input id="t5-priceText" class="t5-inp"></div>
+            <div><label class="t5-fl">Call to action</label><input id="t5-cta" class="t5-inp" placeholder="สมัครเลย/สั่งเลย"></div>
+          </div>
+          <label class="t5-fl">Body text</label>
+          <input id="t5-bodyText" class="t5-inp">
+          <div class="t5-grid2">
+            <div><label class="t5-fl">Extra text</label><input id="t5-extraText" class="t5-inp"></div>
+            <div><label class="t5-fl">Contact</label><input id="t5-contactText" class="t5-inp"></div>
+            <div><label class="t5-fl">Date / time</label><input id="t5-dateTimeText" class="t5-inp"></div>
+            <div><label class="t5-fl">Terms</label><input id="t5-termsText" class="t5-inp" placeholder="เงื่อนไข"></div>
+          </div>
+
+          <!-- E. items -->
+          <div style="border-top:1px solid #1f1f1f;margin:6px 0 12px"></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+            <div class="t5-sec-title" style="margin:0;font-size:10px"><span class="t5-badge" style="width:16px;height:16px;font-size:9px">+</span> รายการ (เพิ่ม/ลบได้)</div>
+            <button class="t5-chip" onclick="t5AddItem()">+ เพิ่มรายการ</button>
+          </div>
+          <div id="t5-items"></div>
+
+          <!-- G. visual direction -->
+          <div style="border-top:1px solid #1f1f1f;margin:6px 0 12px"></div>
+          <div class="t5-sec-title" style="font-size:10px"><span class="t5-badge" style="width:16px;height:16px;font-size:9px">V</span> ทิศทางภาพ</div>
+          <label class="t5-fl">Style preset</label>
+          <input id="t5-stylePreset" class="t5-inp">
+          <div class="t5-grid2">
+            <div><label class="t5-fl">Background style</label><input id="t5-backgroundStyle" class="t5-inp"></div>
+            <div><label class="t5-fl">Layout style</label><input id="t5-layoutStyle" class="t5-inp"></div>
+            <div><label class="t5-fl">Typography style</label><input id="t5-typographyStyle" class="t5-inp"></div>
+            <div><label class="t5-fl">Lighting style</label><input id="t5-lightingStyle" class="t5-inp"></div>
+          </div>
+          <label class="t5-fl">Graphic elements (คั่นด้วย ,)</label>
+          <input id="t5-graphicElements" class="t5-inp" placeholder="badge, arrow, price tag, glow">
+          <label class="t5-fl">Mood</label>
+          <input id="t5-mood" class="t5-inp" placeholder="energetic, premium, urgent">
+
+          <!-- layout positions -->
+          <div class="t5-grid2">
+            <div><label class="t5-fl">Main focus</label><input id="t5-mainFocus" class="t5-inp" placeholder="offer/headline/subject"></div>
+            <div><label class="t5-fl">Headline position</label><input id="t5-headlinePos" class="t5-inp" placeholder="top-center"></div>
+            <div><label class="t5-fl">Subject position</label><input id="t5-subjectPos" class="t5-inp" placeholder="center"></div>
+            <div><label class="t5-fl">Offer position</label><input id="t5-offerPos" class="t5-inp" placeholder="bottom"></div>
+            <div><label class="t5-fl">Price position</label><input id="t5-pricePos" class="t5-inp" placeholder="bottom-right"></div>
+            <div><label class="t5-fl">Logo position</label><input id="t5-logoPos" class="t5-inp" placeholder="top-left"></div>
+          </div>
+
+          <!-- H. constraints -->
+          <div style="border-top:1px solid #1f1f1f;margin:6px 0 12px"></div>
+          <div class="t5-sec-title" style="font-size:10px"><span class="t5-badge" style="width:16px;height:16px;font-size:9px">!</span> ข้อกำหนด</div>
+          <div class="t5-grid2">
+            <div><label class="t5-fl">Must include (คั่นด้วย ,)</label><input id="t5-mustInclude" class="t5-inp"></div>
+            <div><label class="t5-fl">Avoid (คั่นด้วย ,)</label><input id="t5-avoid" class="t5-inp"></div>
+          </div>
+          <div class="t5-grid2">
+            <div><label class="t5-fl">Language</label><input id="t5-language" class="t5-inp" value="Thai"></div>
+            <div><label class="t5-fl">Use case</label><input id="t5-useCase" class="t5-inp" placeholder="โฆษณา/โพสต์/พิมพ์"></div>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:14px;margin:4px 0 4px;font-size:11px;color:#9aa39c;font-family:'Kanit',sans-serif">
+            <label style="display:flex;align-items:center;gap:5px;cursor:pointer"><input type="checkbox" id="t5-readability" checked> readability สูง</label>
+            <label style="display:flex;align-items:center;gap:5px;cursor:pointer"><input type="checkbox" id="t5-realism" checked> realism สูง</label>
+            <label style="display:flex;align-items:center;gap:5px;cursor:pointer"><input type="checkbox" id="t5-noDistort" checked> ไม่บิดเบือน subject</label>
+            <label style="display:flex;align-items:center;gap:5px;cursor:pointer"><input type="checkbox" id="t5-preserveLook" checked> รักษาหน้าตาเดิม</label>
+          </div>
+
+          <button class="t1-btn primary" onclick="t5GeneratePrompt()" style="margin-top:14px">⚡ GENERATE PROMPT</button>
+        </div>
+
+        <!-- STEP 4: Output -->
+        <div class="t1-card" id="t5-outputCard" style="display:none;border-color:rgba(34,197,94,0.25)">
+          <div class="t5-sec-title"><span class="t5-badge">4</span> ผลลัพธ์ Prompt</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+            <label class="t5-fl" style="margin:0">📋 JSON Prompt</label>
+            <button class="t5-chip" onclick="t5Copy('t5-jsonOut')">COPY JSON</button>
+          </div>
+          <textarea id="t5-jsonOut" class="t5-out" readonly spellcheck="false" style="min-height:220px;margin-bottom:14px"></textarea>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+            <label class="t5-fl" style="margin:0">📝 final_prompt (ส่งเข้า AI สร้างภาพ)</label>
+            <button class="t5-chip" onclick="t5Copy('t5-finalOut')">COPY FINAL</button>
+          </div>
+          <textarea id="t5-finalOut" class="t5-out txt" readonly spellcheck="false" style="min-height:260px"></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- TOAST -->
 <div id="toast">SYSTEM_READY</div>
 
@@ -1261,7 +1496,7 @@ h2, h3 {
 
 // ── NAV ──
 function switchTool(n) {
-  [1,2,3,4].forEach(i => {
+  [1,2,3,4,5].forEach(i => {
     const st = document.getElementById('stab'+i);
     if(st) st.classList.toggle('on', i===n);
     const sec = document.getElementById('t'+i);
@@ -1541,6 +1776,468 @@ function t4Copy() {
 
 // generate initial prompt on load
 document.addEventListener('DOMContentLoaded', t4Gen);
+
+// ══════════════════════════════════════════
+//   TOOL 5 LOGIC — UNIVERSAL GRAPHIC PROMPT BUILDER
+// ══════════════════════════════════════════
+
+// ── data stores ──
+let t5StyleImgs = [];      // {name, dataUrl}
+let t5SubjectImgs = [];
+let t5LogoImg = null;      // {name, dataUrl}
+let t5Analysis = null;     // last style_analysis JSON
+
+// ── project type options ──
+const T5_PROJECT_TYPES = [
+  "โปรโมชั่นเกม", "โปรโมชั่นสินค้า", "โปรโมชั่นบริการ", "ประกาศ", "รับสมัครงาน",
+  "Event Poster", "Social Media Post", "Banner", "Menu Design", "Restaurant Promotion",
+  "Combo Set", "Product Ad", "App Promotion", "Maintenance Notice", "General Graphic Design"
+];
+
+// ── preset library (built-in) ──
+const T5_PRESETS = {
+  "game_bold": {
+    label: "🎮 Game Promotion - Bold Commercial",
+    data: {
+      projectType: "โปรโมชั่นเกม",
+      stylePreset: "Bold Gaming Promotion Poster / High Impact Commercial Graphic",
+      backgroundStyle: "dynamic digital graphic background, high contrast, gradient, subtle glow, clean promotional layout",
+      layoutStyle: "large headline, strong offer badge, hero graphic, clear CTA, promotional hierarchy",
+      typographyStyle: "bold modern display typography, highly readable Thai text",
+      graphicElements: "bonus badge, reward icon, arrow, highlight box, glow accent, simple geometric shapes",
+      mood: "exciting, energetic, premium, urgent, rewarding",
+      canvasSize: "1:1",
+      platform: "Facebook / Line OA",
+      avoid: "no low readability text, no cluttered layout, no copied copyrighted game characters unless provided by user, no fake logo, no distorted UI screenshot, no excessive effects that hide text"
+    }
+  },
+  "thalam": {
+    label: "🍸 ถลำ - Dark Green Bar Style",
+    data: {
+      projectType: "Restaurant Promotion",
+      brandName: "ถลำ",
+      brandStyle: "ร้านเหล้าไทย modern / ร้านนั่งชิล / โปรโมชันร้านอาหารและเครื่องดื่ม",
+      mainColor: "#003300", secondaryColor: "#000000", accentColor: "#ffffff", highlightColor: "#8b0000",
+      mood: "เท่ สนุก ดึงดูดสายตา เหมาะกับร้านเหล้าไทยยุคใหม่",
+      canvasSize: "1:1", platform: "Facebook / Instagram",
+      avoid: "no gold text, no neon, no restaurant interior background, no paint stroke background, no Asian/Korean/Japanese decorative pattern unless requested, no fake food distortion, no low readability text"
+    }
+  },
+  "flash_sale": { label: "⚡ Flash Sale", data: { projectType: "โปรโมชั่นสินค้า", stylePreset: "Flash Sale / Urgent Discount", backgroundStyle: "bold high-contrast background, countdown vibe", layoutStyle: "huge discount number, hero product, CTA", typographyStyle: "bold urgent display type", graphicElements: "discount badge, timer, price tag, arrow", mood: "urgent, exciting, high-energy", canvasSize: "1:1", platform: "Facebook / Line OA" } },
+  "bundle_set": { label: "📦 Bundle / Combo Set", data: { projectType: "Combo Set", stylePreset: "Bundle Value Set", backgroundStyle: "clean commercial background", layoutStyle: "grid of items + total price highlight", typographyStyle: "bold readable type", graphicElements: "price tag, bundle badge, plus sign", mood: "value, appetizing, clear", canvasSize: "1:1", platform: "Facebook" } },
+  "new_product": { label: "🆕 New Product", data: { projectType: "Product Ad", stylePreset: "New Product Launch", backgroundStyle: "premium minimal background, soft gradient", layoutStyle: "hero product center, name + tagline", typographyStyle: "modern clean type", graphicElements: "NEW badge, spotlight, subtle shadow", mood: "premium, fresh, clean", canvasSize: "4:5", platform: "Instagram" } },
+  "grand_opening": { label: "🎉 Grand Opening", data: { projectType: "ประกาศ", stylePreset: "Grand Opening Announcement", backgroundStyle: "festive celebratory background", layoutStyle: "big GRAND OPENING headline, date, venue", typographyStyle: "festive bold type", graphicElements: "confetti, ribbon, badge", mood: "celebratory, exciting, welcoming", canvasSize: "4:5", platform: "Facebook" } },
+  "concert": { label: "🎤 Concert / DJ Lineup", data: { projectType: "Event Poster", stylePreset: "Concert / DJ Lineup Poster", backgroundStyle: "dark energetic stage-light background", layoutStyle: "headliner large, lineup list, date/venue", typographyStyle: "bold festival type", graphicElements: "stage lights, glow, badges", mood: "hype, energetic, nightlife", canvasSize: "4:5", platform: "Instagram / Facebook" } },
+  "maintenance": { label: "🛠️ Maintenance Notice", data: { projectType: "Maintenance Notice", stylePreset: "Clean System Notice", backgroundStyle: "calm solid/gradient background, professional", layoutStyle: "icon + headline + date/time + details", typographyStyle: "clear readable type", graphicElements: "warning icon, info box", mood: "calm, clear, professional", canvasSize: "1:1", platform: "Line OA / Website" } },
+  "hiring": { label: "🧑‍💼 Hiring / Job Vacancy", data: { projectType: "รับสมัครงาน", stylePreset: "Job Vacancy Poster", backgroundStyle: "clean professional background", layoutStyle: "WE'RE HIRING headline, positions, contact", typographyStyle: "bold clean type", graphicElements: "badge, icon, contact box", mood: "professional, inviting, clear", canvasSize: "4:5", platform: "Facebook" } },
+  "food_promo": { label: "🍔 Food / Drink Promotion", data: { projectType: "Restaurant Promotion", stylePreset: "Appetizing Food Promotion", backgroundStyle: "warm appetizing background", layoutStyle: "hero food image, price highlight, CTA", typographyStyle: "bold tasty type", graphicElements: "price tag, badge, steam/glow", mood: "appetizing, fresh, inviting", canvasSize: "1:1", platform: "Facebook / Instagram" } },
+  "story_916": { label: "📱 Story / Reels 9:16", data: { projectType: "Social Media Post", stylePreset: "Vertical Story Cover", backgroundStyle: "full-bleed vertical background", layoutStyle: "top headline, center hero, bottom CTA", typographyStyle: "bold mobile-first type", graphicElements: "swipe up cue, badge", mood: "trendy, punchy, mobile", canvasSize: "9:16", orientation: "portrait", platform: "TikTok / Instagram Story" } }
+};
+
+// ── helpers ──
+function t5Err(msg) {
+  const el = document.getElementById('t5-error');
+  if (!msg) { el.style.display = 'none'; el.textContent = ''; return; }
+  el.style.display = 'block'; el.textContent = msg;
+  el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+function t5Val(id) { const el = document.getElementById(id); return el ? el.value.trim() : ''; }
+function t5SetVal(id, v) { const el = document.getElementById(id); if (el && v != null) el.value = v; }
+function t5SplitList(str) { return (str || '').split(',').map(s => s.trim()).filter(Boolean); }
+
+function t5Downscale(dataUrl, maxSide, cb) {
+  const img = new Image();
+  img.onload = () => {
+    let w = img.naturalWidth, h = img.naturalHeight;
+    const scale = Math.min(1, maxSide / Math.max(w, h));
+    w = Math.round(w * scale); h = Math.round(h * scale);
+    const c = document.createElement('canvas'); c.width = w; c.height = h;
+    c.getContext('2d').drawImage(img, 0, 0, w, h);
+    cb(c.toDataURL('image/jpeg', 0.85));
+  };
+  img.src = dataUrl;
+}
+
+// multi-image vision call
+async function gptVisionMulti(system, userMsg, dataUrls) {
+  const content = [{ type: 'text', text: userMsg }];
+  for (const u of dataUrls) content.push({ type: 'image_url', image_url: { url: u } });
+  const d = await callProxy('chat/completions', {
+    model: 'gpt-4o',
+    messages: [{ role: 'system', content: system }, { role: 'user', content }],
+    response_format: { type: 'json_object' },
+    temperature: 0.5
+  });
+  return JSON.parse(d.choices[0].message.content);
+}
+
+// ── uploads ──
+function t5HandleUpload(files, store, thumbsId, phId, multi) {
+  const arr = Array.from(files || []);
+  if (!arr.length) return;
+  const take = multi ? arr.slice(0, 8) : [arr[0]];
+  let pending = take.length;
+  if (!multi) store.length = 0;
+  take.forEach(f => {
+    const reader = new FileReader();
+    reader.onloadend = () => t5Downscale(reader.result, 1280, (small) => {
+      store.push({ name: f.name, dataUrl: small });
+      if (--pending === 0) t5RenderThumbs(store, thumbsId, phId);
+    });
+    reader.readAsDataURL(f);
+  });
+}
+function t5RenderThumbs(store, thumbsId, phId) {
+  const box = document.getElementById(thumbsId);
+  const ph = document.getElementById(phId);
+  box.innerHTML = store.map(it => `<img class="t5-thumb" src="${it.dataUrl}">`).join('');
+  if (ph) ph.style.display = store.length ? 'none' : '';
+}
+
+document.getElementById('t5-styleFiles').addEventListener('change', e => t5HandleUpload(e.target.files, t5StyleImgs, 't5-styleThumbs', 't5-stylePh', true));
+document.getElementById('t5-subjectFiles').addEventListener('change', e => t5HandleUpload(e.target.files, t5SubjectImgs, 't5-subjectThumbs', 't5-subjectPh', true));
+document.getElementById('t5-logoFile').addEventListener('change', e => {
+  const f = e.target.files[0]; if (!f) return;
+  const reader = new FileReader();
+  reader.onloadend = () => t5Downscale(reader.result, 512, (small) => {
+    t5LogoImg = { name: f.name, dataUrl: small };
+    document.getElementById('t5-logoThumb').innerHTML = `<img class="t5-thumb" src="${small}">`;
+    document.getElementById('t5-logoPh').style.display = 'none';
+  });
+  reader.readAsDataURL(f);
+});
+
+// ── STEP 1: Analyze ──
+async function t5AnalyzeReference() {
+  if (!t5StyleImgs.length && !t5SubjectImgs.length) {
+    t5Err('กรุณาแนบรูป Reference อย่างน้อย 1 รูป (Style หรือ Subject)'); return;
+  }
+  t5Err('');
+  const btn = document.getElementById('t5-analyzeBtn');
+  btn.disabled = true; btn.textContent = '⏳ ANALYZING...';
+  const sys = "You are a senior graphic designer and art director. Analyze the attached reference design image(s) and return ONLY a JSON object describing the visual STYLE (not the literal content). The design may be any category: game promotion, product/app/service promo, poster, banner, social media post, announcement, event, hiring, restaurant/food, menu, storefront, or any advertising graphic. Do NOT copy logos, characters, products or exact text. Respond in the exact schema with Thai text for style_summary and mood where natural, English for technical fields.";
+  const schema = 'Return JSON exactly with this shape: {"detected_style_name": string, "style_summary": string (Thai ok), "visual_characteristics": {"color_palette": {"main_color": string, "secondary_color": string, "accent_color": string, "highlight_color": string}, "background_style": string, "typography_style": string, "layout_style": string, "lighting_effect": string, "graphic_elements": string[], "mood": string}, "recommended_prompt_style": string, "avoid_from_reference": string[]}';
+  try {
+    const imgs = [...t5StyleImgs, ...t5SubjectImgs].slice(0, 8).map(i => i.dataUrl);
+    const res = await gptVisionMulti(sys, schema, imgs);
+    t5Analysis = res;
+    t5RenderAnalysis(res);
+    toast('STYLE_ANALYZED');
+  } catch (e) {
+    t5Err('วิเคราะห์ไม่สำเร็จ: ' + ((e && e.message) || e));
+  } finally {
+    btn.disabled = false; btn.textContent = '🔍 ANALYZE REFERENCE';
+  }
+}
+
+function t5RenderAnalysis(a) {
+  const vc = a.visual_characteristics || {};
+  const cp = vc.color_palette || {};
+  const card = document.getElementById('t5-analysisCard');
+  const colorRow = ['main_color', 'secondary_color', 'accent_color', 'highlight_color']
+    .map(k => cp[k] ? `<span style="display:inline-flex;align-items:center;gap:5px;font-size:10px;color:#9aa39c;margin-right:10px"><span style="width:14px;height:14px;border-radius:4px;border:1px solid #333;background:${/^#|rgb|hsl/.test(cp[k]) ? cp[k] : 'transparent'}"></span>${cp[k]}</span>` : '').join('');
+  document.getElementById('t5-analysisBody').innerHTML =
+    `<div style="font-weight:700;color:#4ade80;font-size:14px;margin-bottom:6px">${a.detected_style_name || '-'}</div>` +
+    `<p style="font-size:12px;color:#cfe9d6;line-height:1.6;margin:0 0 10px;font-family:'Kanit',sans-serif">${a.style_summary || ''}</p>` +
+    `<div style="margin-bottom:8px">${colorRow}</div>` +
+    `<div style="font-size:11px;color:#9aa39c;line-height:1.8;font-family:'Kanit',sans-serif">` +
+      `<div><b style="color:#7a7d76">Background:</b> ${vc.background_style || '-'}</div>` +
+      `<div><b style="color:#7a7d76">Typography:</b> ${vc.typography_style || '-'}</div>` +
+      `<div><b style="color:#7a7d76">Layout:</b> ${vc.layout_style || '-'}</div>` +
+      `<div><b style="color:#7a7d76">Mood:</b> ${vc.mood || '-'}</div>` +
+      `<div><b style="color:#7a7d76">Elements:</b> ${(vc.graphic_elements || []).join(', ')}</div>` +
+    `</div>`;
+  card.style.display = '';
+  card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+// ── STEP 2: Use style → fill form ──
+function t5UseStyle() {
+  if (!t5Analysis) return;
+  const a = t5Analysis, vc = a.visual_characteristics || {}, cp = vc.color_palette || {};
+  t5SetVal('t5-stylePreset', a.detected_style_name);
+  t5SetVal('t5-backgroundStyle', vc.background_style);
+  t5SetVal('t5-layoutStyle', vc.layout_style);
+  t5SetVal('t5-typographyStyle', vc.typography_style);
+  t5SetVal('t5-lightingStyle', vc.lighting_effect);
+  t5SetVal('t5-graphicElements', (vc.graphic_elements || []).join(', '));
+  t5SetVal('t5-mood', vc.mood);
+  // colors: only set color picker if hex, else put name in note
+  const setColor = (id, v) => { if (!v) return; if (/^#([0-9a-f]{3}){1,2}$/i.test(v)) t5SetVal(id, v); };
+  setColor('t5-mainColor', cp.main_color); setColor('t5-secondaryColor', cp.secondary_color);
+  setColor('t5-accentColor', cp.accent_color); setColor('t5-highlightColor', cp.highlight_color);
+  const names = ['main_color', 'secondary_color', 'accent_color', 'highlight_color']
+    .map(k => cp[k]).filter(v => v && !/^#([0-9a-f]{3}){1,2}$/i.test(v));
+  if (names.length) t5SetVal('t5-colorNote', names.join(', '));
+  // merge avoid
+  const existing = t5SplitList(t5Val('t5-avoid'));
+  const merged = [...new Set([...existing, ...(a.avoid_from_reference || [])])];
+  t5SetVal('t5-avoid', merged.join(', '));
+  toast('STYLE_APPLIED');
+  document.getElementById('t5-projectType').scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+// ── items (dynamic) ──
+function t5AddItem(data) {
+  data = data || {};
+  const wrap = document.createElement('div');
+  wrap.className = 't5-item-row';
+  wrap.innerHTML =
+    `<button class="t5-x" onclick="this.parentNode.remove()">✕</button>` +
+    `<div class="t5-grid2">` +
+      `<div><label class="t5-fl">item_name</label><input class="t5-inp t5-it-name" value="${data.name || ''}"></div>` +
+      `<div><label class="t5-fl">item_type</label><input class="t5-inp t5-it-type" placeholder="เกม/สินค้า/อาหาร/โบนัส" value="${data.type || ''}"></div>` +
+      `<div><label class="t5-fl">item_price</label><input class="t5-inp t5-it-price" value="${data.price || ''}"></div>` +
+      `<div><label class="t5-fl">item_badge_text</label><input class="t5-inp t5-it-badge" value="${data.badge || ''}"></div>` +
+    `</div>` +
+    `<label class="t5-fl">item_description</label><input class="t5-inp t5-it-desc" value="${data.desc || ''}" style="margin-bottom:0">`;
+  document.getElementById('t5-items').appendChild(wrap);
+}
+function t5CollectItems() {
+  return Array.from(document.querySelectorAll('#t5-items .t5-item-row')).map(r => ({
+    item_name: r.querySelector('.t5-it-name').value.trim(),
+    item_type: r.querySelector('.t5-it-type').value.trim(),
+    item_description: r.querySelector('.t5-it-desc').value.trim(),
+    item_price: r.querySelector('.t5-it-price').value.trim(),
+    item_image_reference: "",
+    item_badge_text: r.querySelector('.t5-it-badge').value.trim()
+  })).filter(it => it.item_name || it.item_description || it.item_price);
+}
+
+// ── color resolution ──
+function t5Color(id, fallbackName) {
+  const note = t5Val('t5-colorNote');
+  // if user typed names and the picker is default-ish, prefer note only as global hint
+  return t5Val(id) || fallbackName || '';
+}
+
+// ── STEP 3: Generate ──
+function t5GeneratePrompt() {
+  const projectType = t5Val('t5-projectType');
+  const canvasSize = t5Val('t5-canvasSize');
+  const mainHeadline = t5Val('t5-mainHeadline');
+  if (!projectType) { t5Err('กรุณาเลือกประเภทงาน (project_type)'); return; }
+  if (!canvasSize) { t5Err('กรุณากรอก Canvas size'); return; }
+  if (!mainHeadline) { t5Err('กรุณากรอก Main headline'); return; }
+  t5Err('');
+
+  const colorNote = t5Val('t5-colorNote');
+  const colors = {
+    main_color: t5Val('t5-mainColor') + (colorNote ? ` (${colorNote})` : ''),
+    secondary_color: t5Val('t5-secondaryColor'),
+    accent_color: t5Val('t5-accentColor'),
+    highlight_color: t5Val('t5-highlightColor')
+  };
+  const items = t5CollectItems();
+  const graphicElements = t5SplitList(t5Val('t5-graphicElements'));
+  const mustInclude = t5SplitList(t5Val('t5-mustInclude'));
+  const avoid = t5SplitList(t5Val('t5-avoid'));
+  const styleRefs = t5StyleImgs.map((_, i) => `[attached style reference image ${i + 1}]`);
+  const subjectRefs = t5SubjectImgs.map((_, i) => `[attached subject reference image ${i + 1}]`);
+  const logoRef = t5LogoImg ? "[attached logo]" : "";
+  const mood = t5Val('t5-mood');
+
+  const out = {
+    task: "Create a professional graphic design image",
+    project_type: projectType,
+    reference_analysis: {
+      style_reference_images: styleRefs,
+      detected_style_name: (t5Analysis && t5Analysis.detected_style_name) || t5Val('t5-stylePreset'),
+      style_summary: (t5Analysis && t5Analysis.style_summary) || "",
+      use_reference_as_style_inspiration: true,
+      do_not_copy_reference_exactly: true
+    },
+    canvas: { size: canvasSize, orientation: t5Val('t5-orientation'), platform: t5Val('t5-platform') },
+    brand: {
+      brand_name: t5Val('t5-brandName'),
+      logo_reference: logoRef,
+      brand_style: t5Val('t5-brandStyle'),
+      brand_colors: colors
+    },
+    objective: { main_goal: t5Val('t5-mainGoal'), target_audience: t5Val('t5-targetAudience'), mood: mood },
+    subject: {
+      subject_type: t5Val('t5-subjectType'),
+      subject_name: t5Val('t5-subjectName'),
+      subject_description: t5Val('t5-subjectDescription'),
+      subject_reference_images: subjectRefs,
+      preserve_original_look: document.getElementById('t5-preserveLook').checked,
+      do_not_distort_subject: document.getElementById('t5-noDistort').checked
+    },
+    items: items,
+    text_on_image: {
+      main_headline: mainHeadline, sub_headline: t5Val('t5-subHeadline'),
+      offer_text: t5Val('t5-offerText'), price_text: t5Val('t5-priceText'),
+      body_text: t5Val('t5-bodyText'), call_to_action: t5Val('t5-cta'),
+      extra_text: t5Val('t5-extraText'), contact_text: t5Val('t5-contactText'),
+      date_time_text: t5Val('t5-dateTimeText'), terms_text: t5Val('t5-termsText')
+    },
+    visual_direction: {
+      style_preset: t5Val('t5-stylePreset'), background_style: t5Val('t5-backgroundStyle'),
+      layout_style: t5Val('t5-layoutStyle'), typography_style: t5Val('t5-typographyStyle'),
+      lighting_style: t5Val('t5-lightingStyle'), graphic_elements: graphicElements, mood: mood
+    },
+    layout: {
+      main_focus: t5Val('t5-mainFocus'), headline_position: t5Val('t5-headlinePos'),
+      subject_position: t5Val('t5-subjectPos'), offer_position: t5Val('t5-offerPos'),
+      price_position: t5Val('t5-pricePos'), logo_position: t5Val('t5-logoPos'),
+      text_priority: t5Val('t5-textPriority') || "headline > offer > price > body",
+      leave_safe_margin: true, high_readability: true
+    },
+    constraints: {
+      must_include: mustInclude, avoid: avoid, language: t5Val('t5-language') || "Thai",
+      readability_priority: document.getElementById('t5-readability').checked ? "high" : "normal",
+      realism_priority: document.getElementById('t5-realism').checked ? "high" : "normal",
+      do_not_copy_reference_exactly: true, do_not_use_unprovided_logos: true,
+      do_not_distort_subject: document.getElementById('t5-noDistort').checked
+    },
+    output_goal: { use_case: t5Val('t5-useCase'), quality: "professional advertising design", marketing_impact: "high" }
+  };
+  out.final_prompt = t5BuildFinalPrompt(out);
+
+  document.getElementById('t5-jsonOut').value = JSON.stringify(out, null, 2);
+  document.getElementById('t5-finalOut').value = out.final_prompt;
+  document.getElementById('t5-outputCard').style.display = '';
+  document.getElementById('t5-outputCard').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  toast('PROMPT_GENERATED');
+}
+
+function t5BuildFinalPrompt(o) {
+  const b = o.brand, c = o.brand_colors || b.brand_colors, t = o.text_on_image, v = o.visual_direction, l = o.layout, s = o.subject;
+  const L = [];
+  L.push(`Create a professional ${o.project_type} graphic${b.brand_name ? ` for ${b.brand_name}` : ''}.`);
+  L.push('');
+  L.push('Use the uploaded reference image(s) only as style inspiration. Do not copy the exact layout, logo, character, text, or copyrighted elements from the reference.');
+  L.push('');
+  L.push('Reference style analysis:');
+  L.push(`The detected style is ${o.reference_analysis.detected_style_name || v.style_preset || 'a clean professional commercial style'}.`);
+  if (v.mood) L.push(`The visual mood is ${v.mood}.`);
+  L.push(`Use ${v.background_style || 'a suitable background'}, ${v.layout_style || 'a balanced layout'}, ${v.typography_style || 'readable typography'}, and ${v.lighting_style || 'appropriate lighting'}.`);
+  L.push('');
+  L.push('Canvas:');
+  L.push(`Create the design in ${o.canvas.size} format, ${o.canvas.orientation || 'auto'}, suitable for ${o.canvas.platform || 'general use'}.`);
+  L.push('');
+  L.push('Brand:');
+  L.push(`Use ${b.brand_colors.main_color || 'the main brand color'} as the main color, ${b.brand_colors.secondary_color || 'a secondary color'} as the secondary color, ${b.brand_colors.accent_color || 'an accent color'} as the accent color, and ${b.brand_colors.highlight_color || 'a highlight color'} for emphasis.`);
+  if (s.subject_name || s.subject_description) {
+    L.push('');
+    L.push('Main content:');
+    if (s.subject_name) L.push(`The main subject is ${s.subject_name}.`);
+    if (s.subject_description) L.push(`Subject description: ${s.subject_description}.`);
+    if (o.subject.subject_reference_images.length) L.push('Use the attached subject reference images. Preserve the original look of provided subject images and do not distort them.');
+  }
+  if (o.items && o.items.length) {
+    L.push('');
+    L.push('Items to include:');
+    o.items.forEach(it => {
+      const parts = [it.item_name];
+      if (it.item_type) parts.push(`(${it.item_type})`);
+      if (it.item_price) parts.push(`- ${it.item_price}`);
+      if (it.item_description) parts.push(`: ${it.item_description}`);
+      if (it.item_badge_text) parts.push(`[badge: ${it.item_badge_text}]`);
+      L.push(`- ${parts.join(' ')}`);
+    });
+  }
+  L.push('');
+  L.push('Text that must appear clearly on the design (keep the exact wording and language, do not translate):');
+  const tx = [
+    ['Main headline', t.main_headline], ['Sub headline', t.sub_headline], ['Offer text', t.offer_text],
+    ['Price text', t.price_text], ['Body text', t.body_text], ['Call to action', t.call_to_action],
+    ['Extra text', t.extra_text], ['Contact', t.contact_text], ['Date/time', t.date_time_text], ['Terms', t.terms_text]
+  ];
+  tx.forEach(([k, val]) => { if (val) L.push(`${k}: "${val}"`); });
+  L.push('');
+  L.push('Layout:');
+  if (l.main_focus) L.push(`Make ${l.main_focus} the strongest visual focus.`);
+  if (l.headline_position) L.push(`Place headline at ${l.headline_position}.`);
+  if (l.subject_position) L.push(`Place main subject at ${l.subject_position}.`);
+  if (l.offer_position) L.push(`Place offer at ${l.offer_position}.`);
+  if (l.price_position) L.push(`Place price at ${l.price_position}.`);
+  if (l.logo_position) L.push(`Place logo at ${l.logo_position}.`);
+  L.push('Keep strong text hierarchy, safe margins, and high readability.');
+  if (o.constraints.must_include.length) { L.push(''); L.push('Must include:'); o.constraints.must_include.forEach(m => L.push(`- ${m}`)); }
+  if (o.constraints.avoid.length) { L.push(''); L.push('Avoid:'); o.constraints.avoid.forEach(m => L.push(`- ${m}`)); }
+  L.push('');
+  L.push(`Overall result:`);
+  L.push(`Make it look like a professional, high-impact, eye-catching graphic design suitable for ${o.canvas.platform || 'advertising'}. The design should be clean, readable, commercial, and ready for advertising use.`);
+  return L.join('\n');
+}
+
+// ── copy / reset ──
+function t5Copy(id) {
+  const el = document.getElementById(id);
+  if (!el.value) return;
+  navigator.clipboard.writeText(el.value).then(
+    () => toast('COPIED'),
+    () => { el.select(); document.execCommand('copy'); toast('COPIED'); }
+  );
+}
+function t5Reset() {
+  document.querySelectorAll('#t5 input[type="text"], #t5 input:not([type]), #t5 textarea').forEach(el => { if (el.id !== 't5-language') el.value = ''; });
+  document.getElementById('t5-items').innerHTML = '';
+  document.getElementById('t5-outputCard').style.display = 'none';
+  document.getElementById('t5-canvasSize').value = '1:1';
+  document.getElementById('t5-language').value = 'Thai';
+  toast('FORM_RESET');
+}
+
+// ── presets ──
+function t5CustomPresets() { try { return JSON.parse(localStorage.getItem('jz9_t5_presets') || '{}'); } catch (e) { return {}; } }
+function t5PopulatePresetSelect() {
+  const sel = document.getElementById('t5-presetSel');
+  const custom = t5CustomPresets();
+  let html = '<option value="">— เลือก preset —</option>';
+  html += '<optgroup label="Built-in">';
+  for (const k in T5_PRESETS) html += `<option value="b:${k}">${T5_PRESETS[k].label}</option>`;
+  html += '</optgroup>';
+  const ck = Object.keys(custom);
+  if (ck.length) { html += '<optgroup label="ของฉัน">'; ck.forEach(k => html += `<option value="c:${k}">💾 ${k}</option>`); html += '</optgroup>'; }
+  sel.innerHTML = html;
+}
+function t5ApplyPresetData(d) {
+  const map = {
+    projectType: 't5-projectType', brandName: 't5-brandName', brandStyle: 't5-brandStyle',
+    mainColor: 't5-mainColor', secondaryColor: 't5-secondaryColor', accentColor: 't5-accentColor', highlightColor: 't5-highlightColor',
+    mood: 't5-mood', canvasSize: 't5-canvasSize', orientation: 't5-orientation', platform: 't5-platform',
+    stylePreset: 't5-stylePreset', backgroundStyle: 't5-backgroundStyle', layoutStyle: 't5-layoutStyle',
+    typographyStyle: 't5-typographyStyle', lightingStyle: 't5-lightingStyle', graphicElements: 't5-graphicElements',
+    avoid: 't5-avoid', mustInclude: 't5-mustInclude'
+  };
+  for (const k in map) if (d[k] != null) t5SetVal(map[k], d[k]);
+  if (d.projectType) { const ps = document.getElementById('t5-projectType'); if (![...ps.options].some(o => o.value === d.projectType)) ps.add(new Option(d.projectType, d.projectType)); ps.value = d.projectType; }
+}
+function t5LoadPreset() {
+  const v = document.getElementById('t5-presetSel').value;
+  if (!v) return;
+  const [kind, key] = [v.slice(0, 1), v.slice(2)];
+  const d = kind === 'b' ? (T5_PRESETS[key] && T5_PRESETS[key].data) : t5CustomPresets()[key];
+  if (!d) return;
+  t5ApplyPresetData(d);
+  toast('PRESET_LOADED');
+}
+function t5SavePreset() {
+  const name = prompt('ตั้งชื่อ preset:');
+  if (!name) return;
+  const d = {
+    projectType: t5Val('t5-projectType'), brandName: t5Val('t5-brandName'), brandStyle: t5Val('t5-brandStyle'),
+    mainColor: t5Val('t5-mainColor'), secondaryColor: t5Val('t5-secondaryColor'), accentColor: t5Val('t5-accentColor'), highlightColor: t5Val('t5-highlightColor'),
+    mood: t5Val('t5-mood'), canvasSize: t5Val('t5-canvasSize'), orientation: t5Val('t5-orientation'), platform: t5Val('t5-platform'),
+    stylePreset: t5Val('t5-stylePreset'), backgroundStyle: t5Val('t5-backgroundStyle'), layoutStyle: t5Val('t5-layoutStyle'),
+    typographyStyle: t5Val('t5-typographyStyle'), lightingStyle: t5Val('t5-lightingStyle'), graphicElements: t5Val('t5-graphicElements'),
+    avoid: t5Val('t5-avoid'), mustInclude: t5Val('t5-mustInclude')
+  };
+  const all = t5CustomPresets(); all[name] = d;
+  try { localStorage.setItem('jz9_t5_presets', JSON.stringify(all)); t5PopulatePresetSelect(); toast('PRESET_SAVED'); }
+  catch (e) { t5Err('บันทึก preset ไม่สำเร็จ: ' + e.message); }
+}
+
+// ── init Tool 5 ──
+function t5Init() {
+  const ps = document.getElementById('t5-projectType');
+  ps.innerHTML = T5_PROJECT_TYPES.map(p => `<option value="${p}">${p}</option>`).join('');
+  t5PopulatePresetSelect();
+  t5AddItem(); // start with one empty item row
+}
+document.addEventListener('DOMContentLoaded', t5Init);
 
 // ══════════════════════
 //   TOOL 1 LOGIC
