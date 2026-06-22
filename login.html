@@ -9,25 +9,57 @@
   <link rel="stylesheet" href="/assets/css/jz9.css">
   <style>
     .auth-wrap { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; }
-    .auth-card { width: 100%; max-width: 400px; text-align: center; }
-    .auth-card .jz-logo { justify-content: center; font-size: 24px; margin-bottom: 8px; }
-    .auth-sub { color: var(--jz-text-dim); font-size: 14px; margin: 6px 0 26px; }
-    .auth-foot { margin-top: 22px; font-size: 12px; color: var(--jz-text-mute); }
+    .auth-card { width: 100%; max-width: 420px; }
+    .auth-head { text-align: center; margin-bottom: 22px; }
+    .auth-head .jz-logo { justify-content: center; font-size: 24px; margin-bottom: 8px; }
+    .auth-sub { color: var(--jz-text-dim); font-size: 14px; margin: 6px 0 0; }
+    .auth-tabs { display: flex; gap: 6px; background: var(--jz-bg-soft); padding: 4px; border-radius: var(--jz-radius-sm); margin-bottom: 20px; }
+    .auth-tab { flex: 1; text-align: center; padding: 9px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px; color: var(--jz-text-dim); border: none; background: transparent; }
+    .auth-tab.on { background: var(--jz-green); color: #06210f; }
+    .auth-field { margin-bottom: 14px; }
+    .auth-msg { display: none; padding: 11px 13px; border-radius: var(--jz-radius-sm); font-size: 13px; margin-bottom: 14px; }
+    .auth-msg.err { display: block; background: rgba(248,113,113,0.12); border: 1px solid rgba(248,113,113,0.35); color: var(--jz-danger); }
+    .auth-msg.ok { display: block; background: rgba(34,197,94,0.12); border: 1px solid rgba(34,197,94,0.3); color: var(--jz-green-bright); }
+    .auth-foot { margin-top: 18px; text-align: center; font-size: 12px; color: var(--jz-text-mute); }
+    .auth-forgot { text-align: right; font-size: 12px; margin: -4px 0 14px; }
+    .auth-forgot a { color: var(--jz-text-dim); cursor: pointer; }
   </style>
 </head>
 <body>
   <div class="auth-wrap">
     <div class="jz-card auth-card">
-      <div class="jz-logo"><span class="jz-logo-badge">JZ9</span> JZ9suite</div>
-      <p class="auth-sub">จัดการ Prompt และไอเดียงานครีเอทีฟของคุณในที่เดียว</p>
+      <div class="auth-head">
+        <div class="jz-logo"><span class="jz-logo-badge">JZ9</span> JZ9suite</div>
+        <p class="auth-sub">จัดการ Prompt และไอเดียงานครีเอทีฟของคุณในที่เดียว</p>
+      </div>
 
-      <button class="jz-google" id="googleBtn">
-        <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
-        เข้าสู่ระบบด้วย Gmail
-      </button>
+      <div class="auth-tabs">
+        <button class="auth-tab on" id="tabSignin" type="button">เข้าสู่ระบบ</button>
+        <button class="auth-tab" id="tabSignup" type="button">สมัครสมาชิก</button>
+      </div>
+
+      <div class="auth-msg" id="msg"></div>
+
+      <form id="authForm" autocomplete="on">
+        <div class="auth-field" id="nameField" style="display:none">
+          <label class="jz-label" for="name">ชื่อที่แสดง</label>
+          <input class="jz-input" type="text" id="name" placeholder="เช่น ร้านถลำ" autocomplete="name">
+        </div>
+        <div class="auth-field">
+          <label class="jz-label" for="email">อีเมล</label>
+          <input class="jz-input" type="email" id="email" placeholder="you@example.com" autocomplete="email" required>
+        </div>
+        <div class="auth-field">
+          <label class="jz-label" for="password">รหัสผ่าน</label>
+          <input class="jz-input" type="password" id="password" placeholder="อย่างน้อย 6 ตัวอักษร" autocomplete="current-password" minlength="6" required>
+        </div>
+        <div class="auth-forgot" id="forgotWrap"><a id="forgotLink">ลืมรหัสผ่าน?</a></div>
+
+        <button class="jz-btn jz-btn-primary jz-btn-block" type="submit" id="submitBtn">เข้าสู่ระบบ</button>
+      </form>
 
       <div class="auth-foot">
-        ใช้งานฟรี • ปลอดภัยด้วย Google OAuth<br>
+        ใช้งานฟรี • ข้อมูลของคุณเป็นส่วนตัว<br>
         <a href="/landing.html" style="color:var(--jz-green-bright)">← กลับหน้าแรก</a>
       </div>
     </div>
@@ -38,14 +70,95 @@
   <script src="/assets/js/supabase.js"></script>
   <script src="/assets/js/auth.js"></script>
   <script>
-    // already signed in? skip straight to dashboard
+    var mode = "signin"; // or "signup"
+    var els = {
+      tabSignin: document.getElementById("tabSignin"),
+      tabSignup: document.getElementById("tabSignup"),
+      nameField: document.getElementById("nameField"),
+      forgotWrap: document.getElementById("forgotWrap"),
+      submit: document.getElementById("submitBtn"),
+      pwd: document.getElementById("password"),
+      msg: document.getElementById("msg")
+    };
+
+    function setMode(m) {
+      mode = m;
+      var signup = m === "signup";
+      els.tabSignin.classList.toggle("on", !signup);
+      els.tabSignup.classList.toggle("on", signup);
+      els.nameField.style.display = signup ? "" : "none";
+      els.forgotWrap.style.display = signup ? "none" : "";
+      els.submit.textContent = signup ? "สมัครสมาชิก" : "เข้าสู่ระบบ";
+      els.pwd.setAttribute("autocomplete", signup ? "new-password" : "current-password");
+      showMsg("");
+    }
+    function showMsg(text, kind) {
+      els.msg.className = "auth-msg" + (kind ? " " + kind : "");
+      els.msg.textContent = text || "";
+    }
+    els.tabSignin.addEventListener("click", function () { setMode("signin"); });
+    els.tabSignup.addEventListener("click", function () { setMode("signup"); });
+
+    // already signed in? go to dashboard
     (async function () {
       var session = await window.JZ9.auth.getSession();
       if (session) window.location.replace(window.JZ9_CONFIG.POST_LOGIN_REDIRECT || "/app/dashboard.html");
     })();
-    document.getElementById("googleBtn").addEventListener("click", function () {
-      window.JZ9.auth.signInWithGoogle();
+
+    document.getElementById("authForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
+      var email = document.getElementById("email").value.trim();
+      var password = document.getElementById("password").value;
+      var name = document.getElementById("name").value.trim();
+      if (!email || !password) return;
+      els.submit.disabled = true;
+      var origLabel = els.submit.textContent;
+      els.submit.textContent = "กำลังดำเนินการ…";
+      showMsg("");
+
+      try {
+        if (mode === "signup") {
+          var up = await window.JZ9.auth.signUpWithEmail(email, password, name);
+          if (up.error) throw up.error;
+          if (up.data && up.data.session) {
+            // email confirmation disabled → logged in immediately
+            window.location.replace(window.JZ9_CONFIG.POST_LOGIN_REDIRECT || "/app/dashboard.html");
+            return;
+          }
+          // confirmation required
+          showMsg("สมัครสำเร็จ! กรุณาตรวจสอบอีเมลเพื่อยืนยันบัญชี แล้วกลับมาเข้าสู่ระบบ", "ok");
+          setMode("signin");
+        } else {
+          var inRes = await window.JZ9.auth.signInWithEmail(email, password);
+          if (inRes.error) throw inRes.error;
+          window.location.replace(window.JZ9_CONFIG.POST_LOGIN_REDIRECT || "/app/dashboard.html");
+          return;
+        }
+      } catch (err) {
+        showMsg(translateErr(err.message || String(err)), "err");
+      } finally {
+        els.submit.disabled = false;
+        els.submit.textContent = origLabel;
+      }
     });
+
+    document.getElementById("forgotLink").addEventListener("click", async function () {
+      var email = document.getElementById("email").value.trim();
+      if (!email) { showMsg("กรอกอีเมลก่อน แล้วกด “ลืมรหัสผ่าน?” อีกครั้ง", "err"); return; }
+      var r = await window.JZ9.auth.resetPassword(email);
+      if (r.error) showMsg(translateErr(r.error.message), "err");
+      else showMsg("ส่งลิงก์รีเซ็ตรหัสผ่านไปที่อีเมลแล้ว", "ok");
+    });
+
+    function translateErr(m) {
+      m = m || "";
+      if (/already registered|already exists/i.test(m)) return "อีเมลนี้สมัครไว้แล้ว — ลองเข้าสู่ระบบ";
+      if (/invalid login credentials/i.test(m)) return "อีเมลหรือรหัสผ่านไม่ถูกต้อง";
+      if (/password should be at least/i.test(m)) return "รหัสผ่านต้องอย่างน้อย 6 ตัวอักษร";
+      if (/email not confirmed/i.test(m)) return "ยังไม่ได้ยืนยันอีเมล — ตรวจสอบกล่องจดหมายของคุณ";
+      if (/rate limit/i.test(m)) return "ลองบ่อยเกินไป กรุณารอสักครู่";
+      return m;
+    }
   </script>
 </body>
 </html>
