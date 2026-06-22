@@ -149,6 +149,9 @@ body { padding-top: 60px; }
 .t5-sw { width:34px;height:34px;border-radius:8px;border:1px solid #2a2a2a;padding:0;cursor:pointer;background:#0a0a0a; }
 .t5-out { width:100%;background:#000;border:1px solid rgba(34,197,94,0.15);border-radius:12px;padding:14px;color:rgba(74,222,128,0.85);font-family:'Fira Code',monospace;font-size:10px;line-height:1.5;resize:vertical;white-space:pre;box-sizing:border-box; }
 .t5-out.txt { white-space:pre-wrap;color:#cfe9d6; }
+#t5 .t5-adv { display: none; }
+#t5.adv .t5-adv { display: block; }
+#t5.adv #t5-advBtn { background: rgba(34,197,94,0.25); color:#fff; }
 .t3-glass {
   background: rgba(22,27,34,0.85); backdrop-filter: blur(12px);
   border: 1px solid rgba(0,255,65,0.13); border-radius: 24px;
@@ -674,6 +677,102 @@ h2, h3 {
   letter-spacing: 3px !important;
 }
 
+/* ═══ THEME TOGGLE BUTTON ═══ */
+#theme-toggle {
+  background: rgba(255,255,255,0.06); border: 1px solid var(--border);
+  color: var(--lime); width: 38px; height: 38px; border-radius: 10px;
+  font-size: 17px; cursor: pointer; transition: all 0.2s; flex-shrink: 0;
+}
+#theme-toggle:hover { background: var(--lime-dim); border-color: var(--lime); transform: scale(1.05); }
+
+/* ═══════════════════════════════════════════════════
+   LIGHT MODE — overrides applied when <html class="light">
+   ═══════════════════════════════════════════════════ */
+html.light { --bg: #eaeee9; --surface: #ffffff; --border: rgba(0,0,0,0.10); }
+html.light, html.light body { background: #eaeee9 !important; color: #1b211b; }
+html.light #bg-rain { display: none !important; }
+
+/* nav */
+html.light #nav { background: rgba(255,255,255,0.92) !important; border-bottom: 1px solid rgba(0,0,0,0.08); }
+html.light .nav-title { color: #15301a; }
+html.light .nav-sub { color: rgba(0,0,0,0.4); }
+html.light #theme-toggle { background: rgba(0,0,0,0.04); color: #1a8f3c; border-color: rgba(0,0,0,0.12); }
+
+/* side tabs */
+html.light #side-tabs { background: rgba(255,255,255,0.9) !important; border-color: rgba(0,0,0,0.08) !important; }
+html.light .side-tab { color: #4a5a4a; }
+html.light .side-tab .s-num { color: rgba(0,0,0,0.35); }
+html.light .side-tab.on { background: rgba(34,197,94,0.14) !important; color: #15301a !important; }
+
+/* section wrappers — light surface + dark base text */
+html.light #t1, html.light #t2, html.light #t3, html.light #t4, html.light #t5 {
+  background: rgba(255,255,255,0.72) !important; color: #1b211b !important;
+  background-image: none !important;
+}
+
+/* cards & panels */
+html.light .t1-card, html.light .t1-small-card, html.light .t3-glass {
+  background: #ffffff !important; border-color: rgba(0,0,0,0.10) !important;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.05) !important;
+}
+
+/* inputs / selects / textareas (class + per-tool inline) */
+html.light .t5-inp,
+html.light #t4 input, html.light #t4 select, html.light #t4 textarea,
+html.light #t5 input, html.light #t5 select, html.light #t5 textarea,
+html.light #t2 input, html.light #t2 select, html.light #t2 textarea,
+html.light #t3 input, html.light #t3 select, html.light #t3 textarea {
+  background: #ffffff !important; color: #15201a !important; border-color: rgba(0,0,0,0.18) !important;
+}
+html.light input[type="color"].t5-sw { background:#fff !important; }
+
+/* output / code areas */
+html.light .t5-out, html.light #t4-promptOut,
+html.light [style*="background:#000"], html.light [style*="background: #000"],
+html.light [style*="background:#0a0a0a"], html.light [style*="background:#0d0d0d"] {
+  background: #f4f6f3 !important; color: #1f3a26 !important; border-color: rgba(0,0,0,0.12) !important;
+}
+
+/* dark inline backgrounds → light card */
+html.light #t1 [style*="background:rgba(0,0,0"], html.light #t2 [style*="background:rgba(0,0,0"],
+html.light #t3 [style*="background:rgba(0,0,0"], html.light #t5 [style*="background:rgba(0,0,0"] {
+  background: #f4f6f3 !important;
+}
+
+/* light-colored inline TEXT → dark for readability */
+html.light .sec [style*="color:#fff"], html.light .sec [style*="color: #fff"],
+html.light .sec [style*="color:#e6edf3"], html.light .sec [style*="color:#f0f0f0"],
+html.light .sec [style*="color:rgba(255,255,255"],
+html.light .sec [style*="color:#cfe9d6"], html.light .sec [style*="color:#e6f"] {
+  color: #1b2b1f !important;
+}
+/* very dark inline text (was on dark bg) → readable dark */
+html.light .sec [style*="color:#1a1a1a"], html.light .sec [style*="color:#2a2a2a"],
+html.light .sec [style*="color:#525252"], html.light .sec [style*="color:#2e2e2e"] {
+  color: #5a635a !important;
+}
+
+/* dropzones / dashed borders */
+html.light .t5-drop, html.light #t1-dropzone, html.light [style*="dashed #2a2a2a"] {
+  border-color: rgba(0,0,0,0.2) !important; background: #fafbfa;
+}
+
+/* item rows / sub panels */
+html.light .t5-item-row { background: #f7f9f6 !important; border-color: rgba(0,0,0,0.1) !important; }
+
+/* labels / accents — darken green for contrast on white */
+html.light .t1-label, html.light .t5-sec-title { color: #1a8f3c !important; }
+html.light .t1-tag { background: rgba(34,197,94,0.12); color: #157a32; }
+html.light .t5-fl { color: #5a635a !important; }
+/* boost faint inline placeholder hints */
+html.light .sec [style*="opacity:0.12"], html.light .sec [style*="opacity: 0.12"] { opacity: 0.4 !important; }
+/* primary CTA stays green with dark text in light mode for readability */
+html.light .t1-btn.primary { color: #06210f !important; }
+
+/* scrollbar */
+html.light ::-webkit-scrollbar-track { background: #e0e4df; }
+html.light ::-webkit-scrollbar-thumb { background: #9fc4a8; }
+
 </style>
 </head>
 <body>
@@ -697,6 +796,7 @@ h2, h3 {
     <button class="nav-tab" onclick="switchTool(4)" id="tab4"><span class="num">[04]</span> 📐 Smart Resize</button>
     <button class="nav-tab" onclick="switchTool(5)" id="tab5"><span class="num">[05]</span> 🧠 Prompt Builder</button>
   </div>
+  <button id="theme-toggle" onclick="toggleTheme()" title="สลับโหมดสว่าง/มืด" aria-label="Toggle theme">🌙</button>
 </nav>
 
 <div id="side-tabs">
@@ -1288,6 +1388,35 @@ h2, h3 {
 
     <div id="t5-error" style="display:none;margin-bottom:16px;padding:14px;background:rgba(127,29,29,0.25);border:1px solid rgba(239,68,68,0.35);color:#f87171;border-radius:14px;font-size:11px;font-family:'Fira Code',monospace"></div>
 
+    <!-- HOW TO USE -->
+    <div class="t1-card" style="margin-bottom:16px;border-color:rgba(34,197,94,0.25)">
+      <div style="display:flex;justify-content:space-between;align-items:center;cursor:pointer" onclick="t5ToggleHelp()">
+        <div class="t5-sec-title" style="margin:0">📖 วิธีใช้งาน (อ่านก่อนเริ่ม)</div>
+        <span id="t5-helpCaret" style="color:#4ade80;font-size:13px">▼</span>
+      </div>
+      <div id="t5-helpBody" style="margin-top:12px">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px">
+          <div style="background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.15);border-radius:10px;padding:12px">
+            <div style="font-weight:700;color:#4ade80;font-size:12px;margin-bottom:4px">1️⃣ แนบรูปตัวอย่าง</div>
+            <div style="font-size:11px;color:#9aa39c;line-height:1.6;font-family:'Kanit',sans-serif">มีงานที่ชอบ? แนบใน <b>Style Reference</b> แล้วกด <b style="color:#4ade80">Analyze</b> ให้ AI อ่านสไตล์ <br>(ไม่มีก็ข้ามไป Step 3 ได้เลย)</div>
+          </div>
+          <div style="background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.15);border-radius:10px;padding:12px">
+            <div style="font-weight:700;color:#4ade80;font-size:12px;margin-bottom:4px">2️⃣ ใช้สไตล์ที่ได้</div>
+            <div style="font-size:11px;color:#9aa39c;line-height:1.6;font-family:'Kanit',sans-serif">กด <b style="color:#4ade80">Use this style</b> ระบบเติมสี/เลย์เอาต์/mood ให้อัตโนมัติ หรือเลือก <b>Preset</b> สำเร็จรูป</div>
+          </div>
+          <div style="background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.15);border-radius:10px;padding:12px">
+            <div style="font-weight:700;color:#4ade80;font-size:12px;margin-bottom:4px">3️⃣ กรอกข้อความ</div>
+            <div style="font-size:11px;color:#9aa39c;line-height:1.6;font-family:'Kanit',sans-serif">ใส่ <b>หัวข้อใหญ่ + โปร/ราคา + รายการ</b> (ช่องที่มี * ต้องกรอก) — ที่เหลือเว้นว่างได้</div>
+          </div>
+          <div style="background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.15);border-radius:10px;padding:12px">
+            <div style="font-weight:700;color:#4ade80;font-size:12px;margin-bottom:4px">4️⃣ สร้าง Prompt</div>
+            <div style="font-size:11px;color:#9aa39c;line-height:1.6;font-family:'Kanit',sans-serif">กด <b style="color:#4ade80">Generate</b> → <b>Copy final_prompt</b> ไปวางใน ChatGPT/Gemini แล้วแนบรูป</div>
+          </div>
+        </div>
+        <p style="font-size:11px;color:#7a7d76;margin:12px 0 0;line-height:1.6;font-family:'Kanit',sans-serif">💡 <b>รีบ?</b> เลือก Preset → แก้หัวข้อ/ราคา → Generate ได้เลย ไม่ต้องแนบรูปก็ได้</p>
+      </div>
+    </div>
+
     <div style="display:grid;grid-template-columns:minmax(320px,1fr) minmax(320px,1.1fr);gap:20px;align-items:start">
       <!-- LEFT COLUMN -->
       <div style="display:flex;flex-direction:column;gap:14px">
@@ -1339,7 +1468,10 @@ h2, h3 {
       <!-- RIGHT COLUMN: FORM -->
       <div style="display:flex;flex-direction:column;gap:14px">
         <div class="t1-card">
-          <div class="t5-sec-title"><span class="t5-badge">3</span> กรอกข้อมูล (แก้ได้ทุกช่อง)</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+            <div class="t5-sec-title" style="margin:0"><span class="t5-badge">3</span> กรอกข้อมูล</div>
+            <button class="t5-chip" id="t5-advBtn" onclick="t5ToggleAdv()">⚙️ โหมดละเอียด</button>
+          </div>
 
           <!-- A. project type + canvas -->
           <label class="t5-fl">ประเภทงาน *</label>
@@ -1381,17 +1513,19 @@ h2, h3 {
           </div>
 
           <!-- objective + subject -->
-          <div style="border-top:1px solid #1f1f1f;margin:6px 0 12px"></div>
-          <div class="t5-grid2">
-            <div><label class="t5-fl">Main goal</label><input id="t5-mainGoal" class="t5-inp" placeholder="เป้าหมายงาน"></div>
-            <div><label class="t5-fl">Target audience</label><input id="t5-targetAudience" class="t5-inp" placeholder="กลุ่มเป้าหมาย"></div>
+          <div class="t5-adv">
+            <div style="border-top:1px solid #1f1f1f;margin:6px 0 12px"></div>
+            <div class="t5-grid2">
+              <div><label class="t5-fl">Main goal</label><input id="t5-mainGoal" class="t5-inp" placeholder="เป้าหมายงาน"></div>
+              <div><label class="t5-fl">Target audience</label><input id="t5-targetAudience" class="t5-inp" placeholder="กลุ่มเป้าหมาย"></div>
+            </div>
+            <div class="t5-grid2">
+              <div><label class="t5-fl">Subject type</label><input id="t5-subjectType" class="t5-inp" placeholder="เกม/สินค้า/อาหาร..."></div>
+              <div><label class="t5-fl">Subject name</label><input id="t5-subjectName" class="t5-inp" placeholder="ชื่อวัตถุหลัก"></div>
+            </div>
+            <label class="t5-fl">Subject description</label>
+            <input id="t5-subjectDescription" class="t5-inp" placeholder="คำอธิบายวัตถุหลัก">
           </div>
-          <div class="t5-grid2">
-            <div><label class="t5-fl">Subject type</label><input id="t5-subjectType" class="t5-inp" placeholder="เกม/สินค้า/อาหาร..."></div>
-            <div><label class="t5-fl">Subject name</label><input id="t5-subjectName" class="t5-inp" placeholder="ชื่อวัตถุหลัก"></div>
-          </div>
-          <label class="t5-fl">Subject description</label>
-          <input id="t5-subjectDescription" class="t5-inp" placeholder="คำอธิบายวัตถุหลัก">
 
           <!-- D. text on image -->
           <div style="border-top:1px solid #1f1f1f;margin:6px 0 12px"></div>
@@ -1404,13 +1538,15 @@ h2, h3 {
             <div><label class="t5-fl">Price text</label><input id="t5-priceText" class="t5-inp"></div>
             <div><label class="t5-fl">Call to action</label><input id="t5-cta" class="t5-inp" placeholder="สมัครเลย/สั่งเลย"></div>
           </div>
-          <label class="t5-fl">Body text</label>
-          <input id="t5-bodyText" class="t5-inp">
-          <div class="t5-grid2">
-            <div><label class="t5-fl">Extra text</label><input id="t5-extraText" class="t5-inp"></div>
-            <div><label class="t5-fl">Contact</label><input id="t5-contactText" class="t5-inp"></div>
-            <div><label class="t5-fl">Date / time</label><input id="t5-dateTimeText" class="t5-inp"></div>
-            <div><label class="t5-fl">Terms</label><input id="t5-termsText" class="t5-inp" placeholder="เงื่อนไข"></div>
+          <div class="t5-adv">
+            <label class="t5-fl">Body text</label>
+            <input id="t5-bodyText" class="t5-inp">
+            <div class="t5-grid2">
+              <div><label class="t5-fl">Extra text</label><input id="t5-extraText" class="t5-inp"></div>
+              <div><label class="t5-fl">Contact</label><input id="t5-contactText" class="t5-inp"></div>
+              <div><label class="t5-fl">Date / time</label><input id="t5-dateTimeText" class="t5-inp"></div>
+              <div><label class="t5-fl">Terms</label><input id="t5-termsText" class="t5-inp" placeholder="เงื่อนไข"></div>
+            </div>
           </div>
 
           <!-- E. items -->
@@ -1426,43 +1562,45 @@ h2, h3 {
           <div class="t5-sec-title" style="font-size:10px"><span class="t5-badge" style="width:16px;height:16px;font-size:9px">V</span> ทิศทางภาพ</div>
           <label class="t5-fl">Style preset</label>
           <input id="t5-stylePreset" class="t5-inp">
-          <div class="t5-grid2">
-            <div><label class="t5-fl">Background style</label><input id="t5-backgroundStyle" class="t5-inp"></div>
-            <div><label class="t5-fl">Layout style</label><input id="t5-layoutStyle" class="t5-inp"></div>
-            <div><label class="t5-fl">Typography style</label><input id="t5-typographyStyle" class="t5-inp"></div>
-            <div><label class="t5-fl">Lighting style</label><input id="t5-lightingStyle" class="t5-inp"></div>
-          </div>
-          <label class="t5-fl">Graphic elements (คั่นด้วย ,)</label>
-          <input id="t5-graphicElements" class="t5-inp" placeholder="badge, arrow, price tag, glow">
           <label class="t5-fl">Mood</label>
           <input id="t5-mood" class="t5-inp" placeholder="energetic, premium, urgent">
+          <div class="t5-adv">
+            <div class="t5-grid2">
+              <div><label class="t5-fl">Background style</label><input id="t5-backgroundStyle" class="t5-inp"></div>
+              <div><label class="t5-fl">Layout style</label><input id="t5-layoutStyle" class="t5-inp"></div>
+              <div><label class="t5-fl">Typography style</label><input id="t5-typographyStyle" class="t5-inp"></div>
+              <div><label class="t5-fl">Lighting style</label><input id="t5-lightingStyle" class="t5-inp"></div>
+            </div>
+            <label class="t5-fl">Graphic elements (คั่นด้วย ,)</label>
+            <input id="t5-graphicElements" class="t5-inp" placeholder="badge, arrow, price tag, glow">
 
-          <!-- layout positions -->
-          <div class="t5-grid2">
-            <div><label class="t5-fl">Main focus</label><input id="t5-mainFocus" class="t5-inp" placeholder="offer/headline/subject"></div>
-            <div><label class="t5-fl">Headline position</label><input id="t5-headlinePos" class="t5-inp" placeholder="top-center"></div>
-            <div><label class="t5-fl">Subject position</label><input id="t5-subjectPos" class="t5-inp" placeholder="center"></div>
-            <div><label class="t5-fl">Offer position</label><input id="t5-offerPos" class="t5-inp" placeholder="bottom"></div>
-            <div><label class="t5-fl">Price position</label><input id="t5-pricePos" class="t5-inp" placeholder="bottom-right"></div>
-            <div><label class="t5-fl">Logo position</label><input id="t5-logoPos" class="t5-inp" placeholder="top-left"></div>
-          </div>
+            <!-- layout positions -->
+            <div class="t5-grid2">
+              <div><label class="t5-fl">Main focus</label><input id="t5-mainFocus" class="t5-inp" placeholder="offer/headline/subject"></div>
+              <div><label class="t5-fl">Headline position</label><input id="t5-headlinePos" class="t5-inp" placeholder="top-center"></div>
+              <div><label class="t5-fl">Subject position</label><input id="t5-subjectPos" class="t5-inp" placeholder="center"></div>
+              <div><label class="t5-fl">Offer position</label><input id="t5-offerPos" class="t5-inp" placeholder="bottom"></div>
+              <div><label class="t5-fl">Price position</label><input id="t5-pricePos" class="t5-inp" placeholder="bottom-right"></div>
+              <div><label class="t5-fl">Logo position</label><input id="t5-logoPos" class="t5-inp" placeholder="top-left"></div>
+            </div>
 
-          <!-- H. constraints -->
-          <div style="border-top:1px solid #1f1f1f;margin:6px 0 12px"></div>
-          <div class="t5-sec-title" style="font-size:10px"><span class="t5-badge" style="width:16px;height:16px;font-size:9px">!</span> ข้อกำหนด</div>
-          <div class="t5-grid2">
-            <div><label class="t5-fl">Must include (คั่นด้วย ,)</label><input id="t5-mustInclude" class="t5-inp"></div>
-            <div><label class="t5-fl">Avoid (คั่นด้วย ,)</label><input id="t5-avoid" class="t5-inp"></div>
-          </div>
-          <div class="t5-grid2">
-            <div><label class="t5-fl">Language</label><input id="t5-language" class="t5-inp" value="Thai"></div>
-            <div><label class="t5-fl">Use case</label><input id="t5-useCase" class="t5-inp" placeholder="โฆษณา/โพสต์/พิมพ์"></div>
-          </div>
-          <div style="display:flex;flex-wrap:wrap;gap:14px;margin:4px 0 4px;font-size:11px;color:#9aa39c;font-family:'Kanit',sans-serif">
-            <label style="display:flex;align-items:center;gap:5px;cursor:pointer"><input type="checkbox" id="t5-readability" checked> readability สูง</label>
-            <label style="display:flex;align-items:center;gap:5px;cursor:pointer"><input type="checkbox" id="t5-realism" checked> realism สูง</label>
-            <label style="display:flex;align-items:center;gap:5px;cursor:pointer"><input type="checkbox" id="t5-noDistort" checked> ไม่บิดเบือน subject</label>
-            <label style="display:flex;align-items:center;gap:5px;cursor:pointer"><input type="checkbox" id="t5-preserveLook" checked> รักษาหน้าตาเดิม</label>
+            <!-- H. constraints -->
+            <div style="border-top:1px solid #1f1f1f;margin:6px 0 12px"></div>
+            <div class="t5-sec-title" style="font-size:10px"><span class="t5-badge" style="width:16px;height:16px;font-size:9px">!</span> ข้อกำหนด</div>
+            <div class="t5-grid2">
+              <div><label class="t5-fl">Must include (คั่นด้วย ,)</label><input id="t5-mustInclude" class="t5-inp"></div>
+              <div><label class="t5-fl">Avoid (คั่นด้วย ,)</label><input id="t5-avoid" class="t5-inp"></div>
+            </div>
+            <div class="t5-grid2">
+              <div><label class="t5-fl">Language</label><input id="t5-language" class="t5-inp" value="Thai"></div>
+              <div><label class="t5-fl">Use case</label><input id="t5-useCase" class="t5-inp" placeholder="โฆษณา/โพสต์/พิมพ์"></div>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:14px;margin:4px 0 4px;font-size:11px;color:#9aa39c;font-family:'Kanit',sans-serif">
+              <label style="display:flex;align-items:center;gap:5px;cursor:pointer"><input type="checkbox" id="t5-readability" checked> readability สูง</label>
+              <label style="display:flex;align-items:center;gap:5px;cursor:pointer"><input type="checkbox" id="t5-realism" checked> realism สูง</label>
+              <label style="display:flex;align-items:center;gap:5px;cursor:pointer"><input type="checkbox" id="t5-noDistort" checked> ไม่บิดเบือน subject</label>
+              <label style="display:flex;align-items:center;gap:5px;cursor:pointer"><input type="checkbox" id="t5-preserveLook" checked> รักษาหน้าตาเดิม</label>
+            </div>
           </div>
 
           <button class="t1-btn primary" onclick="t5GeneratePrompt()" style="margin-top:14px">⚡ GENERATE PROMPT</button>
@@ -1505,6 +1643,26 @@ function switchTool(n) {
     if(tab) tab.classList.toggle('on', i===n);
   });
 }
+
+// ── THEME (light / dark) ──
+function applyTheme(mode) {
+  const light = mode === 'light';
+  document.documentElement.classList.toggle('light', light);
+  const btn = document.getElementById('theme-toggle');
+  if (btn) btn.textContent = light ? '☀️' : '🌙';
+}
+function toggleTheme() {
+  const light = !document.documentElement.classList.contains('light');
+  const mode = light ? 'light' : 'dark';
+  try { localStorage.setItem('jz9_theme', mode); } catch(e) {}
+  applyTheme(mode);
+}
+(function initTheme(){
+  let saved = 'dark';
+  try { saved = localStorage.getItem('jz9_theme') || 'dark'; } catch(e) {}
+  applyTheme(saved);
+  document.addEventListener('DOMContentLoaded', () => applyTheme(saved));
+})();
 
 // ── TOAST ──
 function toast(msg) {
@@ -2228,6 +2386,20 @@ function t5SavePreset() {
   const all = t5CustomPresets(); all[name] = d;
   try { localStorage.setItem('jz9_t5_presets', JSON.stringify(all)); t5PopulatePresetSelect(); toast('PRESET_SAVED'); }
   catch (e) { t5Err('บันทึก preset ไม่สำเร็จ: ' + e.message); }
+}
+
+// ── UI toggles ──
+function t5ToggleHelp() {
+  const body = document.getElementById('t5-helpBody');
+  const caret = document.getElementById('t5-helpCaret');
+  const hidden = body.style.display === 'none';
+  body.style.display = hidden ? '' : 'none';
+  caret.textContent = hidden ? '▼' : '▶';
+}
+function t5ToggleAdv() {
+  const t5 = document.getElementById('t5');
+  const on = t5.classList.toggle('adv');
+  document.getElementById('t5-advBtn').textContent = on ? '✓ โหมดละเอียด' : '⚙️ โหมดละเอียด';
 }
 
 // ── init Tool 5 ──
