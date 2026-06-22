@@ -60,17 +60,14 @@ supabase/seed.sql       Default settings + first admin
    - **anon public** key → `SUPABASE_ANON_KEY`
    - **service_role** key → keep secret (Vercel env only)
 
-### B) Google OAuth (Gmail login)
+### B) Email/password auth (web signup)
 
-4. Go to <https://console.cloud.google.com> → create/select a project.
-5. **APIs & Services → OAuth consent screen** → External → fill app name/support email → save.
-6. **APIs & Services → Credentials → Create credentials → OAuth client ID** → type **Web application**.
-   - **Authorized redirect URI**: paste your Supabase callback —
-     `https://YOUR-PROJECT-ref.supabase.co/auth/v1/callback`
-   - Copy the **Client ID** and **Client Secret**.
-7. In Supabase → **Authentication → Providers → Google** → enable, paste Client ID + Secret → save.
-8. In Supabase → **Authentication → URL Configuration** → add your site URL(s) to **Redirect URLs**, e.g.
+4. In Supabase → **Authentication → Providers → Email** → make sure it is **enabled** (it is on by default).
+5. (Recommended for instant login) Toggle **"Confirm email" OFF** so new users can use the app right after signing up. If you leave it ON, users must click a confirmation link in their inbox before they can log in.
+6. In Supabase → **Authentication → URL Configuration → Redirect URLs**, add your site URL(s), e.g.
    `https://jz9-ai-suite.vercel.app/app/dashboard.html` and `http://localhost:8799/app/dashboard.html` for local testing.
+
+> Want Gmail/Google login later too? It's already wired in `auth.js` — just configure a Google OAuth client in Supabase and add a button. Not required for now.
 
 ### C) Wire the keys into the app
 
@@ -81,12 +78,12 @@ supabase/seed.sql       Default settings + first admin
 
 ### D) Create the first admin
 
-11. Sign in once via **`/login.html`** with your Gmail (this creates your profile row).
-12. In Supabase **SQL Editor**, open [`supabase/seed.sql`](supabase/seed.sql), set `YOUR_EMAIL@gmail.com` to your email, and **Run**. You are now `admin`.
+11. Go to **`/login.html`** → tab **สมัครสมาชิก** → register with your email + password (this creates your profile row).
+12. In Supabase **SQL Editor**, open [`supabase/seed.sql`](supabase/seed.sql), set `YOUR_EMAIL@gmail.com` to the email you registered with, and **Run**. You are now `admin`.
 
 ### E) Test
 
-- Visit `/login.html` → sign in with Google → you should land on `/app/dashboard.html`.
+- Visit `/login.html` → **สมัครสมาชิก** then **เข้าสู่ระบบ** → you should land on `/app/dashboard.html`.
 - Admins see a **🛠 Admin** link in the dashboard nav.
 
 ---

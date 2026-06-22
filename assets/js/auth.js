@@ -11,6 +11,26 @@
 
   var _profile = null; // cached profile row for this page load
 
+  // ── Email + password (primary) ──────────────────────────────────────
+  async function signUpWithEmail(email, password, name) {
+    var redirectTo = window.location.origin + (cfg.POST_LOGIN_REDIRECT || "/app/dashboard.html");
+    return await sb.auth.signUp({
+      email: email,
+      password: password,
+      options: { data: { name: name || "" }, emailRedirectTo: redirectTo }
+    });
+  }
+
+  async function signInWithEmail(email, password) {
+    return await sb.auth.signInWithPassword({ email: email, password: password });
+  }
+
+  async function resetPassword(email) {
+    var redirectTo = window.location.origin + (cfg.LOGIN_PAGE || "/login.html");
+    return await sb.auth.resetPasswordForEmail(email, { redirectTo: redirectTo });
+  }
+
+  // ── Google OAuth (optional, kept for future use; UI currently uses email) ─
   async function signInWithGoogle() {
     var redirectTo = window.location.origin + (cfg.POST_LOGIN_REDIRECT || "/app/dashboard.html");
     var res = await sb.auth.signInWithOAuth({
@@ -79,6 +99,9 @@
   }
 
   window.JZ9.auth = {
+    signUpWithEmail: signUpWithEmail,
+    signInWithEmail: signInWithEmail,
+    resetPassword: resetPassword,
     signInWithGoogle: signInWithGoogle,
     signOut: signOut,
     getSession: getSession,
