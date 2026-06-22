@@ -719,7 +719,7 @@ html.light .side-tab.on { background: rgba(22,163,74,0.16) !important; color: #0
 
 /* section wrappers — solid white surface + dark base text */
 html.light #t1, html.light #t2, html.light #t3, html.light #t4, html.light #t5 {
-  background: rgba(255,255,255,0.78) !important; color: #14201a !important;
+  background: rgba(255,255,255,0.62) !important; color: #14201a !important;
   background-image: none !important;
 }
 
@@ -919,27 +919,29 @@ html.light input::placeholder, html.light textarea::placeholder, html.light .t5-
 }
 /* logo badge — dark text on lime + black cut border (was white-on-lime) */
 html.light .nav-badge {
-  color: #0d2417 !important; -webkit-text-fill-color: #0d2417 !important;
-  border: 1.5px solid #161616 !important; box-shadow: 2px 2px 0 rgba(0,0,0,0.2) !important;
+  background: #b8ff00 !important;
+  color: #000000 !important; -webkit-text-fill-color: #000000 !important;
+  font-weight: 900 !important;
+  border: 2px solid #000000 !important; box-shadow: 3px 3px 0 #000000 !important;
 }
-html.light .nav-badge::before { border-color: #161616 !important; opacity: 0.5 !important; }
+html.light .nav-badge::before { display: none !important; }
 
 /* ── LIGHT-MODE ANIMATED BACKGROUND ── */
 #bg-light { position: fixed; inset: 0; z-index: -1; pointer-events: none; display: none; }
 html.light #bg-light {
   display: block;
   background:
-    radial-gradient(42% 38% at 18% 28%, rgba(34,197,94,0.16), transparent 60%),
-    radial-gradient(40% 36% at 82% 22%, rgba(132,204,22,0.14), transparent 60%),
-    radial-gradient(46% 42% at 72% 80%, rgba(16,185,129,0.13), transparent 62%),
-    radial-gradient(38% 34% at 28% 82%, rgba(74,222,128,0.12), transparent 60%);
+    radial-gradient(48% 44% at 16% 26%, rgba(34,197,94,0.55), transparent 60%),
+    radial-gradient(46% 42% at 84% 20%, rgba(132,204,22,0.5), transparent 60%),
+    radial-gradient(52% 48% at 76% 82%, rgba(16,185,129,0.5), transparent 62%),
+    radial-gradient(44% 40% at 24% 84%, rgba(74,222,128,0.5), transparent 60%);
   background-size: 200% 200%, 200% 200%, 200% 200%, 200% 200%;
   background-repeat: no-repeat;
-  animation: lightDrift 22s ease-in-out infinite alternate;
+  animation: lightDrift 16s ease-in-out infinite alternate;
 }
 @keyframes lightDrift {
   0%   { background-position: 0% 0%, 100% 0%, 100% 100%, 0% 100%; }
-  50%  { background-position: 40% 30%, 60% 40%, 50% 60%, 50% 40%; }
+  50%  { background-position: 60% 40%, 40% 55%, 45% 50%, 55% 45%; }
   100% { background-position: 100% 100%, 0% 100%, 0% 0%, 100% 0%; }
 }
 @media (prefers-reduced-motion: reduce) { html.light #bg-light { animation: none; } }
