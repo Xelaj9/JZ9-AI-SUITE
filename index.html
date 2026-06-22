@@ -883,6 +883,32 @@ html.light .sec [style*="rgba(34,197,94,0.1)"], html.light .sec [style*="rgba(34
 html.light .sec [style*="color:rgba(34,197,94,0.6"],
 html.light .sec [style*="color:rgba(34,197,94,0.5"] { color: #15803d !important; -webkit-text-fill-color: #15803d !important; }
 
+/* ── BLACK-CUT OUTLINES on light surfaces (user request) ── */
+html.light .t1-card, html.light .t1-small-card, html.light .t3-glass,
+html.light .t2-panel, html.light .t2-panel-head {
+  border: 1.5px solid #161616 !important;
+  box-shadow: 2px 2px 0 rgba(0,0,0,0.14) !important;
+}
+html.light .t5-inp, html.light .t4-preset,
+html.light #t1 input, html.light #t1 select, html.light #t1 textarea,
+html.light #t2 input, html.light #t2 select, html.light #t2 textarea,
+html.light #t3 input, html.light #t3 select, html.light #t3 textarea,
+html.light #t4 input, html.light #t4 select, html.light #t4 textarea,
+html.light #t5 input, html.light #t5 select, html.light #t5 textarea {
+  border: 1.5px solid rgba(0,0,0,0.72) !important;
+}
+html.light .t3-fc, html.light .t3-hi, html.light .t3-qr, html.light .t3-badge,
+html.light .t5-chip, html.light .t5-item-row {
+  border: 1.5px solid rgba(0,0,0,0.55) !important;
+}
+html.light .t5-drop, html.light #t1-dropzone, html.light [style*="dashed #2a2a2a"] {
+  border: 2px dashed rgba(0,0,0,0.6) !important;
+}
+/* primary CTA buttons get a black edge too */
+html.light .t1-btn.primary, html.light .t3-btn-p {
+  border: 1.5px solid #161616 !important; box-shadow: 2px 2px 0 rgba(0,0,0,0.18) !important;
+}
+
 /* scrollbar */
 html.light ::-webkit-scrollbar-track { background: #e0e4df; }
 html.light ::-webkit-scrollbar-thumb { background: #9fc4a8; }
