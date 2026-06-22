@@ -785,6 +785,104 @@ html.light .sec [style*="opacity:0.12"], html.light .sec [style*="opacity: 0.12"
 /* primary CTA stays green with dark text in light mode for readability */
 html.light .t1-btn.primary { color: #06210f !important; }
 
+/* ── ACCENT TEXT CONTRAST (bright green / lime / grey are unreadable on white) ── */
+/* bright greens & limes used as TEXT → darken to a readable green */
+html.light .sec [style*="color:#4ade80"], html.light .sec [style*="color: #4ade80"],
+html.light .sec [style*="color:#22c55e"], html.light .sec [style*="color: #22c55e"],
+html.light .sec [style*="color:#00ff41"], html.light .sec [style*="color: #00ff41"],
+html.light .sec [style*="color:#b8ff00"], html.light .sec [style*="color: #b8ff00"],
+html.light .sec [style*="color:rgba(34,197,94"],
+html.light .sec [style*="color:rgba(74,222,128"],
+html.light .sec [style*="color:rgba(0,255,65"],
+html.light .sec [style*="color:rgba(0, 255, 65"] {
+  color: #15803d !important; -webkit-text-fill-color: #15803d !important;
+}
+/* grey body text → darker readable grey */
+html.light .sec [style*="color:#9aa39c"], html.light .sec [style*="color: #9aa39c"],
+html.light .sec [style*="color:#9ca9b8"], html.light .sec [style*="color: #9ca9b8"],
+html.light .sec [style*="color:#8b949e"], html.light .sec [style*="color: #8b949e"],
+html.light .sec [style*="color:#7a7d76"], html.light .sec [style*="color: #7a7d76"] {
+  color: #45524b !important; -webkit-text-fill-color: #45524b !important;
+}
+/* class-based accent text (JS-rendered chips/buttons in t3 & t5) */
+html.light .t5-chip, html.light .t5-sec-title,
+html.light .t3-btn-s, html.light .t3-qr, html.light .t3-badge,
+html.light .sec button[style*="rgba(34,197,94"],
+html.light .sec button[style*="rgba(184,255,0"],
+html.light .sec button[style*="rgba(0,255,65"] {
+  color: #146c30 !important; -webkit-text-fill-color: #146c30 !important;
+  border-color: rgba(20,108,48,0.4) !important;
+}
+/* accent tag — darken text a touch more */
+html.light .t1-tag { color: #0f5d26 !important; }
+
+/* keep t2 dark header bar text LIGHT (it sits on dark-green, must not darken) */
+html.light .t2-panel-head, html.light .t2-panel-head *,
+html.light .t2-panel-head [style*="color"] {
+  color: #d4ecdd !important; -webkit-text-fill-color: #d4ecdd !important;
+}
+html.light .t2-panel-head .t2-tab.on { color: #06210f !important; -webkit-text-fill-color: #06210f !important; }
+
+/* t4 preset buttons (class-based green text) */
+html.light .t4-preset {
+  color: #146c30 !important; -webkit-text-fill-color: #146c30 !important;
+  background: rgba(34,197,94,0.10) !important; border-color: rgba(20,108,48,0.35) !important;
+}
+/* t2 enabled action buttons (class-based accent text) */
+html.light .t2-btn.green { color: #146c30 !important; -webkit-text-fill-color: #146c30 !important; }
+html.light .t2-btn.blue { color: #1d4ed8 !important; -webkit-text-fill-color: #1d4ed8 !important; }
+html.light .t2-btn.green:hover:not(:disabled) { color: #000 !important; -webkit-text-fill-color:#000 !important; }
+html.light .t2-btn.blue:hover:not(:disabled) { color: #fff !important; -webkit-text-fill-color:#fff !important; }
+
+/* ── TOOL 3 (terminal-dark) → light surfaces ── */
+/* dark hex backgrounds → light card */
+html.light #t3 [style*="background:#0d1117"], html.light #t3 [style*="background: #0d1117"],
+html.light #t3 [style*="background:#161b22"], html.light #t3 [style*="background: #161b22"],
+html.light #t3 [style*="background:#0d0d0d"], html.light #t3 [style*="background:#1a1a1a"],
+html.light #t3 [style*="background:#000"],
+html.light .t3-fc, html.light .t3-hi, html.light .t3-qr {
+  background: #f4f6f3 !important; border-color: rgba(0,0,0,0.14) !important;
+}
+html.light .t3-fc, html.light .t3-hi { color: #14201a !important; -webkit-text-fill-color: #14201a !important; }
+html.light .t3-fc.on { background: rgba(34,197,94,0.14) !important; border-color: #15803d !important; }
+/* t3 primary button — dark text on its bright fill */
+html.light .t3-btn-p { color: #06210f !important; -webkit-text-fill-color: #06210f !important; }
+/* t3 dark borders → light */
+html.light #t3 [style*="border:1px solid #21262d"], html.light #t3 [style*="solid #30363d"],
+html.light #t3 [style*="solid #1a1a1a"] { border-color: rgba(0,0,0,0.14) !important; }
+
+/* class-less inline labels are force-painted faint cream by a global rule → darken */
+html.light .sec label:not([class]) { color: #41504a !important; -webkit-text-fill-color: #41504a !important; }
+/* extra lime / cyan accent variants used in t3 */
+html.light .sec [style*="color:rgba(184,255,0"], html.light .sec [style*="color: rgba(184,255,0"],
+html.light .sec [style*="color:#ccff44"], html.light .sec [style*="color: #ccff44"],
+html.light .sec [style*="color:#88eeff"], html.light .sec [style*="color: #88eeff"] {
+  color: #15803d !important; -webkit-text-fill-color: #15803d !important;
+}
+/* t2 active tab (green pill) keeps dark text; inactive pills readable on dark bar */
+html.light .t2-tab-btn.on { color: #06210f !important; -webkit-text-fill-color: #06210f !important; }
+html.light .t2-tab-btn.off { color: #bfe6cb !important; -webkit-text-fill-color: #bfe6cb !important; }
+html.light .t2-tab-btn.blue-on { color: #ffffff !important; -webkit-text-fill-color: #ffffff !important; }
+html.light .t2-tab-btn.blue-off { color: #cfe0f5 !important; -webkit-text-fill-color: #cfe0f5 !important; }
+/* faint inactive mode buttons (opacity) → make visible in light */
+html.light .sec [style*="opacity:0.35"], html.light .sec [style*="opacity: 0.35"],
+html.light .sec [style*="opacity:0.4"], html.light .sec [style*="opacity: 0.4"] { opacity: 0.9 !important; }
+
+/* inline uppercase mini-labels are force-painted cream by a global rule → darken */
+html.light .sec [style*="text-transform:uppercase"][style*="font-size:9"],
+html.light .sec [style*="text-transform: uppercase"][style*="font-size:9"] {
+  color: #45524b !important; -webkit-text-fill-color: #45524b !important;
+}
+/* lighten faint green-tint card/chip backgrounds so green text reads */
+html.light .sec [style*="rgba(34,197,94,0.06"], html.light .sec [style*="rgba(34, 197, 94, 0.06"],
+html.light .sec [style*="rgba(34,197,94,0.08"], html.light .sec [style*="rgba(34, 197, 94, 0.08"],
+html.light .sec [style*="rgba(34,197,94,0.1)"], html.light .sec [style*="rgba(34,197,94,0.12"] {
+  background-color: #f2f8f3 !important;
+}
+/* generic faint inline text (any low-alpha rgba color) → ensure readable */
+html.light .sec [style*="color:rgba(34,197,94,0.6"],
+html.light .sec [style*="color:rgba(34,197,94,0.5"] { color: #15803d !important; -webkit-text-fill-color: #15803d !important; }
+
 /* scrollbar */
 html.light ::-webkit-scrollbar-track { background: #e0e4df; }
 html.light ::-webkit-scrollbar-thumb { background: #9fc4a8; }
