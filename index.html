@@ -688,33 +688,49 @@ h2, h3 {
 /* ═══════════════════════════════════════════════════
    LIGHT MODE — overrides applied when <html class="light">
    ═══════════════════════════════════════════════════ */
-html.light { --bg: #eaeee9; --surface: #ffffff; --border: rgba(0,0,0,0.10); }
-html.light, html.light body { background: #eaeee9 !important; color: #1b211b; }
+html.light { --bg: #ffffff; --surface: #ffffff; --border: rgba(0,0,0,0.12); }
+html.light, html.light body { background: #ffffff !important; color: #14201a; }
 html.light #bg-rain { display: none !important; }
 
+/* big headlines & serif titles use --cream (invisible on white) → force dark green-black */
+html.light h1, html.light .h1, html.light .sec h1 {
+  color: #0d2417 !important;
+  -webkit-text-fill-color: #0d2417 !important;
+  background: none !important;
+}
+/* giant data-num watermark — keep faint green so it doesn't dominate */
+html.light .sec::before { color: rgba(22,163,74,0.07) !important; opacity: 1 !important; }
+
 /* nav */
-html.light #nav { background: rgba(255,255,255,0.92) !important; border-bottom: 1px solid rgba(0,0,0,0.08); }
-html.light .nav-title { color: #15301a; }
-html.light .nav-sub { color: rgba(0,0,0,0.4); }
-html.light #theme-toggle { background: rgba(0,0,0,0.04); color: #1a8f3c; border-color: rgba(0,0,0,0.12); }
+html.light #nav { background: #ffffff !important; border-bottom: 1px solid rgba(0,0,0,0.12); }
+html.light .nav-title { color: #0d2417; }
+html.light .nav-sub { color: rgba(0,0,0,0.45); }
+html.light #theme-toggle { background: #f1f4f0; color: #15803d; border-color: rgba(0,0,0,0.14); }
 
 /* side tabs */
-html.light #side-tabs { background: rgba(255,255,255,0.9) !important; border-color: rgba(0,0,0,0.08) !important; }
-html.light .side-tab { color: #4a5a4a; }
-html.light .side-tab .s-num { color: rgba(0,0,0,0.35); }
-html.light .side-tab.on { background: rgba(34,197,94,0.14) !important; color: #15301a !important; }
+html.light #side-tabs { background: #ffffff !important; border-color: rgba(0,0,0,0.10) !important; }
+html.light .side-tab { color: #3a463a; }
+html.light .side-tab .s-num { color: rgba(0,0,0,0.4); }
+html.light .side-tab.on { background: rgba(22,163,74,0.16) !important; color: #0d2417 !important; }
 
-/* section wrappers — light surface + dark base text */
+/* section wrappers — solid white surface + dark base text */
 html.light #t1, html.light #t2, html.light #t3, html.light #t4, html.light #t5 {
-  background: rgba(255,255,255,0.72) !important; color: #1b211b !important;
+  background: #ffffff !important; color: #14201a !important;
   background-image: none !important;
 }
 
 /* cards & panels */
 html.light .t1-card, html.light .t1-small-card, html.light .t3-glass {
-  background: #ffffff !important; border-color: rgba(0,0,0,0.10) !important;
-  box-shadow: 0 1px 6px rgba(0,0,0,0.05) !important;
+  background: #ffffff !important; border-color: rgba(0,0,0,0.14) !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 0 0 1px rgba(0,0,0,0.03) !important;
 }
+/* t2 editor panels — white body, keep dark-green header bar as accent */
+html.light .t2-panel {
+  background: #ffffff !important; border-color: rgba(0,0,0,0.14) !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08) !important;
+}
+html.light .t2-panel-head { background: #0d2417 !important; border-bottom-color: rgba(255,255,255,0.10) !important; }
+html.light #t2-editorPane, html.light #t2-knowledgePane { color: #14201a !important; }
 
 /* inputs / selects / textareas (class + per-tool inline) */
 html.light .t5-inp,
