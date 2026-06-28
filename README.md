@@ -94,6 +94,6 @@ supabase/seed.sql       Default settings + first admin
 - [x] **Phase 2 — Prompt Library**: data layer (CRUD + search + filter + favorite + duplicate + copy), Dashboard, Editor, "Save to Library" from Studio.
 - [x] **Phase 3 — Images**: upload + gallery + attach to prompts (Storage + signed URLs).
 - [x] **Phase 4 — Admin + Analytics**: `/admin` dashboard, users (role/disable), user detail, prompts overview, settings; usage_events tracking.
-- [ ] Phase 5 — Landing page + nav login/dashboard CTA + final polish.
+- [x] **Phase 5 — Landing page**: hero, features, use cases, dashboard mockup, footer, auth-aware CTAs; routed as the homepage (`/`). Studio stays at `/index.html`.
 
 Existing Studio tools and the OpenAI proxy are untouched throughout.
