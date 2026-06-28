@@ -30,8 +30,8 @@ Supabase `service_role`) stay server-side only.
 ## Files
 
 ```
-index.html              Studio (5 AI tools) — unchanged
-landing.html            JZ9suite landing page            (coming next)
+index.html              JZ9suite landing page (homepage)
+studio.html             Studio (5 AI tools) — unchanged            (coming next)
 login.html              Google sign-in
 app/dashboard.html      User dashboard
 app/editor.html         Prompt editor                    (coming next)

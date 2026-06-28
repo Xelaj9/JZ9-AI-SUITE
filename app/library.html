@@ -30,10 +30,10 @@
 <body>
   <nav class="jz-nav">
     <div class="jz-container jz-nav-inner">
-      <a class="jz-logo" href="/app/dashboard.html"><span class="jz-logo-badge">JZ9</span> JZ9suite</a>
+      <a class="jz-logo" href="/app/dashboard"><span class="jz-logo-badge">JZ9</span> JZ9suite</a>
       <div class="jz-row">
-        <a class="jz-btn jz-btn-ghost" href="/app/dashboard.html">🏠 Dashboard</a>
-        <a class="jz-btn jz-btn-ghost" href="/index.html">🎨 Studio</a>
+        <a class="jz-btn jz-btn-ghost" href="/app/dashboard">🏠 Dashboard</a>
+        <a class="jz-btn jz-btn-ghost" href="/studio">🎨 Studio</a>
         <button class="jz-btn jz-btn-ghost" id="logoutBtn">ออกจากระบบ</button>
       </div>
     </div>
@@ -42,7 +42,7 @@
   <main class="jz-container jz-section">
     <div class="jz-spread" style="margin-bottom:18px">
       <h1 style="margin:0">📚 Prompt Library</h1>
-      <a class="jz-btn jz-btn-primary" href="/app/editor.html">+ สร้างใหม่</a>
+      <a class="jz-btn jz-btn-primary" href="/app/editor">+ สร้างใหม่</a>
     </div>
 
     <div class="lib-toolbar">
@@ -58,7 +58,7 @@
 
     <div id="loading" class="jz-loading"><span class="jz-spin"></span></div>
     <div id="list" class="lib-grid" style="display:none"></div>
-    <div id="empty" class="jz-empty" style="display:none">ยังไม่มี Prompt ที่ตรงเงื่อนไข — <a href="/app/editor.html" style="color:var(--jz-green-bright)">สร้างใหม่</a></div>
+    <div id="empty" class="jz-empty" style="display:none">ยังไม่มี Prompt ที่ตรงเงื่อนไข — <a href="/app/editor" style="color:var(--jz-green-bright)">สร้างใหม่</a></div>
     <div id="error" class="jz-error" style="display:none"></div>
   </main>
 
@@ -110,7 +110,7 @@
         '<div class="pcontent">'+esc((p.prompt_content||"").slice(0,200))+'</div>' +
         (tags?'<div style="display:flex;flex-wrap:wrap;gap:5px">'+tags+'</div>':'') +
         '<div class="pactions">' +
-          '<a class="iconbtn" href="/app/editor.html?id='+p.id+'">✏️ แก้ไข</a>' +
+          '<a class="iconbtn" href="/app/editor?id='+p.id+'">✏️ แก้ไข</a>' +
           '<button class="iconbtn" data-act="copy">📋 คัดลอก</button>' +
           '<button class="iconbtn" data-act="dup">⧉ สำเนา</button>' +
           '<button class="iconbtn" data-act="arc">'+(p.is_archived?"♻️ กู้คืน":"📥 เก็บ")+'</button>' +

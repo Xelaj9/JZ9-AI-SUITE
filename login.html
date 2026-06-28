@@ -61,7 +61,7 @@
 
       <div class="auth-foot">
         ใช้งานฟรี • ข้อมูลของคุณเป็นส่วนตัว<br>
-        <a href="/landing.html" style="color:var(--jz-green-bright)">← กลับหน้าแรก</a>
+        <a href="/" style="color:var(--jz-green-bright)">← กลับหน้าแรก</a>
       </div>
     </div>
   </div>
@@ -103,7 +103,7 @@
     // already signed in? go to dashboard
     (async function () {
       var session = await window.JZ9.auth.getSession();
-      if (session) window.location.replace(window.JZ9_CONFIG.POST_LOGIN_REDIRECT || "/app/dashboard.html");
+      if (session) window.location.replace(window.JZ9_CONFIG.POST_LOGIN_REDIRECT || "/app/dashboard");
     })();
 
     document.getElementById("authForm").addEventListener("submit", async function (e) {
@@ -123,7 +123,7 @@
           if (up.error) throw up.error;
           if (up.data && up.data.session) {
             // email confirmation disabled → logged in immediately
-            window.location.replace(window.JZ9_CONFIG.POST_LOGIN_REDIRECT || "/app/dashboard.html");
+            window.location.replace(window.JZ9_CONFIG.POST_LOGIN_REDIRECT || "/app/dashboard");
             return;
           }
           // confirmation required
@@ -132,7 +132,7 @@
         } else {
           var inRes = await window.JZ9.auth.signInWithEmail(email, password);
           if (inRes.error) throw inRes.error;
-          window.location.replace(window.JZ9_CONFIG.POST_LOGIN_REDIRECT || "/app/dashboard.html");
+          window.location.replace(window.JZ9_CONFIG.POST_LOGIN_REDIRECT || "/app/dashboard");
           return;
         }
       } catch (err) {

@@ -20,10 +20,10 @@
 <body>
   <nav class="jz-nav">
     <div class="jz-container jz-nav-inner">
-      <a class="jz-logo" href="/app/dashboard.html"><span class="jz-logo-badge">JZ9</span> JZ9suite</a>
+      <a class="jz-logo" href="/app/dashboard"><span class="jz-logo-badge">JZ9</span> JZ9suite</a>
       <div class="jz-row">
-        <a class="jz-btn jz-btn-ghost" href="/app/library.html">📚 Library</a>
-        <a class="jz-btn jz-btn-ghost" href="/index.html">🎨 Studio</a>
+        <a class="jz-btn jz-btn-ghost" href="/app/library">📚 Library</a>
+        <a class="jz-btn jz-btn-ghost" href="/studio">🎨 Studio</a>
         <button class="jz-btn jz-btn-ghost" id="logoutBtn">ออกจากระบบ</button>
       </div>
     </div>
@@ -35,7 +35,7 @@
     <div id="app" style="display:none">
       <div class="jz-spread" style="margin-bottom:20px">
         <div class="jz-row">
-          <a class="jz-btn jz-btn-ghost" href="/app/library.html">←</a>
+          <a class="jz-btn jz-btn-ghost" href="/app/library">←</a>
           <h1 style="margin:0" id="pageTitle">สร้าง Prompt ใหม่</h1>
         </div>
         <button class="jz-btn jz-btn-ghost" id="favBtn" title="Favorite">☆</button>
@@ -217,7 +217,7 @@
       try {
         if (id) { current = await P.update(id, data); msg("บันทึกแล้ว ✓", "ok"); }
         else { current = await P.create(data); id = current.id;
-          history.replaceState(null,"","/app/editor.html?id="+id);
+          history.replaceState(null,"","/app/editor?id="+id);
           byId("pageTitle").textContent = "แก้ไข Prompt"; byId("delBtn").style.display=""; byId("dupBtn").style.display="";
           enableImages(); msg("สร้าง Prompt แล้ว ✓", "ok"); }
       } catch(e){ msg("บันทึกไม่สำเร็จ: " + (e.message||e), "err"); }
@@ -233,13 +233,13 @@
 
     byId("dupBtn").addEventListener("click", async function(){
       if (!id) return;
-      try { var c = await P.duplicate(id); location.href = "/app/editor.html?id="+c.id; }
+      try { var c = await P.duplicate(id); location.href = "/app/editor?id="+c.id; }
       catch(e){ msg("ทำสำเนาไม่สำเร็จ: "+(e.message||e), "err"); }
     });
 
     byId("delBtn").addEventListener("click", async function(){
       if (!id || !confirm("ลบ Prompt นี้?")) return;
-      try { await P.remove(id); location.href = "/app/library.html"; }
+      try { await P.remove(id); location.href = "/app/library"; }
       catch(e){ msg("ลบไม่สำเร็จ: "+(e.message||e), "err"); }
     });
 
