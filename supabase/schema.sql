@@ -7,21 +7,6 @@
 -- Needed for gen_random_uuid()
 create extension if not exists pgcrypto;
 
--- ── Helper: is the current user an admin? ──────────────────────────────
--- SECURITY DEFINER so it can read profiles without tripping RLS recursion.
-create or replace function public.is_admin()
-returns boolean
-language sql
-stable
-security definer
-set search_path = public
-as $$
-  select exists (
-    select 1 from public.profiles
-    where id = auth.uid() and role = 'admin'
-  );
-$$;
-
 -- ── Helper: keep updated_at fresh ──────────────────────────────────────
 create or replace function public.set_updated_at()
 returns trigger
@@ -47,6 +32,22 @@ create table if not exists public.profiles (
   last_login_at timestamptz
 );
 alter table public.profiles enable row level security;
+
+-- ── Helper: is the current user an admin? ──────────────────────────────
+-- Defined AFTER profiles exists (a SQL function validates its body at
+-- creation time). SECURITY DEFINER avoids RLS recursion when policies call it.
+create or replace function public.is_admin()
+returns boolean
+language sql
+stable
+security definer
+set search_path = public
+as $$
+  select exists (
+    select 1 from public.profiles
+    where id = auth.uid() and role = 'admin'
+  );
+$$;
 
 -- Auto-create a profile row whenever a new auth user signs up
 create or replace function public.handle_new_user()
