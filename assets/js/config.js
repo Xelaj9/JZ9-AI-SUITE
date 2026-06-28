@@ -12,8 +12,8 @@
  *    Supabase Dashboard → Project Settings → API
  */
 window.JZ9_CONFIG = {
-  SUPABASE_URL: "https://YOUR-PROJECT-ref.supabase.co",
-  SUPABASE_ANON_KEY: "YOUR-ANON-PUBLIC-KEY",
+  SUPABASE_URL: "https://suoblquexfxmxbtrjnxe.supabase.co",
+  SUPABASE_ANON_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN1b2JscXVleGZ4bXhidHJqbnhlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI2MzMwMTksImV4cCI6MjA5ODIwOTAxOX0.e7rZzh8sKhLcYsCD2tEAwHFqWBGWHBbo4WkqmaiOEMc",
 
   // Where users land after a successful login:
   POST_LOGIN_REDIRECT: "/app/dashboard.html",
