@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prompt Editor — JZ9suite</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;800&family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/jz9.css">
+  <style>
+    .ed-grid { display: grid; gap: 20px; }
+    @media (min-width: 900px) { .ed-grid { grid-template-columns: 1.4fr 1fr; align-items: start; } }
+    .ed-2 { display: grid; gap: 14px; grid-template-columns: 1fr 1fr; }
+    .preview-pre { white-space: pre-wrap; word-break: break-word; font-family: var(--jz-mono); font-size: 12px; color: var(--jz-green-bright); background: var(--jz-bg-soft); border:1px solid var(--jz-border); border-radius: var(--jz-radius-sm); padding: 14px; max-height: 360px; overflow:auto; }
+    .ed-sticky { position: sticky; top: 80px; }
+    .img-placeholder { border:1px dashed var(--jz-border); border-radius: var(--jz-radius-sm); padding: 18px; text-align:center; color: var(--jz-text-mute); font-size: 13px; }
+  </style>
+</head>
+<body>
+  <nav class="jz-nav">
+    <div class="jz-container jz-nav-inner">
+      <a class="jz-logo" href="/app/dashboard.html"><span class="jz-logo-badge">JZ9</span> JZ9suite</a>
+      <div class="jz-row">
+        <a class="jz-btn jz-btn-ghost" href="/app/library.html">📚 Library</a>
+        <a class="jz-btn jz-btn-ghost" href="/index.html">🎨 Studio</a>
+        <button class="jz-btn jz-btn-ghost" id="logoutBtn">ออกจากระบบ</button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="jz-container jz-section">
+    <div id="loading" class="jz-loading"><span class="jz-spin"></span><div style="margin-top:10px">กำลังโหลด…</div></div>
+
+    <div id="app" style="display:none">
+      <div class="jz-spread" style="margin-bottom:20px">
+        <div class="jz-row">
+          <a class="jz-btn jz-btn-ghost" href="/app/library.html">←</a>
+          <h1 style="margin:0" id="pageTitle">สร้าง Prompt ใหม่</h1>
+        </div>
+        <button class="jz-btn jz-btn-ghost" id="favBtn" title="Favorite">☆</button>
+      </div>
+
+      <div class="auth-msg" id="msg" style="display:none;padding:11px 13px;border-radius:10px;margin-bottom:14px"></div>
+
+      <div class="ed-grid">
+        <!-- form -->
+        <div class="jz-stack">
+          <div class="jz-card jz-stack">
+            <div><label class="jz-label" for="f-title">ชื่อ Prompt *</label>
+              <input class="jz-input" id="f-title" placeholder="เช่น โปรเกมโบนัส 100%"></div>
+            <div><label class="jz-label" for="f-desc">รายละเอียด</label>
+              <textarea class="jz-textarea" id="f-desc" placeholder="คำอธิบายสั้นๆ" style="min-height:64px"></textarea></div>
+            <div><label class="jz-label" for="f-content">Prompt Content *</label>
+              <textarea class="jz-textarea" id="f-content" placeholder="วาง prompt ที่นี่…" style="min-height:200px;font-family:var(--jz-mono)"></textarea></div>
+          </div>
+
+          <div class="jz-card">
+            <div class="ed-2">
+              <div><label class="jz-label" for="f-usecase">ประเภทงาน (Use Case)</label>
+                <select class="jz-select" id="f-usecase"></select></div>
+              <div><label class="jz-label" for="f-category">หมวดหมู่</label>
+                <input class="jz-input" id="f-category" placeholder="เช่น promotion"></div>
+              <div><label class="jz-label" for="f-tags">Tags (คั่นด้วย ,)</label>
+                <input class="jz-input" id="f-tags" placeholder="เกม, โบนัส, line"></div>
+              <div><label class="jz-label" for="f-style">Style Preset</label>
+                <input class="jz-input" id="f-style" placeholder="เช่น bold gaming"></div>
+              <div><label class="jz-label" for="f-canvas">Canvas Size</label>
+                <input class="jz-input" id="f-canvas" placeholder="เช่น 1:1, 1080x1080"></div>
+              <div><label class="jz-label" for="f-tone">Tone / Color</label>
+                <input class="jz-input" id="f-tone" placeholder="เช่น dark green / black"></div>
+            </div>
+            <div style="margin-top:14px"><label class="jz-label" for="f-ref">Reference Note</label>
+              <textarea class="jz-textarea" id="f-ref" placeholder="โน้ตอ้างอิง / ลิงก์ตัวอย่าง" style="min-height:60px"></textarea></div>
+          </div>
+
+          <div class="jz-card">
+            <label class="jz-label">รูปภาพแนบ</label>
+            <div class="img-placeholder">📎 การแนบรูปภาพจะเปิดใช้ใน Phase ถัดไป (Image Gallery)</div>
+          </div>
+
+          <div class="jz-row" style="flex-wrap:wrap;gap:10px">
+            <button class="jz-btn jz-btn-primary" id="saveBtn">💾 บันทึก</button>
+            <button class="jz-btn" id="copyBtn">📋 คัดลอก Prompt</button>
+            <button class="jz-btn" id="dupBtn" style="display:none">⧉ ทำสำเนา</button>
+            <button class="jz-btn jz-btn-danger" id="delBtn" style="display:none;margin-left:auto">🗑 ลบ</button>
+          </div>
+        </div>
+
+        <!-- preview -->
+        <div class="ed-sticky">
+          <div class="jz-card">
+            <div class="jz-spread" style="margin-bottom:10px"><h3 style="margin:0">Preview</h3>
+              <span class="jz-chip" id="pvUseCase">—</span></div>
+            <div style="font-weight:700;font-size:16px;margin-bottom:4px" id="pvTitle">—</div>
+            <div class="jz-muted" style="font-size:13px;margin-bottom:12px" id="pvDesc"></div>
+            <div id="pvTags" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px"></div>
+            <pre class="preview-pre" id="pvContent">…</pre>
+            <div class="jz-muted" id="pvMeta" style="font-size:12px;margin-top:10px"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/assets/js/config.js"></script>
+  <script src="/assets/js/supabase.js"></script>
+  <script src="/assets/js/analytics.js"></script>
+  <script src="/assets/js/auth.js"></script>
+  <script src="/assets/js/prompts.js"></script>
+  <script>
+    var sb = window.JZ9.sb, P = window.JZ9.prompts;
+    var id = new URLSearchParams(location.search).get("id");
+    var current = null;       // loaded record (edit mode)
+    var isFav = false;
+
+    var F = {
+      title: byId("f-title"), desc: byId("f-desc"), content: byId("f-content"),
+      usecase: byId("f-usecase"), category: byId("f-category"), tags: byId("f-tags"),
+      style: byId("f-style"), canvas: byId("f-canvas"), tone: byId("f-tone"), ref: byId("f-ref")
+    };
+    function byId(x){ return document.getElementById(x); }
+    function msg(t, kind){ var m=byId("msg"); m.style.display=t?"block":"none"; m.textContent=t||"";
+      m.style.background = kind==="err" ? "rgba(248,113,113,0.12)" : "rgba(34,197,94,0.12)";
+      m.style.color = kind==="err" ? "var(--jz-danger)" : "var(--jz-green-bright)";
+      m.style.border = "1px solid " + (kind==="err" ? "rgba(248,113,113,0.35)" : "rgba(34,197,94,0.3)"); }
+    function esc(s){ return (s||"").replace(/[&<>"']/g,function(c){return({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c];}); }
+
+    // populate use-case select
+    var ucSel = F.usecase;
+    ucSel.innerHTML = '<option value="">— เลือก —</option>' +
+      window.JZ9.USE_CASES.map(function(u){ return '<option value="'+u.v+'">'+u.t+'</option>'; }).join("");
+
+    function renderPreview() {
+      byId("pvTitle").textContent = F.title.value || "—";
+      byId("pvDesc").textContent = F.desc.value || "";
+      byId("pvContent").textContent = F.content.value || "…";
+      byId("pvUseCase").textContent = ucSel.value ? window.JZ9.useCaseLabel(ucSel.value) : "—";
+      var tags = F.tags.value.split(",").map(function(s){return s.trim();}).filter(Boolean);
+      byId("pvTags").innerHTML = tags.map(function(t){ return '<span class="jz-tag">'+esc(t)+'</span>'; }).join("");
+      var meta = [F.style.value, F.canvas.value, F.tone.value].filter(Boolean).join(" · ");
+      byId("pvMeta").textContent = meta;
+    }
+    Object.keys(F).forEach(function(k){ F[k].addEventListener("input", renderPreview); });
+
+    function collect() {
+      return {
+        title: F.title.value.trim(), description: F.desc.value.trim(),
+        prompt_content: F.content.value, category: F.category.value.trim(),
+        use_case: ucSel.value, tags: F.tags.value, style_preset: F.style.value.trim(),
+        canvas_size: F.canvas.value.trim(), tone_color: F.tone.value.trim(),
+        reference_note: F.ref.value.trim(), is_favorite: isFav
+      };
+    }
+    function fill(p) {
+      F.title.value = p.title || ""; F.desc.value = p.description || "";
+      F.content.value = p.prompt_content || ""; ucSel.value = p.use_case || "";
+      F.category.value = p.category || ""; F.tags.value = (p.tags||[]).join(", ");
+      F.style.value = p.style_preset || ""; F.canvas.value = p.canvas_size || "";
+      F.tone.value = p.tone_color || ""; F.ref.value = p.reference_note || "";
+      isFav = !!p.is_favorite; renderFav(); renderPreview();
+    }
+    function renderFav(){ byId("favBtn").textContent = isFav ? "★" : "☆"; byId("favBtn").style.color = isFav ? "var(--jz-green-bright)" : ""; }
+
+    byId("favBtn").addEventListener("click", function(){ isFav = !isFav; renderFav(); });
+
+    byId("saveBtn").addEventListener("click", async function(){
+      var data = collect();
+      if (!data.title) { msg("กรุณาใส่ชื่อ Prompt", "err"); return; }
+      if (!data.prompt_content) { msg("กรุณาใส่ Prompt Content", "err"); return; }
+      var btn = this; btn.disabled = true; var lbl = btn.textContent; btn.textContent = "กำลังบันทึก…";
+      try {
+        if (id) { current = await P.update(id, data); msg("บันทึกแล้ว ✓", "ok"); }
+        else { current = await P.create(data); id = current.id;
+          history.replaceState(null,"","/app/editor.html?id="+id);
+          byId("pageTitle").textContent = "แก้ไข Prompt"; byId("delBtn").style.display=""; byId("dupBtn").style.display="";
+          msg("สร้าง Prompt แล้ว ✓", "ok"); }
+      } catch(e){ msg("บันทึกไม่สำเร็จ: " + (e.message||e), "err"); }
+      finally { btn.disabled=false; btn.textContent=lbl; }
+    });
+
+    byId("copyBtn").addEventListener("click", async function(){
+      try { await navigator.clipboard.writeText(F.content.value || ""); }
+      catch(e){ var ta=F.content; ta.select(); document.execCommand("copy"); }
+      if (id) P.trackCopy(id);
+      msg("คัดลอก Prompt แล้ว ✓", "ok");
+    });
+
+    byId("dupBtn").addEventListener("click", async function(){
+      if (!id) return;
+      try { var c = await P.duplicate(id); location.href = "/app/editor.html?id="+c.id; }
+      catch(e){ msg("ทำสำเนาไม่สำเร็จ: "+(e.message||e), "err"); }
+    });
+
+    byId("delBtn").addEventListener("click", async function(){
+      if (!id || !confirm("ลบ Prompt นี้?")) return;
+      try { await P.remove(id); location.href = "/app/library.html"; }
+      catch(e){ msg("ลบไม่สำเร็จ: "+(e.message||e), "err"); }
+    });
+
+    byId("logoutBtn").addEventListener("click", function(){ window.JZ9.auth.signOut(); });
+
+    (async function(){
+      var profile = await window.JZ9.auth.requireAuth();
+      if (!profile) return;
+      // handoff from Studio "Save to Library"
+      var handoff = null;
+      try { var raw = localStorage.getItem("jz9_prompt_handoff"); if (raw) { handoff = JSON.parse(raw); localStorage.removeItem("jz9_prompt_handoff"); } } catch(e){}
+
+      if (id) {
+        try { current = await P.get(id); fill(current);
+          byId("pageTitle").textContent = "แก้ไข Prompt"; byId("delBtn").style.display=""; byId("dupBtn").style.display="";
+        } catch(e){ msg("โหลดไม่สำเร็จ: "+(e.message||e), "err"); }
+      } else if (handoff) {
+        fill({ title: handoff.title || "", prompt_content: handoff.prompt_content || "", use_case: handoff.use_case || "", description: handoff.description || "", canvas_size: handoff.canvas_size || "" });
+        msg("นำเข้าจาก Studio แล้ว — ตรวจสอบและกดบันทึก", "ok");
+      } else { renderPreview(); }
+
+      byId("loading").style.display="none"; byId("app").style.display="";
+    })();
+  </script>
+</body>
+</html>

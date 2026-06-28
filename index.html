@@ -3183,5 +3183,65 @@ document.getElementById('t3-execBtn').addEventListener('click', async () => {
   requestAnimationFrame(loop);
 })();
 </script>
+
+<!-- ═══ JZ9suite: Save to Library (non-invasive add-on) ═══ -->
+<button id="jz9-save-fab" title="บันทึก prompt ปัจจุบันเข้าคลัง JZ9suite"
+  style="position:fixed;left:84px;bottom:24px;z-index:99998;display:flex;align-items:center;gap:8px;
+  background:#22c55e;color:#06210f;border:none;border-radius:999px;padding:11px 18px;font-weight:800;
+  font-family:'Fira Code',monospace;font-size:12px;letter-spacing:1px;cursor:pointer;
+  box-shadow:0 6px 20px rgba(34,197,94,0.4)">💾 SAVE TO LIBRARY</button>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/assets/js/config.js"></script>
+<script src="/assets/js/supabase.js"></script>
+<script src="/assets/js/analytics.js"></script>
+<script src="/assets/js/auth.js"></script>
+<script>
+(function(){
+  var fab = document.getElementById('jz9-save-fab');
+  if (!fab) return;
+
+  // Grab the most likely "prompt" output inside the currently active tool.
+  function grabActivePrompt(){
+    var sec = document.querySelector('.sec.on') || document;
+    var best = '';
+    sec.querySelectorAll('textarea, pre, input[type="text"], [readonly]').forEach(function(el){
+      var t = (el.value != null && el.value !== '') ? el.value : el.textContent;
+      t = (t || '').trim();
+      // skip tiny / placeholder-ish content
+      if (t.length > best.length && t.length > 20) best = t;
+    });
+    return best;
+  }
+  function activeToolName(){
+    var on = document.querySelector('.side-tab.on span:last-child');
+    return on ? on.textContent.trim() : 'Studio';
+  }
+
+  fab.addEventListener('click', async function(){
+    var content = grabActivePrompt();
+    if (!content){ alert('ยังไม่พบ prompt ในเครื่องมือนี้ — สร้าง/วาง prompt ก่อนแล้วลองใหม่'); return; }
+    var handoff = {
+      title: activeToolName() + ' — ' + new Date().toLocaleDateString('th-TH'),
+      prompt_content: content,
+      use_case: 'custom'
+    };
+    try { localStorage.setItem('jz9_prompt_handoff', JSON.stringify(handoff)); } catch(e){}
+
+    var session = null;
+    try { session = await window.JZ9.auth.getSession(); } catch(e){}
+    if (session) {
+      window.location.href = '/app/editor.html';
+    } else {
+      if (confirm('ต้องเข้าสู่ระบบก่อนบันทึกเข้าคลัง\nไปหน้าเข้าสู่ระบบ? (prompt ถูกเก็บไว้ให้แล้ว)')) {
+        window.location.href = '/login.html';
+      }
+    }
+  });
+
+  // Hide on very small screens to avoid covering the side tabs
+  function place(){ fab.style.display = window.innerWidth < 520 ? 'none' : 'flex'; }
+  place(); window.addEventListener('resize', place);
+})();
+</script>
 </body>
 </html>

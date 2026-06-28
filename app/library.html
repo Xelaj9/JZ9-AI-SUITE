@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prompt Library — JZ9suite</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;800&family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/jz9.css">
+  <style>
+    .lib-toolbar { display: grid; gap: 10px; grid-template-columns: 1fr; margin-bottom: 18px; }
+    @media (min-width: 760px){ .lib-toolbar { grid-template-columns: 2fr 1fr 1fr auto; align-items: center; } }
+    .lib-grid { display: grid; gap: 14px; grid-template-columns: 1fr; }
+    @media (min-width: 680px){ .lib-grid { grid-template-columns: 1fr 1fr; } }
+    @media (min-width: 1040px){ .lib-grid { grid-template-columns: 1fr 1fr 1fr; } }
+    .pcard { display:flex; flex-direction:column; gap:8px; transition: border-color .15s; }
+    .pcard:hover { border-color: var(--jz-green); }
+    .pcard .ptitle { font-weight:700; font-size:15px; }
+    .pcard .pcontent { font-family: var(--jz-mono); font-size:11px; color: var(--jz-text-dim); background: var(--jz-bg-soft); border-radius:8px; padding:8px; max-height:72px; overflow:hidden; white-space:pre-wrap; }
+    .pcard .pactions { display:flex; gap:6px; flex-wrap:wrap; margin-top:auto; }
+    .iconbtn { background:transparent; border:1px solid var(--jz-border); color: var(--jz-text-dim); border-radius:8px; padding:5px 9px; cursor:pointer; font-size:13px; }
+    .iconbtn:hover { border-color: var(--jz-green); color: var(--jz-text); }
+    .iconbtn.fav.on { color: var(--jz-green-bright); border-color: rgba(34,197,94,0.4); }
+    .seg { display:flex; gap:4px; background: var(--jz-bg-soft); padding:4px; border-radius:10px; }
+    .seg button { flex:1; border:none; background:transparent; color: var(--jz-text-dim); padding:8px 10px; border-radius:7px; cursor:pointer; font-size:13px; font-family:var(--jz-font); }
+    .seg button.on { background: var(--jz-green); color:#06210f; font-weight:600; }
+  </style>
+</head>
+<body>
+  <nav class="jz-nav">
+    <div class="jz-container jz-nav-inner">
+      <a class="jz-logo" href="/app/dashboard.html"><span class="jz-logo-badge">JZ9</span> JZ9suite</a>
+      <div class="jz-row">
+        <a class="jz-btn jz-btn-ghost" href="/app/dashboard.html">🏠 Dashboard</a>
+        <a class="jz-btn jz-btn-ghost" href="/index.html">🎨 Studio</a>
+        <button class="jz-btn jz-btn-ghost" id="logoutBtn">ออกจากระบบ</button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="jz-container jz-section">
+    <div class="jz-spread" style="margin-bottom:18px">
+      <h1 style="margin:0">📚 Prompt Library</h1>
+      <a class="jz-btn jz-btn-primary" href="/app/editor.html">+ สร้างใหม่</a>
+    </div>
+
+    <div class="lib-toolbar">
+      <input class="jz-input" id="search" placeholder="🔍 ค้นหา title / รายละเอียด / เนื้อหา…">
+      <select class="jz-select" id="fUseCase"><option value="">ทุกประเภทงาน</option></select>
+      <input class="jz-input" id="fTag" placeholder="กรองด้วย tag">
+      <div class="seg" id="viewSeg">
+        <button data-v="all" class="on">ทั้งหมด</button>
+        <button data-v="fav">★ Favorite</button>
+        <button data-v="arc">เก็บถาวร</button>
+      </div>
+    </div>
+
+    <div id="loading" class="jz-loading"><span class="jz-spin"></span></div>
+    <div id="list" class="lib-grid" style="display:none"></div>
+    <div id="empty" class="jz-empty" style="display:none">ยังไม่มี Prompt ที่ตรงเงื่อนไข — <a href="/app/editor.html" style="color:var(--jz-green-bright)">สร้างใหม่</a></div>
+    <div id="error" class="jz-error" style="display:none"></div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/assets/js/config.js"></script>
+  <script src="/assets/js/supabase.js"></script>
+  <script src="/assets/js/analytics.js"></script>
+  <script src="/assets/js/auth.js"></script>
+  <script src="/assets/js/prompts.js"></script>
+  <script>
+    var P = window.JZ9.prompts;
+    var view = "all", searchTimer = null;
+    function byId(x){ return document.getElementById(x); }
+    function esc(s){ return (s||"").replace(/[&<>"']/g,function(c){return({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c];}); }
+
+    // use-case filter options
+    byId("fUseCase").innerHTML = '<option value="">ทุกประเภทงาน</option>' +
+      window.JZ9.USE_CASES.map(function(u){ return '<option value="'+u.v+'">'+u.t+'</option>'; }).join("");
+
+    // prefill search from ?q=
+    var q0 = new URLSearchParams(location.search).get("q"); if (q0) byId("search").value = q0;
+
+    function currentOpts(){
+      return {
+        search: byId("search").value.trim(),
+        useCase: byId("fUseCase").value,
+        tag: byId("fTag").value.trim(),
+        favorite: view === "fav",
+        archived: view === "arc"
+      };
+    }
+
+    async function load(){
+      byId("loading").style.display=""; byId("list").style.display="none";
+      byId("empty").style.display="none"; byId("error").style.display="none";
+      try {
+        var items = await P.list(currentOpts());
+        render(items);
+      } catch(e){ byId("loading").style.display="none"; byId("error").style.display=""; byId("error").textContent = "โหลดไม่สำเร็จ: " + (e.message||e); }
+    }
+
+    function card(p){
+      var tags = (p.tags||[]).slice(0,4).map(function(t){ return '<span class="jz-tag">'+esc(t)+'</span>'; }).join(" ");
+      return '<div class="jz-card pcard" data-id="'+p.id+'">' +
+        '<div class="jz-spread"><div class="ptitle">'+esc(p.title)+'</div>' +
+          '<button class="iconbtn fav '+(p.is_favorite?"on":"")+'" data-act="fav" title="Favorite">'+(p.is_favorite?"★":"☆")+'</button></div>' +
+        '<div class="jz-muted" style="font-size:12px">'+ (window.JZ9.useCaseLabel(p.use_case)) + (p.category?(" · "+esc(p.category)):"") +'</div>' +
+        (p.description?'<div class="jz-muted" style="font-size:13px">'+esc(p.description)+'</div>':'') +
+        '<div class="pcontent">'+esc((p.prompt_content||"").slice(0,200))+'</div>' +
+        (tags?'<div style="display:flex;flex-wrap:wrap;gap:5px">'+tags+'</div>':'') +
+        '<div class="pactions">' +
+          '<a class="iconbtn" href="/app/editor.html?id='+p.id+'">✏️ แก้ไข</a>' +
+          '<button class="iconbtn" data-act="copy">📋 คัดลอก</button>' +
+          '<button class="iconbtn" data-act="dup">⧉ สำเนา</button>' +
+          '<button class="iconbtn" data-act="arc">'+(p.is_archived?"♻️ กู้คืน":"📥 เก็บ")+'</button>' +
+          '<button class="iconbtn" data-act="del" style="margin-left:auto;color:var(--jz-danger)">🗑</button>' +
+        '</div></div>';
+    }
+
+    function render(items){
+      byId("loading").style.display="none";
+      var box = byId("list");
+      if (!items.length){ box.style.display="none"; byId("empty").style.display=""; return; }
+      box.style.display=""; box.innerHTML = items.map(card).join("");
+      // cache for copy
+      window._items = {}; items.forEach(function(p){ window._items[p.id]=p; });
+    }
+
+    // delegated actions
+    byId("list").addEventListener("click", async function(e){
+      var btn = e.target.closest("[data-act]"); if (!btn) return;
+      var cardEl = e.target.closest(".pcard"); var pid = cardEl.getAttribute("data-id");
+      var act = btn.getAttribute("data-act");
+      try {
+        if (act==="fav"){ var p=window._items[pid]; var nv=!p.is_favorite; await P.toggleFavorite(pid,nv); p.is_favorite=nv; btn.classList.toggle("on",nv); btn.textContent=nv?"★":"☆"; }
+        else if (act==="copy"){ var c=window._items[pid]; try{ await navigator.clipboard.writeText(c.prompt_content||""); }catch(_){} P.trackCopy(pid); btn.textContent="✓ คัดลอกแล้ว"; setTimeout(function(){btn.textContent="📋 คัดลอก";},1200); }
+        else if (act==="dup"){ await P.duplicate(pid); load(); }
+        else if (act==="arc"){ var cur=window._items[pid]; await P.toggleArchive(pid, !cur.is_archived); load(); }
+        else if (act==="del"){ if (confirm("ลบ Prompt นี้?")){ await P.remove(pid); cardEl.remove(); } }
+      } catch(err){ alert("ทำรายการไม่สำเร็จ: " + (err.message||err)); }
+    });
+
+    // filters
+    byId("search").addEventListener("input", function(){ clearTimeout(searchTimer); searchTimer=setTimeout(load,300); });
+    byId("fUseCase").addEventListener("change", load);
+    byId("fTag").addEventListener("input", function(){ clearTimeout(searchTimer); searchTimer=setTimeout(load,300); });
+    byId("viewSeg").addEventListener("click", function(e){ var b=e.target.closest("button"); if(!b) return;
+      [].forEach.call(this.children,function(c){c.classList.remove("on");}); b.classList.add("on"); view=b.getAttribute("data-v"); load(); });
+    byId("logoutBtn").addEventListener("click", function(){ window.JZ9.auth.signOut(); });
+
+    (async function(){
+      var profile = await window.JZ9.auth.requireAuth();
+      if (!profile) return;
+      load();
+    })();
+  </script>
+</body>
+</html>
