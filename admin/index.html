@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — JZ9suite</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;800&family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/jz9.css">
+  <style>
+    .adm-nav a { padding:6px 12px; border-radius:8px; font-size:14px; color:var(--jz-text-dim); }
+    .adm-nav a.on, .adm-nav a:hover { background:var(--jz-surface-2); color:var(--jz-text); }
+    .bar { height:8px; border-radius:99px; background:var(--jz-green); }
+    table { width:100%; border-collapse:collapse; }
+    th,td { text-align:left; padding:10px 8px; border-bottom:1px solid var(--jz-border); font-size:13px; }
+    th { color:var(--jz-text-dim); font-weight:600; font-size:12px; text-transform:uppercase; letter-spacing:0.5px; }
+  </style>
+</head>
+<body>
+  <nav class="jz-nav">
+    <div class="jz-container jz-nav-inner">
+      <a class="jz-logo" href="/admin/index.html"><span class="jz-logo-badge">JZ9</span> Admin</a>
+      <div class="jz-row adm-nav">
+        <a href="/admin/index.html" class="on">Dashboard</a>
+        <a href="/admin/users.html">Users</a>
+        <a href="/admin/prompts.html">Prompts</a>
+        <a href="/admin/settings.html">Settings</a>
+        <a class="jz-btn jz-btn-ghost" href="/app/dashboard.html" style="margin-left:8px">← App</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="jz-container jz-section">
+    <h1 style="margin:0 0 18px">📊 ภาพรวมระบบ</h1>
+    <div id="loading" class="jz-loading"><span class="jz-spin"></span></div>
+    <div id="error" class="jz-error" style="display:none"></div>
+
+    <div id="content" style="display:none">
+      <div class="jz-grid jz-grid-4" style="margin-bottom:16px">
+        <div class="jz-card jz-stat"><span class="num" id="sUsers">0</span><span class="lbl">ผู้ใช้ทั้งหมด</span></div>
+        <div class="jz-card jz-stat"><span class="num" id="sPrompts">0</span><span class="lbl">Prompt ทั้งหมด</span></div>
+        <div class="jz-card jz-stat"><span class="num" id="sImages">0</span><span class="lbl">รูปภาพทั้งหมด</span></div>
+        <div class="jz-card jz-stat"><span class="num" id="sAvg">0</span><span class="lbl">Prompt เฉลี่ย/คน</span></div>
+      </div>
+      <div class="jz-grid jz-grid-3" style="margin-bottom:24px">
+        <div class="jz-card jz-stat"><span class="num" id="sToday">0</span><span class="lbl">ผู้ใช้ใหม่วันนี้</span></div>
+        <div class="jz-card jz-stat"><span class="num" id="sWeek">0</span><span class="lbl">ใหม่ 7 วัน</span></div>
+        <div class="jz-card jz-stat"><span class="num" id="sMonth">0</span><span class="lbl">ใหม่ 30 วัน</span></div>
+      </div>
+
+      <div class="jz-grid jz-grid-2">
+        <div class="jz-card">
+          <h3 style="margin:0 0 12px">ผู้ใช้ที่ active ล่าสุด</h3>
+          <table><thead><tr><th>ชื่อ</th><th>อีเมล</th><th>ล่าสุด</th></tr></thead>
+            <tbody id="recentBody"></tbody></table>
+        </div>
+        <div class="jz-card">
+          <h3 style="margin:0 0 12px">Usage 30 วัน</h3>
+          <div id="events"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/assets/js/config.js"></script>
+  <script src="/assets/js/supabase.js"></script>
+  <script src="/assets/js/auth.js"></script>
+  <script src="/assets/js/admin.js"></script>
+  <script>
+    function byId(x){ return document.getElementById(x); }
+    function esc(s){ return (s||"").replace(/[&<>"']/g,function(c){return({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c];}); }
+    function fmtDate(d){ if(!d) return "—"; try{ return new Date(d).toLocaleString("th-TH",{dateStyle:"short",timeStyle:"short"}); }catch(e){ return d; } }
+    var EVENT_TH = { user_login:"เข้าสู่ระบบ", prompt_created:"สร้าง Prompt", prompt_updated:"แก้ Prompt", prompt_deleted:"ลบ Prompt", image_uploaded:"อัปโหลดรูป", prompt_copied:"คัดลอก", prompt_favorited:"Favorite" };
+
+    (async function(){
+      var profile = await window.JZ9.auth.requireAdmin();
+      if (!profile) return;
+      try {
+        var A = window.JZ9.admin;
+        var st = await A.stats();
+        byId("sUsers").textContent = st.users; byId("sPrompts").textContent = st.prompts;
+        byId("sImages").textContent = st.images; byId("sAvg").textContent = st.avgPrompts.toFixed(1);
+        byId("sToday").textContent = st.today; byId("sWeek").textContent = st.week; byId("sMonth").textContent = st.month;
+
+        var recent = await A.recentActive(8);
+        byId("recentBody").innerHTML = recent.length ? recent.map(function(u){
+          return '<tr><td>'+esc(u.name||"—")+(u.role==="admin"?' <span class="jz-chip" style="padding:1px 7px">admin</span>':'')+'</td>'+
+            '<td class="jz-muted">'+esc(u.email||"")+'</td><td class="jz-muted">'+fmtDate(u.last_login_at)+'</td></tr>';
+        }).join("") : '<tr><td colspan="3" class="jz-muted">ยังไม่มีข้อมูล</td></tr>';
+
+        var ev = await A.eventSummary(30);
+        var max = Math.max.apply(null, [1].concat(Object.keys(ev).map(function(k){return ev[k];})));
+        var order = ["user_login","prompt_created","prompt_updated","prompt_copied","image_uploaded","prompt_favorited","prompt_deleted"];
+        byId("events").innerHTML = order.filter(function(k){return ev[k];}).map(function(k){
+          var pct = Math.round(ev[k]/max*100);
+          return '<div style="margin-bottom:10px"><div class="jz-spread" style="font-size:12px;margin-bottom:4px">'+
+            '<span>'+(EVENT_TH[k]||k)+'</span><span class="jz-muted">'+ev[k]+'</span></div>'+
+            '<div style="background:var(--jz-bg-soft);border-radius:99px"><div class="bar" style="width:'+pct+'%"></div></div></div>';
+        }).join("") || '<div class="jz-muted">ยังไม่มี event ในช่วงนี้</div>';
+
+        byId("loading").style.display="none"; byId("content").style.display="";
+      } catch(e){ byId("loading").style.display="none"; byId("error").style.display=""; byId("error").textContent="โหลดข้อมูลไม่สำเร็จ: "+(e.message||e); }
+    })();
+  </script>
+</body>
+</html>

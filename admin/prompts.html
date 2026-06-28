@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prompts — Admin — JZ9suite</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;800&family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/jz9.css">
+  <style>
+    .adm-nav a { padding:6px 12px; border-radius:8px; font-size:14px; color:var(--jz-text-dim); }
+    .adm-nav a.on, .adm-nav a:hover { background:var(--jz-surface-2); color:var(--jz-text); }
+    table { width:100%; border-collapse:collapse; }
+    th,td { text-align:left; padding:10px 8px; border-bottom:1px solid var(--jz-border); font-size:13px; }
+    th { color:var(--jz-text-dim); font-weight:600; font-size:12px; text-transform:uppercase; }
+  </style>
+</head>
+<body>
+  <nav class="jz-nav">
+    <div class="jz-container jz-nav-inner">
+      <a class="jz-logo" href="/admin/index.html"><span class="jz-logo-badge">JZ9</span> Admin</a>
+      <div class="jz-row adm-nav">
+        <a href="/admin/index.html">Dashboard</a>
+        <a href="/admin/users.html">Users</a>
+        <a href="/admin/prompts.html" class="on">Prompts</a>
+        <a href="/admin/settings.html">Settings</a>
+        <a class="jz-btn jz-btn-ghost" href="/app/dashboard.html" style="margin-left:8px">← App</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="jz-container jz-section">
+    <div class="jz-spread" style="margin-bottom:16px">
+      <h1 style="margin:0">📝 Prompt ทั้งหมด <span class="jz-muted" id="count" style="font-size:15px"></span></h1>
+      <input class="jz-input" id="search" placeholder="🔍 ค้นหา title" style="max-width:320px">
+    </div>
+    <div id="loading" class="jz-loading"><span class="jz-spin"></span></div>
+    <div id="error" class="jz-error" style="display:none"></div>
+    <div class="jz-card" id="wrap" style="display:none;overflow-x:auto">
+      <table><thead><tr><th>Title</th><th>ประเภท</th><th>เจ้าของ (user id)</th><th>แก้ล่าสุด</th></tr></thead>
+        <tbody id="body"></tbody></table>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/assets/js/config.js"></script>
+  <script src="/assets/js/supabase.js"></script>
+  <script src="/assets/js/auth.js"></script>
+  <script src="/assets/js/prompts.js"></script>
+  <script src="/assets/js/admin.js"></script>
+  <script>
+    var A = window.JZ9.admin, timer=null;
+    function byId(x){ return document.getElementById(x); }
+    function esc(s){ return (s||"").replace(/[&<>"']/g,function(c){return({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c];}); }
+    function fmtDate(d){ if(!d) return "—"; try{ return new Date(d).toLocaleDateString("th-TH",{dateStyle:"medium"}); }catch(e){ return d; } }
+
+    async function load(){
+      byId("loading").style.display=""; byId("wrap").style.display="none"; byId("error").style.display="none";
+      try {
+        var rows = await A.listPrompts(byId("search").value.trim());
+        byId("count").textContent = "("+rows.length+")";
+        byId("body").innerHTML = rows.length ? rows.map(function(p){
+          return '<tr><td>'+(p.is_favorite?"★ ":"")+esc(p.title)+(p.is_archived?' <span class="jz-tag">archived</span>':'')+'</td>'+
+            '<td class="jz-muted">'+window.JZ9.useCaseLabel(p.use_case)+'</td>'+
+            '<td class="jz-muted" style="font-family:var(--jz-mono);font-size:11px">'+esc((p.user_id||"").slice(0,8))+'…</td>'+
+            '<td class="jz-muted">'+fmtDate(p.updated_at)+'</td></tr>';
+        }).join("") : '<tr><td colspan="4" class="jz-muted">ไม่พบ</td></tr>';
+        byId("loading").style.display="none"; byId("wrap").style.display="";
+      } catch(e){ byId("loading").style.display="none"; byId("error").style.display=""; byId("error").textContent="โหลดไม่สำเร็จ: "+(e.message||e); }
+    }
+    byId("search").addEventListener("input", function(){ clearTimeout(timer); timer=setTimeout(load,300); });
+
+    (async function(){ var me = await window.JZ9.auth.requireAdmin(); if (!me) return; load(); })();
+  </script>
+</body>
+</html>
