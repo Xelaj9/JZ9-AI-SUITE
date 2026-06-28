@@ -73,9 +73,14 @@
               <textarea class="jz-textarea" id="f-ref" placeholder="โน้ตอ้างอิง / ลิงก์ตัวอย่าง" style="min-height:60px"></textarea></div>
           </div>
 
-          <div class="jz-card">
-            <label class="jz-label">รูปภาพแนบ</label>
-            <div class="img-placeholder">📎 การแนบรูปภาพจะเปิดใช้ใน Phase ถัดไป (Image Gallery)</div>
+          <div class="jz-card" id="imgCard">
+            <div class="jz-spread" style="margin-bottom:10px">
+              <label class="jz-label" style="margin:0">รูปภาพแนบ</label>
+              <button class="jz-btn" id="attachBtn" type="button" style="padding:6px 12px" disabled>+ อัปโหลด & แนบ</button>
+            </div>
+            <input type="file" id="attachFile" accept="image/jpeg,image/png,image/webp" multiple style="display:none">
+            <div id="imgHint" class="jz-muted" style="font-size:12px">💾 บันทึก Prompt ก่อน แล้วจึงแนบรูปได้</div>
+            <div id="imgGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:8px;margin-top:8px"></div>
           </div>
 
           <div class="jz-row" style="flex-wrap:wrap;gap:10px">
@@ -108,8 +113,9 @@
   <script src="/assets/js/analytics.js"></script>
   <script src="/assets/js/auth.js"></script>
   <script src="/assets/js/prompts.js"></script>
+  <script src="/assets/js/images.js"></script>
   <script>
-    var sb = window.JZ9.sb, P = window.JZ9.prompts;
+    var sb = window.JZ9.sb, P = window.JZ9.prompts, IM = window.JZ9.images;
     var id = new URLSearchParams(location.search).get("id");
     var current = null;       // loaded record (edit mode)
     var isFav = false;
@@ -164,6 +170,44 @@
 
     byId("favBtn").addEventListener("click", function(){ isFav = !isFav; renderFav(); });
 
+    // ── attached images ──
+    function enableImages(){
+      byId("attachBtn").disabled = false;
+      byId("imgHint").textContent = "แนบรูปได้หลายรูป (JPG/PNG/WEBP ≤10MB)";
+      renderImages();
+    }
+    async function renderImages(){
+      if (!id) return;
+      try {
+        var imgs = await IM.listForPrompt(id);
+        var grid = byId("imgGrid");
+        grid.innerHTML = imgs.map(function(im){
+          return '<div style="position:relative;border:1px solid var(--jz-border);border-radius:8px;overflow:hidden" data-img="'+im.id+'">' +
+            '<img src="'+(im.url||"")+'" style="width:100%;height:84px;object-fit:cover;display:block">' +
+            '<button data-act="detach" title="เอาออก" style="position:absolute;top:3px;right:3px;background:rgba(0,0,0,0.6);color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:12px;padding:2px 6px">✕</button></div>';
+        }).join("");
+      } catch(e){ console.warn("renderImages", e.message); }
+    }
+    byId("imgGrid").addEventListener("click", async function(e){
+      var b = e.target.closest('[data-act="detach"]'); if (!b) return;
+      var cell = e.target.closest('[data-img]'); var imgId = cell.getAttribute("data-img");
+      try { await IM.detach(id, imgId); cell.remove(); } catch(err){ msg("เอารูปออกไม่สำเร็จ: "+(err.message||err), "err"); }
+    });
+    byId("attachBtn").addEventListener("click", function(){ if (id) byId("attachFile").click(); });
+    byId("attachFile").addEventListener("change", async function(){
+      if (!id) return;
+      var files = [].slice.call(this.files); this.value = "";
+      if (!files.length) return;
+      msg("กำลังอัปโหลด "+files.length+" รูป…", "ok");
+      var ok=0;
+      for (var i=0;i<files.length;i++){
+        try { var asset = await IM.upload(files[i]); await IM.attach(id, asset.id); ok++; }
+        catch(err){ console.warn("attach fail", err.message); msg("บางรูปอัปโหลดไม่สำเร็จ: "+(err.message||err), "err"); }
+      }
+      if (ok) msg("แนบรูปแล้ว "+ok+" รูป ✓", "ok");
+      renderImages();
+    });
+
     byId("saveBtn").addEventListener("click", async function(){
       var data = collect();
       if (!data.title) { msg("กรุณาใส่ชื่อ Prompt", "err"); return; }
@@ -174,7 +218,7 @@
         else { current = await P.create(data); id = current.id;
           history.replaceState(null,"","/app/editor.html?id="+id);
           byId("pageTitle").textContent = "แก้ไข Prompt"; byId("delBtn").style.display=""; byId("dupBtn").style.display="";
-          msg("สร้าง Prompt แล้ว ✓", "ok"); }
+          enableImages(); msg("สร้าง Prompt แล้ว ✓", "ok"); }
       } catch(e){ msg("บันทึกไม่สำเร็จ: " + (e.message||e), "err"); }
       finally { btn.disabled=false; btn.textContent=lbl; }
     });
@@ -210,6 +254,7 @@
       if (id) {
         try { current = await P.get(id); fill(current);
           byId("pageTitle").textContent = "แก้ไข Prompt"; byId("delBtn").style.display=""; byId("dupBtn").style.display="";
+          enableImages();
         } catch(e){ msg("โหลดไม่สำเร็จ: "+(e.message||e), "err"); }
       } else if (handoff) {
         fill({ title: handoff.title || "", prompt_content: handoff.prompt_content || "", use_case: handoff.use_case || "", description: handoff.description || "", canvas_size: handoff.canvas_size || "" });
