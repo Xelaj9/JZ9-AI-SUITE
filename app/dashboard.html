@@ -12,11 +12,11 @@
 <body>
   <nav class="jz-nav">
     <div class="jz-container jz-nav-inner">
-      <a class="jz-logo" href="/app/dashboard.html"><span class="jz-logo-badge">JZ9</span> JZ9suite</a>
+      <a class="jz-logo" href="/app/dashboard"><span class="jz-logo-badge">JZ9</span> JZ9suite</a>
       <div class="jz-row">
-        <a class="jz-btn jz-btn-ghost" href="/app/library.html">📚 Library</a>
-        <a class="jz-btn jz-btn-ghost" href="/index.html">🎨 Studio</a>
-        <a class="jz-btn jz-btn-ghost" id="adminLink" href="/admin/index.html" style="display:none">🛠 Admin</a>
+        <a class="jz-btn jz-btn-ghost" href="/app/library">📚 Library</a>
+        <a class="jz-btn jz-btn-ghost" href="/studio">🎨 Studio</a>
+        <a class="jz-btn jz-btn-ghost" id="adminLink" href="/admin/studio" style="display:none">🛠 Admin</a>
         <button class="jz-btn jz-btn-ghost" id="logoutBtn">ออกจากระบบ</button>
       </div>
     </div>
@@ -31,13 +31,13 @@
           <h1 style="margin:0">สวัสดี, <span id="userName">—</span> 👋</h1>
           <p class="jz-muted" style="margin:4px 0 0">ยินดีต้อนรับสู่คลัง Prompt ส่วนตัวของคุณ</p>
         </div>
-        <a class="jz-btn jz-btn-primary" href="/app/editor.html">+ สร้าง Prompt ใหม่</a>
+        <a class="jz-btn jz-btn-primary" href="/app/editor">+ สร้าง Prompt ใหม่</a>
       </div>
 
       <form class="jz-row" id="searchForm" style="margin-bottom:20px">
         <input class="jz-input" id="dashSearch" placeholder="🔍 ค้นหา Prompt ในคลังของคุณ…">
         <button class="jz-btn" type="submit">ค้นหา</button>
-        <a class="jz-btn jz-btn-ghost" href="/app/gallery.html">🖼 รูปภาพ</a>
+        <a class="jz-btn jz-btn-ghost" href="/app/gallery">🖼 รูปภาพ</a>
       </form>
 
       <div class="jz-grid jz-grid-3" style="margin-bottom:24px">
@@ -49,7 +49,7 @@
       <div class="jz-card">
         <div class="jz-spread" style="margin-bottom:14px">
           <h3 style="margin:0">Prompt ล่าสุด</h3>
-          <a class="jz-muted" href="/app/library.html" style="font-size:13px">ดูทั้งหมด →</a>
+          <a class="jz-muted" href="/app/library" style="font-size:13px">ดูทั้งหมด →</a>
         </div>
         <div id="recent"></div>
       </div>
@@ -89,7 +89,7 @@
           return '<div class="jz-spread" style="padding:12px 0;border-bottom:1px solid var(--jz-border)">' +
             '<div><div style="font-weight:600">' + escapeHtml(x.title) + '</div>' +
             '<div class="jz-muted" style="font-size:12px">' + (x.use_case || "—") + '</div></div>' +
-            '<a class="jz-muted" href="/app/editor.html?id=' + x.id + '">เปิด →</a></div>';
+            '<a class="jz-muted" href="/app/editor?id=' + x.id + '">เปิด →</a></div>';
         }).join("");
       }
 
@@ -101,7 +101,7 @@
     document.getElementById("searchForm").addEventListener("submit", function (e) {
       e.preventDefault();
       var q = document.getElementById("dashSearch").value.trim();
-      window.location.href = "/app/library.html" + (q ? "?q=" + encodeURIComponent(q) : "");
+      window.location.href = "/app/library" + (q ? "?q=" + encodeURIComponent(q) : "");
     });
     function escapeHtml(s){ return (s||"").replace(/[&<>"']/g, function(c){ return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]; }); }
   </script>

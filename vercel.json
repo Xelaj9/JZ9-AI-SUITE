@@ -1,12 +1,7 @@
 {
-  "version": 2,
+  "cleanUrls": true,
+  "trailingSlash": false,
   "functions": {
     "api/proxy.js": { "maxDuration": 60 }
-  },
-  "routes": [
-    { "src": "/api/(.*)", "dest": "/api/$1" },
-    { "handle": "filesystem" },
-    { "src": "/", "dest": "/landing.html" },
-    { "src": "/(.*)", "dest": "/index.html" }
-  ]
+  }
 }

@@ -20,13 +20,13 @@
 <body>
   <nav class="jz-nav">
     <div class="jz-container jz-nav-inner">
-      <a class="jz-logo" href="/admin/index.html"><span class="jz-logo-badge">JZ9</span> Admin</a>
+      <a class="jz-logo" href="/admin/studio"><span class="jz-logo-badge">JZ9</span> Admin</a>
       <div class="jz-row adm-nav">
-        <a href="/admin/index.html">Dashboard</a>
-        <a href="/admin/users.html" class="on">Users</a>
-        <a href="/admin/prompts.html">Prompts</a>
-        <a href="/admin/settings.html">Settings</a>
-        <a class="jz-btn jz-btn-ghost" href="/app/dashboard.html" style="margin-left:8px">← App</a>
+        <a href="/admin/studio">Dashboard</a>
+        <a href="/admin/users" class="on">Users</a>
+        <a href="/admin/prompts">Prompts</a>
+        <a href="/admin/settings">Settings</a>
+        <a class="jz-btn jz-btn-ghost" href="/app/dashboard" style="margin-left:8px">← App</a>
       </div>
     </div>
   </nav>
@@ -58,7 +58,7 @@
     function row(u){
       var isMe = me && u.id===me.id;
       return '<tr data-id="'+u.id+'">'+
-        '<td><a href="/admin/user.html?id='+u.id+'" style="color:var(--jz-green-bright)">'+esc(u.name||"—")+'</a></td>'+
+        '<td><a href="/admin/user?id='+u.id+'" style="color:var(--jz-green-bright)">'+esc(u.name||"—")+'</a></td>'+
         '<td class="jz-muted">'+esc(u.email||"")+'</td>'+
         '<td>'+(u.role==="admin"?'<span class="jz-chip" style="padding:1px 8px">admin</span>':'<span class="jz-tag">user</span>')+'</td>'+
         '<td class="jz-muted">'+fmtDate(u.created_at)+'</td>'+
