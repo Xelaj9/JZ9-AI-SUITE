@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User detail — Admin — JZ9suite</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;800&family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/jz9.css">
+  <style>
+    .adm-nav a { padding:6px 12px; border-radius:8px; font-size:14px; color:var(--jz-text-dim); }
+    .adm-nav a.on, .adm-nav a:hover { background:var(--jz-surface-2); color:var(--jz-text); }
+    .kv { display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid var(--jz-border); font-size:14px; }
+    .kv span:first-child { color:var(--jz-text-dim); }
+  </style>
+</head>
+<body>
+  <nav class="jz-nav">
+    <div class="jz-container jz-nav-inner">
+      <a class="jz-logo" href="/admin/index.html"><span class="jz-logo-badge">JZ9</span> Admin</a>
+      <div class="jz-row adm-nav">
+        <a href="/admin/index.html">Dashboard</a>
+        <a href="/admin/users.html" class="on">Users</a>
+        <a href="/admin/prompts.html">Prompts</a>
+        <a href="/admin/settings.html">Settings</a>
+        <a class="jz-btn jz-btn-ghost" href="/app/dashboard.html" style="margin-left:8px">← App</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="jz-container jz-section" style="max-width:720px">
+    <a class="jz-muted" href="/admin/users.html" style="font-size:13px">← กลับรายชื่อผู้ใช้</a>
+    <div id="loading" class="jz-loading" style="margin-top:14px"><span class="jz-spin"></span></div>
+    <div id="error" class="jz-error" style="display:none;margin-top:14px"></div>
+
+    <div id="content" style="display:none;margin-top:14px">
+      <div class="jz-spread" style="margin-bottom:16px">
+        <h1 style="margin:0" id="uName">—</h1>
+        <span id="uRole"></span>
+      </div>
+      <div class="jz-grid jz-grid-2" style="margin-bottom:18px">
+        <div class="jz-card jz-stat"><span class="num" id="uPrompts">0</span><span class="lbl">Prompt</span></div>
+        <div class="jz-card jz-stat"><span class="num" id="uImages">0</span><span class="lbl">รูปภาพ</span></div>
+      </div>
+      <div class="jz-card" style="margin-bottom:18px">
+        <div class="kv"><span>อีเมล</span><span id="uEmail"></span></div>
+        <div class="kv"><span>User ID</span><span id="uId" style="font-family:var(--jz-mono);font-size:12px"></span></div>
+        <div class="kv"><span>สมัครเมื่อ</span><span id="uCreated"></span></div>
+        <div class="kv"><span>เข้าระบบล่าสุด</span><span id="uLast"></span></div>
+        <div class="kv" style="border-bottom:none"><span>สถานะ</span><span id="uStatus"></span></div>
+      </div>
+      <div class="jz-row" id="actions" style="gap:10px">
+        <button class="jz-btn" id="roleBtn">—</button>
+        <button class="jz-btn" id="disBtn">—</button>
+      </div>
+      <div class="auth-msg" id="msg" style="display:none;padding:10px 13px;border-radius:10px;margin-top:14px"></div>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/assets/js/config.js"></script>
+  <script src="/assets/js/supabase.js"></script>
+  <script src="/assets/js/auth.js"></script>
+  <script src="/assets/js/admin.js"></script>
+  <script>
+    var A = window.JZ9.admin, me=null, u=null;
+    var id = new URLSearchParams(location.search).get("id");
+    function byId(x){ return document.getElementById(x); }
+    function esc(s){ return (s||"").replace(/[&<>"']/g,function(c){return({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c];}); }
+    function fmtDate(d){ if(!d) return "—"; try{ return new Date(d).toLocaleString("th-TH",{dateStyle:"medium",timeStyle:"short"}); }catch(e){ return d; } }
+    function msg(t,kind){ var m=byId("msg"); m.style.display=t?"block":"none"; m.textContent=t||"";
+      m.style.background = kind==="err"?"rgba(248,113,113,0.12)":"rgba(34,197,94,0.12)";
+      m.style.color = kind==="err"?"var(--jz-danger)":"var(--jz-green-bright)";
+      m.style.border = "1px solid "+(kind==="err"?"rgba(248,113,113,0.35)":"rgba(34,197,94,0.3)"); }
+
+    function render(){
+      byId("uName").textContent = u.name || "—";
+      byId("uRole").innerHTML = u.role==="admin" ? '<span class="jz-chip">admin</span>' : '<span class="jz-tag">user</span>';
+      byId("uEmail").textContent = u.email || "";
+      byId("uId").textContent = u.id;
+      byId("uCreated").textContent = fmtDate(u.created_at);
+      byId("uLast").textContent = fmtDate(u.last_login_at);
+      byId("uStatus").innerHTML = u.is_disabled ? '<span style="color:var(--jz-danger)">ปิดใช้งาน</span>' : '<span style="color:var(--jz-green-bright)">ปกติ</span>';
+      var isMe = me && me.id===u.id;
+      var rb = byId("roleBtn"), db = byId("disBtn");
+      rb.textContent = u.role==="admin" ? "ปลดสิทธิ์ admin" : "ตั้งเป็น admin";
+      db.textContent = u.is_disabled ? "เปิดใช้งานบัญชี" : "ปิดใช้งานบัญชี";
+      db.className = "jz-btn" + (u.is_disabled ? "" : " jz-btn-danger");
+      rb.disabled = db.disabled = !!isMe;
+      if (isMe){ rb.title = db.title = "แก้ไขบัญชีตัวเองจากที่นี่ไม่ได้"; }
+    }
+
+    byId("roleBtn").addEventListener("click", async function(){
+      var mk = u.role!=="admin";
+      if (!confirm(mk?"ตั้งผู้ใช้นี้เป็น admin?":"ปลดสิทธิ์ admin?")) return;
+      try { u = await A.setRole(u.id, mk?"admin":"user"); render(); msg("อัปเดต role แล้ว ✓","ok"); }
+      catch(e){ msg("ไม่สำเร็จ: "+(e.message||e),"err"); }
+    });
+    byId("disBtn").addEventListener("click", async function(){
+      try { u = await A.setDisabled(u.id, !u.is_disabled); render(); msg("อัปเดตสถานะแล้ว ✓","ok"); }
+      catch(e){ msg("ไม่สำเร็จ: "+(e.message||e),"err"); }
+    });
+
+    (async function(){
+      me = await window.JZ9.auth.requireAdmin();
+      if (!me) return;
+      if (!id){ byId("loading").style.display="none"; byId("error").style.display=""; byId("error").textContent="ไม่พบ user id"; return; }
+      try {
+        u = await A.getUser(id);
+        var c = await A.userCounts(id);
+        byId("uPrompts").textContent = c.prompts; byId("uImages").textContent = c.images;
+        render();
+        byId("loading").style.display="none"; byId("content").style.display="";
+      } catch(e){ byId("loading").style.display="none"; byId("error").style.display=""; byId("error").textContent="โหลดไม่สำเร็จ: "+(e.message||e); }
+    })();
+  </script>
+</body>
+</html>

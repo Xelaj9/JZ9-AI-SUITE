@@ -91,9 +91,9 @@ supabase/seed.sql       Default settings + first admin
 ## Build phases
 
 - [x] **Phase 1 — Foundation**: schema + RLS + storage, Supabase client, auth + guards, login page, dashboard shell, config/env, setup guide.
-- [ ] Phase 2 — Prompt Library data layer + full Dashboard + Prompt Editor (+ "Save to library" from Studio tools).
-- [ ] Phase 3 — Image upload + gallery + attach to prompts.
-- [ ] Phase 4 — Analytics events + Admin (`/admin`, users, prompts, settings).
-- [ ] Phase 5 — Landing page + nav login/dashboard CTA + polish (loading/empty/error, responsive).
+- [x] **Phase 2 — Prompt Library**: data layer (CRUD + search + filter + favorite + duplicate + copy), Dashboard, Editor, "Save to Library" from Studio.
+- [x] **Phase 3 — Images**: upload + gallery + attach to prompts (Storage + signed URLs).
+- [x] **Phase 4 — Admin + Analytics**: `/admin` dashboard, users (role/disable), user detail, prompts overview, settings; usage_events tracking.
+- [ ] Phase 5 — Landing page + nav login/dashboard CTA + final polish.
 
 Existing Studio tools and the OpenAI proxy are untouched throughout.
