@@ -1329,19 +1329,6 @@ html.light ::-webkit-scrollbar-thumb { background: #9fc4a8; }
             </div>
           </div>
 
-          <style>
-            #t3 .t3-seg{background:rgba(0,0,0,0.3);border:1px solid var(--border);color:var(--paper-dim);border-radius:9px;padding:8px 16px;cursor:pointer;font-family:'Fira Code',monospace;font-size:11px;font-weight:700;letter-spacing:1px;transition:all .15s}
-            #t3 .t3-seg.on{background:var(--em);color:#052B10;border-color:var(--em)}
-          </style>
-          <div style="display:flex;gap:8px;margin-bottom:16px">
-            <button id="t3-mB" class="t3-seg on" onclick="t3Mode('basic')">⚡ พื้นฐาน</button>
-            <button id="t3-mA" class="t3-seg" onclick="t3Mode('adv')">⚙️ ขั้นสูง</button>
-            <span style="align-self:center;font-size:10px;color:var(--paper-mute);font-family:'Fira Code',monospace">โหมดพื้นฐานซ่อนช่องขั้นสูง (ฟอนต์ · insight · DNA)</span>
-          </div>
-          <script>
-            function t3Mode(m){var adv=m==='adv';var a=document.getElementById('t3-adv');if(a)a.style.display=adv?'':'none';var b=document.getElementById('t3-mB'),x=document.getElementById('t3-mA');if(b)b.classList.toggle('on',!adv);if(x)x.classList.toggle('on',adv);}
-          </script>
-
           <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px">
             <div style="display:flex;flex-direction:column;gap:14px">
               <div>
@@ -1410,7 +1397,7 @@ html.light ::-webkit-scrollbar-thumb { background: #9fc4a8; }
             </div>
           </div>
 
-          <div id="t3-adv" style="display:none">
+          <div id="t3-adv">
           <!-- Typography -->
           <div style="margin-top:18px;padding-top:18px;border-top:1px solid #21262d">
             <label style="display:block;font-size:9px;text-transform:uppercase;color:#53E66D;margin-bottom:12px;font-family:'Fira Code',monospace;font-weight:700;letter-spacing:3px;display:flex;align-items:center;gap:6px">
