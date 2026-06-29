@@ -100,6 +100,9 @@
     els.tabSignin.addEventListener("click", function () { setMode("signin"); });
     els.tabSignup.addEventListener("click", function () { setMode("signup"); });
 
+    // open the signup tab when arriving via /login?signup or #signup
+    if (/signup/i.test(location.search) || /signup/i.test(location.hash)) setMode("signup");
+
     // already signed in? go to dashboard
     (async function () {
       var session = await window.JZ9.auth.getSession();
