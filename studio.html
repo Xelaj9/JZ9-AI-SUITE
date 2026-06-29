@@ -1060,7 +1060,18 @@ html.light ::-webkit-scrollbar-thumb { background: #9fc4a8; }
 
 <!-- ══ TOOL 1: VISUAL DNA ══ -->
 
+<style>
+  .tool-head{display:flex;align-items:center;gap:14px;max-width:1400px;margin:0 auto 18px;padding:14px 18px;background:var(--surface-glass);border:1px solid var(--border);border-radius:14px;backdrop-filter:blur(8px)}
+  .tool-head .th-back{background:transparent;border:1px solid var(--border);color:var(--paper-dim);border-radius:9px;padding:7px 12px;cursor:pointer;font-family:'Fira Code',monospace;font-size:11px;white-space:nowrap}
+  .tool-head .th-back:hover{border-color:var(--em);color:var(--em-bright)}
+  .tool-head .th-info{flex:1;min-width:0}
+  .tool-head .th-name{font-family:'Kanit',sans-serif;font-weight:800;font-size:16px;color:var(--paper)}
+  .tool-head .th-desc{font-size:12px;color:var(--paper-dim)}
+  .tool-head .th-badge{background:var(--em-dim);color:var(--em-bright);border:1px solid var(--border-em);border-radius:999px;padding:4px 12px;font-family:'Fira Code',monospace;font-size:10px;letter-spacing:1px;white-space:nowrap}
+  @media(max-width:600px){ .tool-head .th-desc{display:none} }
+</style>
 <div class="sec" id="t1" data-num="01">
+  <div class="tool-head"><button class="th-back" onclick="switchTool(0)">← Hub</button><div class="th-info"><div class="th-name">🧬 Visual DNA</div><div class="th-desc">สกัดสไตล์จากรูปอ้างอิง เป็น Prompt components</div></div><span class="th-badge">DEMO MODE</span></div>
   <div style="max-width:1400px;margin:0 auto">
     <!-- Header -->
     <div style="text-align:center;margin-bottom:28px">
@@ -1170,6 +1181,7 @@ html.light ::-webkit-scrollbar-thumb { background: #9fc4a8; }
 
 <!-- ══ TOOL 2: PROMPT EDITOR ══ -->
 <div class="sec" id="t2" data-num="02">
+  <div class="tool-head"><button class="th-back" onclick="switchTool(0)">← Hub</button><div class="th-info"><div class="th-name">⌨️ Prompt Editor</div><div class="th-desc">แปลง/แก้ Prompt JSON ↔ ภาษาไทย และจัดรูปแบบ</div></div><span class="th-badge">DEMO MODE</span></div>
   <div style="max-width:1600px;margin:0 auto">
     <!-- Header -->
     <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;margin-bottom:28px;border-bottom:1px solid rgba(34,197,94,0.15);padding-bottom:24px;gap:16px">
@@ -1242,6 +1254,7 @@ html.light ::-webkit-scrollbar-thumb { background: #9fc4a8; }
 
 <!-- ══ TOOL 3: GRAPHIC ══ -->
 <div class="sec" id="t3" data-num="03">
+  <div class="tool-head"><button class="th-back" onclick="switchTool(0)">← Hub</button><div class="th-info"><div class="th-name">🎨 Graphic Builder</div><div class="th-desc">สร้าง Prompt งานกราฟิก/โฆษณาแบบครบ พร้อมพรีวิว</div></div><span class="th-badge">DEMO MODE</span></div>
   <div style="max-width:1700px;margin:0 auto">
     <div id="t3-err"></div>
 
@@ -1507,6 +1520,7 @@ html.light ::-webkit-scrollbar-thumb { background: #9fc4a8; }
 
 <!-- ══ TOOL 4: RESIZE PROMPT GENERATOR ══ -->
 <div class="sec" id="t4" data-num="04">
+  <div class="tool-head"><button class="th-back" onclick="switchTool(0)">← Hub</button><div class="th-info"><div class="th-name">📐 Smart Resize</div><div class="th-desc">กำหนดขนาดใหม่ + สร้าง Prompt จัดวางองค์ประกอบให้พอดี</div></div><span class="th-badge">DEMO MODE</span></div>
   <div style="max-width:1400px;margin:0 auto">
     <!-- Header -->
     <div style="text-align:center;margin-bottom:28px">
@@ -1608,6 +1622,7 @@ html.light ::-webkit-scrollbar-thumb { background: #9fc4a8; }
 
 <!-- ══ TOOL 5: UNIVERSAL GRAPHIC PROMPT BUILDER ══ -->
 <div class="sec" id="t5" data-num="05">
+  <div class="tool-head"><button class="th-back" onclick="switchTool(0)">← Hub</button><div class="th-info"><div class="th-name">🧠 Prompt Builder</div><div class="th-desc">แนบรูป → วิเคราะห์ → กรอกฟอร์ม → ได้ Prompt อัตโนมัติ</div></div><span class="th-badge">DEMO MODE</span></div>
   <div style="max-width:1400px;margin:0 auto">
     <!-- Header -->
     <div style="text-align:center;margin-bottom:24px">
