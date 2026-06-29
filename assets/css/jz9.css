@@ -137,3 +137,5 @@ h1,h2,h3 { font-family: var(--jz-serif); font-weight: 500; line-height: 1.15; le
 ::-webkit-scrollbar-track { background: var(--jz-bg); }
 ::-webkit-scrollbar-thumb { background: #1a2620; border-radius: 8px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--jz-green-deep); }
+
+.jz-logo-img { width: 32px; height: 32px; display: block; flex-shrink: 0; }
