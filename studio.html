@@ -1521,103 +1521,100 @@ html.light ::-webkit-scrollbar-thumb { background: #9fc4a8; }
 <!-- ══ TOOL 4: RESIZE PROMPT GENERATOR ══ -->
 <div class="sec" id="t4" data-num="04">
   <div class="tool-head"><button class="th-back" onclick="switchTool(0)">← Hub</button><div class="th-info"><div class="th-name">📐 Smart Resize</div><div class="th-desc">กำหนดขนาดใหม่ + สร้าง Prompt จัดวางองค์ประกอบให้พอดี</div></div><span class="th-badge">DEMO MODE</span></div>
-  <div style="max-width:1400px;margin:0 auto">
-    <!-- Header -->
-    <div style="text-align:center;margin-bottom:28px">
-      <div style="font-size:48px;margin-bottom:8px;filter:drop-shadow(0 0 10px rgba(34,197,94,0.5))">📐</div>
-      <div class="t1-tag" style="margin-bottom:10px">JZ9 Resize Prompt Generator</div>
-      <h1 style="font-size:clamp(24px,5vw,44px);font-weight:900;background:linear-gradient(to right,#4ade80,#22c55e,#16a34a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-1px;margin-bottom:6px">Smart Resize Prompt</h1>
-      <p style="color:#9aa39c;font-size:14px;font-style:italic">กำหนดขนาด + ระยะขอบ + เลย์เอาต์ → ระบบสร้าง Prompt สำเร็จรูป ไปวางใน ChatGPT / Gemini แล้วแนบรูปเอง เพื่อคุณภาพสูงสุด</p>
+  <style>
+    #t4 .t4-grid{display:grid;grid-template-columns:minmax(300px,1fr) minmax(320px,1.25fr);gap:18px;align-items:start;max-width:1400px;margin:0 auto}
+    @media(max-width:880px){ #t4 .t4-grid{grid-template-columns:1fr} }
+    #t4 .sz-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+    @media(max-width:520px){ #t4 .sz-grid{grid-template-columns:1fr 1fr} }
+    #t4 .szc,#t4 .layc{background:rgba(0,0,0,0.30);border:1px solid var(--border);border-radius:10px;cursor:pointer;text-align:left;transition:all .15s;color:var(--paper)}
+    #t4 .szc{padding:10px 11px}
+    #t4 .szc:hover,#t4 .layc:hover{border-color:var(--em)}
+    #t4 .szc.on,#t4 .layc.on{border-color:var(--em);background:var(--em-soft)}
+    #t4 .szc .n{font-size:12px;font-weight:700;font-family:'Kanit',sans-serif}
+    #t4 .szc .d{font-size:10px;color:var(--paper-dim);font-family:'Fira Code',monospace;margin-top:2px}
+    #t4 .lay-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+    #t4 .layc{padding:9px 11px;font-size:12px;font-family:'Kanit',sans-serif}
+    #t4 .layc.on{color:var(--em-bright)}
+    #t4 .t4-in{width:100%;margin-top:4px;background:rgba(0,0,0,0.4);border:1px solid var(--border);border-radius:8px;padding:9px 11px;color:var(--paper);font-family:'Fira Code',monospace;font-size:13px}
+    #t4 .t4-in:focus{outline:none;border-color:var(--em)}
+    #t4 .t4-fl{font-size:9px;color:var(--paper-mute);text-transform:uppercase;letter-spacing:1px;font-family:'Fira Code',monospace}
+  </style>
+  <div id="t4-error" style="display:none;max-width:1400px;margin:0 auto 16px;padding:14px;background:rgba(127,29,29,0.25);border:1px solid rgba(239,68,68,0.35);color:#f87171;border-radius:14px;font-size:11px;font-family:'Fira Code',monospace"></div>
+
+  <div class="t4-grid">
+    <!-- LEFT: controls -->
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div class="t1-card">
+        <div class="t1-label">📏 เลือกขนาดสำเร็จรูป</div>
+        <div class="sz-grid">
+          <button class="szc" onclick="t4SetSize(1040,1040);t4pick(this)"><div class="n">1:1 Facebook</div><div class="d">1040×1040</div></button>
+          <button class="szc" onclick="t4SetSize(1080,1350);t4pick(this)"><div class="n">4:5 Post</div><div class="d">1080×1350</div></button>
+          <button class="szc" onclick="t4SetSize(1080,1920);t4pick(this)"><div class="n">9:16 Story</div><div class="d">1080×1920</div></button>
+          <button class="szc" onclick="t4SetSize(1920,1080);t4pick(this)"><div class="n">16:9 Landscape</div><div class="d">1920×1080</div></button>
+          <button class="szc" onclick="t4SetSize(2480,3508);t4pick(this)"><div class="n">A4 แนวตั้ง</div><div class="d">2480×3508</div></button>
+          <button class="szc" onclick="t4SetSize(2926,7315);t4pick(this)"><div class="n">Banner 80×200ซม</div><div class="d">2926×7315</div></button>
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-end;margin-top:14px">
+          <div style="flex:1"><label class="t4-fl">Width (px)</label>
+            <input type="number" id="t4-w" value="1200" min="16" max="8192" oninput="t4Gen()" class="t4-in"></div>
+          <div style="color:var(--paper-mute);padding-bottom:9px">×</div>
+          <div style="flex:1"><label class="t4-fl">Height (px)</label>
+            <input type="number" id="t4-h" value="630" min="16" max="8192" oninput="t4Gen()" class="t4-in"></div>
+        </div>
+      </div>
+
+      <div class="t1-card">
+        <div class="t1-label">🔲 ระยะขอบปลอดภัย (px)</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div><label class="t4-fl">Top</label><input type="number" id="t4-mt" value="40" min="0" max="2000" oninput="t4Gen()" class="t4-in"></div>
+          <div><label class="t4-fl">Right</label><input type="number" id="t4-mr" value="50" min="0" max="2000" oninput="t4Gen()" class="t4-in"></div>
+          <div><label class="t4-fl">Bottom</label><input type="number" id="t4-mb" value="40" min="0" max="2000" oninput="t4Gen()" class="t4-in"></div>
+          <div><label class="t4-fl">Left</label><input type="number" id="t4-ml" value="50" min="0" max="2000" oninput="t4Gen()" class="t4-in"></div>
+        </div>
+      </div>
+
+      <div class="t1-card">
+        <div class="t1-label">🧭 การจัดวาง (Layout)</div>
+        <div class="lay-grid">
+          <button class="layc on" onclick="t4lay(this,'AUTO')">AUTO · ให้ AI เลือก</button>
+          <button class="layc" onclick="t4lay(this,'SPLIT_LEFT_RIGHT')">แบ่งซ้าย/ขวา</button>
+          <button class="layc" onclick="t4lay(this,'CENTER_CARD')">การ์ดกึ่งกลาง</button>
+          <button class="layc" onclick="t4lay(this,'TOP_TEXT_BOTTOM_VISUAL')">ข้อความบน·ภาพล่าง</button>
+          <button class="layc" onclick="t4lay(this,'VISUAL_TOP_TEXT_BOTTOM')">ภาพบน·ข้อความล่าง</button>
+        </div>
+        <select id="t4-mode" onchange="t4Gen()" style="display:none">
+          <option value="AUTO" selected>AUTO</option><option value="SPLIT_LEFT_RIGHT">SPLIT_LEFT_RIGHT</option><option value="CENTER_CARD">CENTER_CARD</option><option value="TOP_TEXT_BOTTOM_VISUAL">TOP_TEXT_BOTTOM_VISUAL</option><option value="VISUAL_TOP_TEXT_BOTTOM">VISUAL_TOP_TEXT_BOTTOM</option>
+        </select>
+        <label class="t4-fl" style="display:block;margin-top:12px">Quality</label>
+        <select id="t4-quality" onchange="t4Gen()" class="t4-in" style="font-family:'Kanit',sans-serif">
+          <option value="HIGH" selected>HIGH</option><option value="MEDIUM">MEDIUM</option><option value="LOW">LOW</option>
+        </select>
+      </div>
+
+      <div class="t1-card" style="border-color:var(--border-em)">
+        <div class="t1-label" style="margin-bottom:6px">💡 วิธีใช้</div>
+        <ol style="margin:0;padding-left:18px;color:var(--paper-dim);font-size:11px;line-height:1.8;font-family:'Kanit',sans-serif">
+          <li>เลือกขนาด/ระยะขอบ/เลย์เอาต์</li>
+          <li>กด <b style="color:var(--em-bright)">COPY PROMPT</b></li>
+          <li>เปิด ChatGPT / Gemini → วาง Prompt + แนบรูปต้นฉบับ</li>
+          <li>ส่ง แล้วรอภาพ Resize คุณภาพสูง</li>
+        </ol>
+      </div>
     </div>
 
-    <div id="t4-error" style="display:none;margin-bottom:16px;padding:14px;background:rgba(127,29,29,0.25);border:1px solid rgba(239,68,68,0.35);color:#f87171;border-radius:14px;font-size:11px;font-family:'Fira Code',monospace"></div>
-
-    <div style="display:grid;grid-template-columns:minmax(300px,1fr) minmax(300px,1.4fr);gap:20px;align-items:start">
-      <!-- LEFT: controls -->
-      <div style="display:flex;flex-direction:column;gap:14px">
-        <div class="t1-card">
-          <div class="t1-label">📏 ขนาดเป้าหมาย (pixels)</div>
-          <div style="display:flex;gap:10px;align-items:flex-end">
-            <div style="flex:1">
-              <label style="font-size:9px;color:#7a7d76;text-transform:uppercase;letter-spacing:1px;font-family:'Fira Code',monospace">Width</label>
-              <input type="number" id="t4-w" value="1200" min="16" max="8192" oninput="t4Gen()" style="width:100%;margin-top:4px;background:#0a0a0a;border:1px solid #2a2a2a;border-radius:8px;padding:8px 10px;color:#e6edf3;font-family:'Fira Code',monospace;font-size:13px">
-            </div>
-            <div style="color:#7a7d76;padding-bottom:8px">×</div>
-            <div style="flex:1">
-              <label style="font-size:9px;color:#7a7d76;text-transform:uppercase;letter-spacing:1px;font-family:'Fira Code',monospace">Height</label>
-              <input type="number" id="t4-h" value="630" min="16" max="8192" oninput="t4Gen()" style="width:100%;margin-top:4px;background:#0a0a0a;border:1px solid #2a2a2a;border-radius:8px;padding:8px 10px;color:#e6edf3;font-family:'Fira Code',monospace;font-size:13px">
-            </div>
-          </div>
-          <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:12px">
-            <button class="t4-preset" onclick="t4SetSize(1080,1080)">1:1 · 1080²</button>
-            <button class="t4-preset" onclick="t4SetSize(1080,1920)">9:16 Story</button>
-            <button class="t4-preset" onclick="t4SetSize(1920,1080)">16:9 FHD</button>
-            <button class="t4-preset" onclick="t4SetSize(1200,630)">OG 1200×630</button>
-            <button class="t4-preset" onclick="t4SetSize(1080,1350)">4:5 Post</button>
-          </div>
-        </div>
-
-        <div class="t1-card">
-          <div class="t1-label">🔲 ระยะขอบปลอดภัย (Safe Margins · px)</div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-            <div>
-              <label style="font-size:9px;color:#7a7d76;text-transform:uppercase;letter-spacing:1px;font-family:'Fira Code',monospace">Top</label>
-              <input type="number" id="t4-mt" value="40" min="0" max="2000" oninput="t4Gen()" style="width:100%;margin-top:4px;background:#0a0a0a;border:1px solid #2a2a2a;border-radius:8px;padding:8px 10px;color:#e6edf3;font-family:'Fira Code',monospace;font-size:13px">
-            </div>
-            <div>
-              <label style="font-size:9px;color:#7a7d76;text-transform:uppercase;letter-spacing:1px;font-family:'Fira Code',monospace">Right</label>
-              <input type="number" id="t4-mr" value="50" min="0" max="2000" oninput="t4Gen()" style="width:100%;margin-top:4px;background:#0a0a0a;border:1px solid #2a2a2a;border-radius:8px;padding:8px 10px;color:#e6edf3;font-family:'Fira Code',monospace;font-size:13px">
-            </div>
-            <div>
-              <label style="font-size:9px;color:#7a7d76;text-transform:uppercase;letter-spacing:1px;font-family:'Fira Code',monospace">Bottom</label>
-              <input type="number" id="t4-mb" value="40" min="0" max="2000" oninput="t4Gen()" style="width:100%;margin-top:4px;background:#0a0a0a;border:1px solid #2a2a2a;border-radius:8px;padding:8px 10px;color:#e6edf3;font-family:'Fira Code',monospace;font-size:13px">
-            </div>
-            <div>
-              <label style="font-size:9px;color:#7a7d76;text-transform:uppercase;letter-spacing:1px;font-family:'Fira Code',monospace">Left</label>
-              <input type="number" id="t4-ml" value="50" min="0" max="2000" oninput="t4Gen()" style="width:100%;margin-top:4px;background:#0a0a0a;border:1px solid #2a2a2a;border-radius:8px;padding:8px 10px;color:#e6edf3;font-family:'Fira Code',monospace;font-size:13px">
-            </div>
-          </div>
-        </div>
-
-        <div class="t1-card">
-          <div class="t1-label">⚙️ ตัวเลือกการจัดวาง</div>
-          <label style="font-size:9px;color:#7a7d76;text-transform:uppercase;letter-spacing:1px;font-family:'Fira Code',monospace">Layout preference</label>
-          <select id="t4-mode" onchange="t4Gen()" style="width:100%;margin:4px 0 12px;background:#0a0a0a;border:1px solid #2a2a2a;border-radius:8px;padding:8px 10px;color:#e6edf3;font-family:'Kanit',sans-serif;font-size:13px">
-            <option value="AUTO">AUTO — ให้ AI เลือกเอง</option>
-            <option value="SPLIT_LEFT_RIGHT">แบ่งซ้าย/ขวา (ภาพ + ข้อความ)</option>
-            <option value="CENTER_CARD">การ์ดกึ่งกลาง</option>
-            <option value="TOP_TEXT_BOTTOM_VISUAL">ข้อความบน · ภาพล่าง</option>
-            <option value="VISUAL_TOP_TEXT_BOTTOM">ภาพบน · ข้อความล่าง</option>
-          </select>
-          <label style="font-size:9px;color:#7a7d76;text-transform:uppercase;letter-spacing:1px;font-family:'Fira Code',monospace">Quality</label>
-          <select id="t4-quality" onchange="t4Gen()" style="width:100%;margin:4px 0 0;background:#0a0a0a;border:1px solid #2a2a2a;border-radius:8px;padding:8px 10px;color:#e6edf3;font-family:'Kanit',sans-serif;font-size:13px">
-            <option value="HIGH" selected>HIGH</option>
-            <option value="MEDIUM">MEDIUM</option>
-            <option value="LOW">LOW</option>
-          </select>
-        </div>
-
-        <div class="t1-card" style="border-color:rgba(34,197,94,0.2)">
-          <div class="t1-label" style="margin-bottom:6px">💡 วิธีใช้</div>
-          <ol style="margin:0;padding-left:18px;color:#9aa39c;font-size:11px;line-height:1.8;font-family:'Kanit',sans-serif">
-            <li>กรอกขนาด/ระยะขอบ/เลย์เอาต์</li>
-            <li>กด <b style="color:#4ade80">COPY PROMPT</b></li>
-            <li>เปิด ChatGPT / Gemini → วาง Prompt + แนบรูปต้นฉบับ</li>
-            <li>ส่ง แล้วรอภาพ Resize คุณภาพสูง</li>
-          </ol>
-        </div>
+    <!-- RIGHT: generated prompt -->
+    <div class="t1-card" style="min-height:300px;display:flex;flex-direction:column;position:sticky;top:80px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <div class="t1-label" style="margin-bottom:0">📋 Prompt สำเร็จรูป (JSON)</div>
+        <button class="t1-btn primary" id="t4-copyBtn" onclick="t4Copy()" style="width:auto;padding:8px 16px;margin:0;font-size:11px">📋 COPY PROMPT</button>
       </div>
-
-      <!-- RIGHT: generated prompt -->
-      <div class="t1-card" style="min-height:300px;display:flex;flex-direction:column">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-          <div class="t1-label" style="margin-bottom:0">📋 Prompt สำเร็จรูป (JSON)</div>
-          <button class="t1-btn primary" id="t4-copyBtn" onclick="t4Copy()" style="width:auto;padding:8px 16px;margin:0;font-size:11px">📋 COPY PROMPT</button>
-        </div>
-        <textarea id="t4-promptOut" readonly spellcheck="false" style="flex:1;min-height:420px;width:100%;background:#000;border:1px solid rgba(34,197,94,0.15);border-radius:12px;padding:14px;color:rgba(74,222,128,0.85);font-family:'Fira Code',monospace;font-size:10px;line-height:1.5;resize:vertical;white-space:pre"></textarea>
-      </div>
+      <textarea id="t4-promptOut" readonly spellcheck="false" style="flex:1;min-height:460px;width:100%;background:rgba(0,0,0,0.5);border:1px solid var(--border-em);border-radius:12px;padding:14px;color:var(--em-bright);font-family:'Fira Code',monospace;font-size:10px;line-height:1.5;resize:vertical;white-space:pre"></textarea>
     </div>
   </div>
+  <script>
+    function t4pick(el){ var p=el.parentNode; p.querySelectorAll('.szc').forEach(function(c){c.classList.remove('on')}); el.classList.add('on'); }
+    function t4lay(el,val){ var p=el.parentNode; p.querySelectorAll('.layc').forEach(function(c){c.classList.remove('on')}); el.classList.add('on'); var s=document.getElementById('t4-mode'); s.value=val; t4Gen(); }
+  </script>
 </div>
 
 <!-- ══ TOOL 5: UNIVERSAL GRAPHIC PROMPT BUILDER ══ -->
