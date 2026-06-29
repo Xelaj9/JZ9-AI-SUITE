@@ -401,6 +401,7 @@ body::after {
 }
 .side-tab .s-num { display: none; }
 .side-tab .s-icon { font-size: 18px; filter: grayscale(0.3); transition: filter 0.3s; }
+.side-tab .s-icon img { width: 26px; height: 26px; object-fit: contain; display: block; margin: 0 auto; filter: drop-shadow(0 0 5px rgba(83,230,109,0.4)); }
 .side-tab:hover { color: var(--cream); background: var(--em-soft); }
 .side-tab:hover .s-icon { filter: grayscale(0); }
 .side-tab.on { color: var(--em-bright); background: var(--em-dim); border-left-color: var(--em); }
@@ -988,27 +989,27 @@ html.light ::-webkit-scrollbar-thumb { background: #9fc4a8; }
     <span>HUB</span>
   </button>
   <button class="side-tab" onclick="switchTool(1)" id="stab1">
-    <span class="s-icon">🧬</span>
+    <span class="s-icon"><img src="/assets/icons/dna.png" alt=""></span>
     <span class="s-num">[01]</span>
     <span>DNA</span>
   </button>
   <button class="side-tab" onclick="switchTool(2)" id="stab2">
-    <span class="s-icon">⌨️</span>
+    <span class="s-icon"><img src="/assets/icons/editor.png" alt=""></span>
     <span class="s-num">[02]</span>
     <span>PROMPT</span>
   </button>
   <button class="side-tab" onclick="switchTool(3)" id="stab3">
-    <span class="s-icon">🎨</span>
+    <span class="s-icon"><img src="/assets/icons/graphic.png" alt=""></span>
     <span class="s-num">[03]</span>
     <span>GRAPHIC</span>
   </button>
   <button class="side-tab" onclick="switchTool(4)" id="stab4">
-    <span class="s-icon">📐</span>
+    <span class="s-icon"><img src="/assets/icons/resize.png" alt=""></span>
     <span class="s-num">[04]</span>
     <span>RESIZE</span>
   </button>
   <button class="side-tab" onclick="switchTool(5)" id="stab5">
-    <span class="s-icon">🧠</span>
+    <span class="s-icon"><img src="/assets/icons/builder.png" alt=""></span>
     <span class="s-num">[05]</span>
     <span>BUILDER</span>
   </button>
@@ -1027,7 +1028,8 @@ html.light ::-webkit-scrollbar-thumb { background: #9fc4a8; }
   #t0 .hub-card{background:linear-gradient(160deg,rgba(16,29,20,0.85),rgba(8,16,11,0.85));border:1px solid var(--border);border-radius:22px;padding:26px 24px;display:flex;flex-direction:column;gap:14px;cursor:pointer;transition:all .2s;backdrop-filter:blur(8px);position:relative;overflow:hidden}
   #t0 .hub-card::after{content:"";position:absolute;inset:0;border-radius:22px;box-shadow:inset 0 0 60px rgba(83,230,109,0.05);pointer-events:none}
   #t0 .hub-card:hover{border-color:var(--em);transform:translateY(-5px);box-shadow:0 0 0 1px var(--em),0 18px 46px rgba(83,230,109,0.28)}
-  #t0 .hub-ic{width:72px;height:72px;filter:drop-shadow(0 0 16px rgba(83,230,109,0.45))}
+  #t0 .hub-ic{width:72px;height:72px;filter:drop-shadow(0 0 16px rgba(83,230,109,0.45));position:relative}
+  #t0 .hub-ic::after{content:"";position:absolute;left:50%;bottom:-10px;transform:translateX(-50%);width:64%;height:12px;border-radius:50%;background:radial-gradient(ellipse at center,rgba(83,230,109,0.6),rgba(83,230,109,0.15) 45%,transparent 72%);filter:blur(2px);pointer-events:none}
   #t0 .hub-ic img{width:100%;height:100%;object-fit:contain;display:block}
   #t0 .hub-name{font-size:20px;font-weight:800;color:var(--paper);font-family:'Kanit',sans-serif}
   #t0 .hub-desc{font-size:13.5px;color:var(--paper-dim);line-height:1.65;flex:1}
@@ -1078,19 +1080,7 @@ html.light ::-webkit-scrollbar-thumb { background: #9fc4a8; }
   <div style="max-width:1400px;margin:0 auto">
     <!-- Header -->
     <div style="text-align:center;margin-bottom:28px">
-      <svg width="64" height="64" viewBox="0 0 100 100" style="margin:0 auto 10px;display:block;filter:drop-shadow(0 0 8px rgba(34,197,94,0.5))">
-        <path d="M30 20 Q 50 50, 70 80 M70 20 Q 50 50, 30 80" fill="none" stroke="#22c55e" stroke-width="4" stroke-linecap="round" opacity="0.2"/>
-        <line x1="44" y1="25" x2="56" y2="25" stroke="#22c55e" stroke-width="2"/>
-        <line x1="41" y1="35" x2="59" y2="35" stroke="#22c55e" stroke-width="2"/>
-        <line x1="40" y1="45" x2="60" y2="45" stroke="#22c55e" stroke-width="2"/>
-        <line x1="41" y1="55" x2="59" y2="55" stroke="#22c55e" stroke-width="2"/>
-        <line x1="44" y1="65" x2="56" y2="65" stroke="#22c55e" stroke-width="2"/>
-        <line x1="48" y1="75" x2="52" y2="75" stroke="#22c55e" stroke-width="2"/>
-        <path d="M30 20 C 40 40, 60 60, 70 80" fill="none" stroke="#22c55e" stroke-width="3" stroke-dasharray="4 2"/>
-        <path d="M70 20 C 60 40, 40 60, 30 80" fill="none" stroke="#4ade80" stroke-width="3" stroke-dasharray="4 2"/>
-        <rect x="25" y="42" width="50" height="16" rx="4" fill="#000" opacity="0.9"/>
-        <text x="50" y="54" text-anchor="middle" fill="#22c55e" font-size="12" font-weight="900" font-family="monospace">JZ9</text>
-      </svg>
+      <img src="/assets/icons/dna.png" alt="Visual DNA" style="width:84px;height:84px;object-fit:contain;margin:0 auto 10px;display:block;filter:drop-shadow(0 0 14px rgba(83,230,109,0.5))">
       <div class="t1-tag" style="margin-bottom:10px">JZ9 Visual DNA Protocol</div>
       <h1 style="font-size:clamp(24px,5vw,44px);font-weight:900;background:linear-gradient(to right,#4ade80,#22c55e,#16a34a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-1px;margin-bottom:6px">JZ9 Visual DNA Extractor</h1>
       <p style="color:#9aa39c;font-size:14px;font-style:italic">สกัด DNA สไตล์ภาพ เพื่อสร้าง Prompt Components ที่สมบูรณ์แบบ</p>
@@ -1271,12 +1261,7 @@ html.light ::-webkit-scrollbar-thumb { background: #9fc4a8; }
     <!-- Header -->
     <header style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;margin-bottom:28px;border-bottom:1px solid #21262d;padding-bottom:20px;gap:14px">
       <div style="display:flex;align-items:center;gap:16px;animation:t3float 4s ease-in-out infinite">
-        <svg width="64" height="64" viewBox="0 0 100 100" fill="none">
-          <rect x="5" y="5" width="90" height="90" rx="15" stroke="#53E66D" stroke-width="2" fill="rgba(83, 230, 109,0.04)"/>
-          <text x="50" y="58" text-anchor="middle" fill="white" font-family="Chakra Petch" font-size="24" font-weight="900">JZ9</text>
-          <path d="M65 25L75 25L75 35" stroke="#53E66D" stroke-width="2"/><circle cx="75" cy="25" r="3" fill="#53E66D"/>
-          <rect x="25" y="65" width="15" height="10" rx="2" fill="#53E66D" opacity="0.25"/>
-        </svg>
+        <img src="/assets/icons/graphic.png" alt="Graphic Builder" style="width:64px;height:64px;object-fit:contain;display:block;filter:drop-shadow(0 0 12px rgba(83,230,109,0.5))">
         <div>
           <h1 style="font-size:clamp(28px,5vw,54px);font-weight:900;font-family:'Chakra Petch',sans-serif;color:#fff;letter-spacing:-2px">JZ9<span style="color:#53E66D">_</span>GRAPHIC</h1>
           <div style="display:flex;align-items:center;gap:10px;margin-top:4px">
@@ -1635,7 +1620,7 @@ html.light ::-webkit-scrollbar-thumb { background: #9fc4a8; }
   <div style="max-width:1400px;margin:0 auto">
     <!-- Header -->
     <div style="text-align:center;margin-bottom:24px">
-      <div style="font-size:48px;margin-bottom:8px;filter:drop-shadow(0 0 10px rgba(34,197,94,0.5))">🧠</div>
+      <div style="margin-bottom:8px"><img src="/assets/icons/builder.png" alt="Prompt Builder" style="width:84px;height:84px;object-fit:contain;display:inline-block;filter:drop-shadow(0 0 14px rgba(83,230,109,0.5))"></div>
       <div class="t1-tag" style="margin-bottom:10px">JZ9 Universal Graphic Prompt Builder</div>
       <h1 style="font-size:clamp(24px,5vw,44px);font-weight:900;background:linear-gradient(to right,#4ade80,#22c55e,#16a34a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-1px;margin-bottom:6px">Prompt Builder</h1>
       <p style="color:#9aa39c;font-size:14px;font-style:italic">แนบรูป Reference → AI วิเคราะห์สไตล์ → กรอกฟอร์มง่าย ๆ → ได้ JSON Prompt + final_prompt พร้อมใช้ (ครอบคลุมงานกราฟิกทุกประเภท)</p>
