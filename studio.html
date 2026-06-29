@@ -17,7 +17,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>JZ9 AI — Tools Suite</title>
 <script src="https://cdn.tailwindcss.com"></script>
-<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Kanit:wght@300;400;500;600;700;800;900&family=Mitr:wght@500&family=Chakra+Petch:wght@400;600;700&family=Sarabun:wght@400;700&family=Noto+Serif+Thai:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Kanit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 :root {
   --lime: #53E66D;
@@ -41,10 +41,10 @@ html, body { background: var(--bg); color: #f0f0f0; font-family: 'Kanit', sans-s
 .nav-badge {
   background: var(--lime); color: #000; font-weight: 900;
   padding: 4px 10px; border-radius: 6px; font-size: 14px;
-  font-family: 'Chakra Petch', sans-serif; letter-spacing: 1px;
+  font-family: 'Kanit', sans-serif; letter-spacing: 1px;
   box-shadow: var(--lime-glow);
 }
-.nav-title { font-family: 'Chakra Petch', sans-serif; font-size: 14px; font-weight: 700; color: #fff; letter-spacing: 2px; }
+.nav-title { font-family: 'Kanit', sans-serif; font-size: 14px; font-weight: 700; color: #fff; letter-spacing: 2px; }
 .nav-sub { font-size: 9px; color: rgba(255,255,255,0.25); letter-spacing: 4px; font-family: 'Fira Code', monospace; }
 .nav-tabs { display: none; }
 
@@ -262,14 +262,14 @@ body { padding-top: 60px; }
 }
 
 /* === FONTS === */
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@200..800&family=JetBrains+Mono:wght@300..700&family=Noto+Sans+Thai:wght@200..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Kanit:wght@300;400;500;600;700;800;900&display=swap');
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 html, body {
   background: var(--bg);
   color: var(--paper);
-  font-family: 'Manrope', 'Noto Sans Thai', sans-serif;
+  font-family: 'Kanit', 'Kanit', sans-serif;
   font-feature-settings: "ss01", "cv11";
   -webkit-font-smoothing: antialiased;
   letter-spacing: -0.005em;
@@ -326,7 +326,7 @@ body::after {
   padding: 6px 12px;
   border-radius: 0;
   font-size: 13px;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Fira Code', monospace;
   letter-spacing: 0;
   box-shadow: var(--em-glow);
   position: relative;
@@ -340,7 +340,7 @@ body::after {
   pointer-events: none;
 }
 .nav-title {
-  font-family: 'Fraunces', serif;
+  font-family: 'Kanit', serif;
   font-size: 22px;
   font-weight: 400;
   font-style: italic;
@@ -351,7 +351,7 @@ body::after {
   font-size: 9px;
   color: var(--paper-mute);
   letter-spacing: 4px;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Fira Code', monospace;
   text-transform: uppercase;
 }
 .nav-tabs { display: none; }
@@ -379,7 +379,7 @@ body::after {
   letter-spacing: 0.5px; cursor: pointer; box-shadow: var(--em-glow);
 }
 .sb-newbtn:hover { background: var(--em-bright); }
-.sb-label { font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:2px; color:var(--paper-mute); text-transform:uppercase; padding:8px 12px 6px; }
+.sb-label { font-family:'Fira Code',monospace; font-size:9px; letter-spacing:2px; color:var(--paper-mute); text-transform:uppercase; padding:8px 12px 6px; }
 .side-tab {
   display: flex; flex-direction: row;
   align-items: center; justify-content: flex-start; gap: 12px;
@@ -448,7 +448,7 @@ body { padding-left: 216px !important; padding-top: 64px; }
   content: attr(data-num);
   position: absolute;
   top: 32px; right: 48px;
-  font-family: 'Fraunces', serif;
+  font-family: 'Kanit', serif;
   font-size: 180px;
   font-weight: 200;
   line-height: 1;
@@ -461,7 +461,7 @@ body { padding-left: 216px !important; padding-top: 64px; }
 
 /* ═══ TYPOGRAPHY ═══ */
 h1, .h1 {
-  font-family: 'Fraunces', serif !important;
+  font-family: 'Kanit', serif !important;
   font-weight: 300 !important;
   font-size: clamp(40px, 6vw, 88px) !important;
   letter-spacing: -0.04em !important;
@@ -504,7 +504,7 @@ h1 em, .h1 em {
   background: var(--em) !important;
   color: var(--bg) !important;
   border: none !important;
-  font-family: 'JetBrains Mono', monospace !important;
+  font-family: 'Fira Code', monospace !important;
   font-weight: 700 !important;
   letter-spacing: 2px !important;
   text-transform: uppercase !important;
@@ -524,7 +524,7 @@ h1 em, .h1 em {
   background: transparent !important;
   color: var(--paper) !important;
   border: 1px solid var(--border) !important;
-  font-family: 'JetBrains Mono', monospace !important;
+  font-family: 'Fira Code', monospace !important;
   font-weight: 600 !important;
   letter-spacing: 2px !important;
   text-transform: uppercase !important;
@@ -542,7 +542,7 @@ input, textarea, select, .t3-ti, .field-input, .mono-input {
   background: var(--surface) !important;
   border: 1px solid var(--border) !important;
   color: var(--cream) !important;
-  font-family: 'Manrope', 'Noto Sans Thai', sans-serif !important;
+  font-family: 'Kanit', 'Kanit', sans-serif !important;
   border-radius: 2px !important;
   transition: all 0.2s !important;
 }
@@ -559,7 +559,7 @@ input::placeholder, textarea::placeholder {
 
 /* Section/group labels */
 [class*="label"], [style*="text-transform:uppercase"][style*="font-size:9"] {
-  font-family: 'JetBrains Mono', monospace !important;
+  font-family: 'Fira Code', monospace !important;
   letter-spacing: 3px !important;
   color: var(--paper-mute) !important;
 }
@@ -570,7 +570,7 @@ input::placeholder, textarea::placeholder {
   border: 1px solid var(--border) !important;
   color: var(--paper-mute) !important;
   border-radius: 2px !important;
-  font-family: 'JetBrains Mono', monospace !important;
+  font-family: 'Fira Code', monospace !important;
   letter-spacing: 1px !important;
   padding: 8px 12px !important;
   transition: all 0.2s !important;
@@ -601,7 +601,7 @@ input::placeholder, textarea::placeholder {
 .toast, [id*="toast"], [class*="toast"] {
   background: var(--em) !important;
   color: var(--bg) !important;
-  font-family: 'JetBrains Mono', monospace !important;
+  font-family: 'Fira Code', monospace !important;
   font-weight: 700 !important;
   letter-spacing: 2px !important;
   border-radius: 2px !important;
@@ -619,7 +619,7 @@ input::placeholder, textarea::placeholder {
   background: rgba(180, 70, 60, 0.08) !important;
   border-color: rgba(180, 70, 60, 0.3) !important;
   color: #ff9988 !important;
-  font-family: 'JetBrains Mono', monospace !important;
+  font-family: 'Fira Code', monospace !important;
   border-radius: 2px !important;
 }
 
@@ -640,7 +640,7 @@ pre[id*="json"], pre[id*="Out"] {
   background: var(--bg) !important;
   border: 1px solid var(--border) !important;
   color: var(--em-bright) !important;
-  font-family: 'JetBrains Mono', monospace !important;
+  font-family: 'Fira Code', monospace !important;
   border-radius: 2px !important;
 }
 
@@ -673,7 +673,7 @@ button[style*="border-radius:20px"], button[style*="border-radius: 20px"],
 
 /* Override emoji-styled headers to feel more editorial */
 h2, h3 {
-  font-family: 'Fraunces', serif !important;
+  font-family: 'Kanit', serif !important;
   font-weight: 400 !important;
   letter-spacing: -0.02em !important;
 }
@@ -1071,12 +1071,13 @@ html.light ::-webkit-scrollbar-thumb { background: #9fc4a8; }
   .tool-head .th-back:hover{border-color:var(--em);color:var(--em-bright)}
   .tool-head .th-info{flex:1;min-width:0}
   .tool-head .th-name{font-family:'Kanit',sans-serif;font-weight:800;font-size:16px;color:var(--paper)}
+  .tool-head .th-ic{width:26px;height:26px;object-fit:contain;vertical-align:-7px;margin-right:6px;filter:drop-shadow(0 0 5px rgba(83,230,109,0.4))}
   .tool-head .th-desc{font-size:12px;color:var(--paper-dim)}
   .tool-head .th-badge{background:var(--em-dim);color:var(--em-bright);border:1px solid var(--border-em);border-radius:999px;padding:4px 12px;font-family:'Fira Code',monospace;font-size:10px;letter-spacing:1px;white-space:nowrap}
   @media(max-width:600px){ .tool-head .th-desc{display:none} }
 </style>
 <div class="sec" id="t1" data-num="01">
-  <div class="tool-head"><button class="th-back" onclick="switchTool(0)">← Hub</button><div class="th-info"><div class="th-name">🧬 Visual DNA</div><div class="th-desc">สกัดสไตล์จากรูปอ้างอิง เป็น Prompt components</div></div><span class="th-badge">DEMO MODE</span></div>
+  <div class="tool-head"><button class="th-back" onclick="switchTool(0)">← Hub</button><div class="th-info"><div class="th-name"><img class="th-ic" src="/assets/icons/dna.png" alt="">Visual DNA</div><div class="th-desc">สกัดสไตล์จากรูปอ้างอิง เป็น Prompt components</div></div><span class="th-badge">DEMO MODE</span></div>
   <div style="max-width:1400px;margin:0 auto">
     <!-- Header -->
     <div style="text-align:center;margin-bottom:28px">
@@ -1181,14 +1182,14 @@ html.light ::-webkit-scrollbar-thumb { background: #9fc4a8; }
 
 <!-- ══ TOOL 2: PROMPT EDITOR ══ -->
 <div class="sec" id="t2" data-num="02">
-  <div class="tool-head"><button class="th-back" onclick="switchTool(0)">← Hub</button><div class="th-info"><div class="th-name">⌨️ Prompt Editor</div><div class="th-desc">แปลง/แก้ Prompt JSON ↔ ภาษาไทย และจัดรูปแบบ</div></div><span class="th-badge">DEMO MODE</span></div>
+  <div class="tool-head"><button class="th-back" onclick="switchTool(0)">← Hub</button><div class="th-info"><div class="th-name"><img class="th-ic" src="/assets/icons/editor.png" alt="">Prompt Editor</div><div class="th-desc">แปลง/แก้ Prompt JSON ↔ ภาษาไทย และจัดรูปแบบ</div></div><span class="th-badge">DEMO MODE</span></div>
   <div style="max-width:1600px;margin:0 auto">
     <!-- Header -->
     <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;margin-bottom:28px;border-bottom:1px solid rgba(34,197,94,0.15);padding-bottom:24px;gap:16px">
       <div style="display:flex;align-items:center;gap:16px">
-        <div style="background:#22c55e;padding:12px 14px;border-radius:18px;box-shadow:0 0 30px rgba(34,197,94,0.4);font-size:26px">⌨️</div>
+        <img src="/assets/icons/editor.png" alt="" style="width:64px;height:64px;object-fit:contain;filter:drop-shadow(0 0 12px rgba(83,230,109,0.5))">
         <div>
-          <h1 style="font-size:clamp(22px,4vw,40px);font-weight:900;letter-spacing:-2px;color:#4ade80;font-family:'Chakra Petch',sans-serif">JZ9 PROMPT EDITOR</h1>
+          <h1 style="font-size:clamp(22px,4vw,40px);font-weight:900;letter-spacing:-2px;color:#4ade80;font-family:'Kanit',sans-serif">JZ9 PROMPT EDITOR</h1>
           <div style="display:flex;align-items:center;gap:8px;margin-top:4px">
             <span style="font-size:8px;background:rgba(34,197,94,0.15);color:#22c55e;padding:2px 8px;border-radius:5px;border:1px solid rgba(34,197,94,0.25);font-weight:700;letter-spacing:3px;text-transform:uppercase">Learning AI Bridge</span>
             <span style="width:7px;height:7px;background:#22c55e;border-radius:50%;display:inline-block;animation:t1pulse 2s infinite"></span>
@@ -1254,7 +1255,7 @@ html.light ::-webkit-scrollbar-thumb { background: #9fc4a8; }
 
 <!-- ══ TOOL 3: GRAPHIC ══ -->
 <div class="sec" id="t3" data-num="03">
-  <div class="tool-head"><button class="th-back" onclick="switchTool(0)">← Hub</button><div class="th-info"><div class="th-name">🎨 Graphic Builder</div><div class="th-desc">สร้าง Prompt งานกราฟิก/โฆษณาแบบครบ พร้อมพรีวิว</div></div><span class="th-badge">DEMO MODE</span></div>
+  <div class="tool-head"><button class="th-back" onclick="switchTool(0)">← Hub</button><div class="th-info"><div class="th-name"><img class="th-ic" src="/assets/icons/graphic.png" alt="">Graphic Builder</div><div class="th-desc">สร้าง Prompt งานกราฟิก/โฆษณาแบบครบ พร้อมพรีวิว</div></div><span class="th-badge">DEMO MODE</span></div>
   <div style="max-width:1700px;margin:0 auto">
     <div id="t3-err"></div>
 
@@ -1263,7 +1264,7 @@ html.light ::-webkit-scrollbar-thumb { background: #9fc4a8; }
       <div style="display:flex;align-items:center;gap:16px;animation:t3float 4s ease-in-out infinite">
         <img src="/assets/icons/graphic.png" alt="Graphic Builder" style="width:64px;height:64px;object-fit:contain;display:block;filter:drop-shadow(0 0 12px rgba(83,230,109,0.5))">
         <div>
-          <h1 style="font-size:clamp(28px,5vw,54px);font-weight:900;font-family:'Chakra Petch',sans-serif;color:#fff;letter-spacing:-2px">JZ9<span style="color:#53E66D">_</span>GRAPHIC</h1>
+          <h1 style="font-size:clamp(28px,5vw,54px);font-weight:900;font-family:'Kanit',sans-serif;color:#fff;letter-spacing:-2px">JZ9<span style="color:#53E66D">_</span>GRAPHIC</h1>
           <div style="display:flex;align-items:center;gap:10px;margin-top:4px">
             <div style="height:3px;width:50px;background:#53E66D;border-radius:99px;box-shadow:0 0 8px #53E66D"></div>
             <p style="font-size:9px;color:#9ca9b8;font-family:'Fira Code',monospace;text-transform:uppercase;letter-spacing:4px;font-weight:700">Visual Master Engine v10.1</p>
@@ -1300,7 +1301,7 @@ html.light ::-webkit-scrollbar-thumb { background: #9fc4a8; }
         <!-- Visual Core -->
         <div class="t3-glass" style="padding:24px">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;border-bottom:1px solid #21262d;padding-bottom:14px">
-            <h2 style="font-size:15px;font-weight:700;font-family:'Chakra Petch',sans-serif;text-transform:uppercase;display:flex;align-items:center;gap:10px">
+            <h2 style="font-size:15px;font-weight:700;font-family:'Kanit',sans-serif;text-transform:uppercase;display:flex;align-items:center;gap:10px">
               <span style="color:#53E66D">[01]</span> VISUAL_CORE_CONFIG
             </h2>
             <div style="display:flex;align-items:center;gap:16px">
@@ -1393,11 +1394,11 @@ html.light ::-webkit-scrollbar-thumb { background: #9fc4a8; }
             </label>
             <div id="t3-fontList" style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px">
               <div class="t3-fc on" data-font="None/Auto"><div style="padding:10px;font-size:9px;opacity:0.4;font-weight:700;font-family:'Fira Code',monospace;color:#e6edf3">AUTO</div></div>
-              <div class="t3-fc" data-font="TH_CLEAN_UI"><div style="padding:10px;font-family:'Sarabun';font-size:12px;color:#e6edf3">สะอาดตา</div></div>
+              <div class="t3-fc" data-font="TH_CLEAN_UI"><div style="padding:10px;font-family:'Kanit';font-size:12px;color:#e6edf3">สะอาดตา</div></div>
               <div class="t3-fc" data-font="TH_PROMO_BOLD"><div style="padding:10px;font-family:'Kanit';font-weight:700;font-size:12px;color:#e6edf3">พาดหัวแรง</div></div>
-              <div class="t3-fc" data-font="TH_ROUNDED_FRIENDLY"><div style="padding:10px;font-family:'Mitr';font-size:12px;color:#e6edf3">เป็นกันเอง</div></div>
-              <div class="t3-fc" data-font="TH_LUXE_SERIF"><div style="padding:10px;font-family:'Noto Serif Thai';font-size:12px;color:#e6edf3">หรูหรา</div></div>
-              <div class="t3-fc" data-font="MIX_CLEAN_GLOBAL"><div style="padding:10px;font-family:'Sarabun';font-size:10px;color:#e6edf3">Global Mix</div></div>
+              <div class="t3-fc" data-font="TH_ROUNDED_FRIENDLY"><div style="padding:10px;font-family:'Kanit';font-size:12px;color:#e6edf3">เป็นกันเอง</div></div>
+              <div class="t3-fc" data-font="TH_LUXE_SERIF"><div style="padding:10px;font-family:'Kanit';font-size:12px;color:#e6edf3">หรูหรา</div></div>
+              <div class="t3-fc" data-font="MIX_CLEAN_GLOBAL"><div style="padding:10px;font-family:'Kanit';font-size:10px;color:#e6edf3">Global Mix</div></div>
               <div class="t3-fc" data-font="MIX_PROMO_IMPACT"><div style="padding:10px;font-family:'Kanit';font-weight:700;font-size:10px;color:#e6edf3">PROMO IMPACT</div></div>
             </div>
           </div>
@@ -1517,7 +1518,7 @@ html.light ::-webkit-scrollbar-thumb { background: #9fc4a8; }
 
 <!-- ══ TOOL 4: RESIZE PROMPT GENERATOR ══ -->
 <div class="sec" id="t4" data-num="04">
-  <div class="tool-head"><button class="th-back" onclick="switchTool(0)">← Hub</button><div class="th-info"><div class="th-name">📐 Smart Resize</div><div class="th-desc">กำหนดขนาดใหม่ + สร้าง Prompt จัดวางองค์ประกอบให้พอดี</div></div><span class="th-badge">DEMO MODE</span></div>
+  <div class="tool-head"><button class="th-back" onclick="switchTool(0)">← Hub</button><div class="th-info"><div class="th-name"><img class="th-ic" src="/assets/icons/resize.png" alt="">Smart Resize</div><div class="th-desc">กำหนดขนาดใหม่ + สร้าง Prompt จัดวางองค์ประกอบให้พอดี</div></div><span class="th-badge">DEMO MODE</span></div>
   <style>
     #t4 .t4-grid{display:grid;grid-template-columns:minmax(300px,1fr) minmax(320px,1.25fr);gap:18px;align-items:start;max-width:1400px;margin:0 auto}
     @media(max-width:880px){ #t4 .t4-grid{grid-template-columns:1fr} }
@@ -1616,7 +1617,7 @@ html.light ::-webkit-scrollbar-thumb { background: #9fc4a8; }
 
 <!-- ══ TOOL 5: UNIVERSAL GRAPHIC PROMPT BUILDER ══ -->
 <div class="sec" id="t5" data-num="05">
-  <div class="tool-head"><button class="th-back" onclick="switchTool(0)">← Hub</button><div class="th-info"><div class="th-name">🧠 Prompt Builder</div><div class="th-desc">แนบรูป → วิเคราะห์ → กรอกฟอร์ม → ได้ Prompt อัตโนมัติ</div></div><span class="th-badge">DEMO MODE</span></div>
+  <div class="tool-head"><button class="th-back" onclick="switchTool(0)">← Hub</button><div class="th-info"><div class="th-name"><img class="th-ic" src="/assets/icons/builder.png" alt="">Prompt Builder</div><div class="th-desc">แนบรูป → วิเคราะห์ → กรอกฟอร์ม → ได้ Prompt อัตโนมัติ</div></div><span class="th-badge">DEMO MODE</span></div>
   <div style="max-width:1400px;margin:0 auto">
     <!-- Header -->
     <div style="text-align:center;margin-bottom:24px">

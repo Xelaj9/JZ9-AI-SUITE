@@ -3,7 +3,7 @@
    Unified with the Studio identity: Editorial Dark · Emerald/Lime ·
    matrix rain · Fraunces headlines · JetBrains Mono labels.
    ════════════════════════════════════════════════════════════════ */
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..900&family=Manrope:wght@300..800&family=JetBrains+Mono:wght@300..700&family=Noto+Sans+Thai:wght@200..800&family=Fira+Code:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Kanit:wght@300;400;500;600;700;800;900&display=swap');
 
 :root {
   /* base (from Studio) */
@@ -32,9 +32,9 @@
   --jz-shadow: 0 16px 50px rgba(0,0,0,0.5);
   --jz-glow: 0 0 32px rgba(83,230,109,0.22);
 
-  --jz-font: 'Manrope', 'Noto Sans Thai', sans-serif;
-  --jz-serif: 'Fraunces', 'Noto Sans Thai', serif;
-  --jz-mono: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+  --jz-font: 'Kanit', sans-serif;
+  --jz-serif: 'Kanit', sans-serif;
+  --jz-mono: 'Fira Code', ui-monospace, monospace;
 }
 
 * { box-sizing: border-box; }
