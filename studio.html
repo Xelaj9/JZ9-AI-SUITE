@@ -1095,9 +1095,16 @@ html.light ::-webkit-scrollbar-thumb { background: #9fc4a8; }
 
     <div id="t1-error" style="display:none;margin-bottom:16px;padding:14px;background:rgba(127,29,29,0.25);border:1px solid rgba(239,68,68,0.35);color:#f87171;border-radius:14px;font-size:11px;font-family:'Fira Code',monospace"></div>
 
-    <div style="display:grid;grid-template-columns:minmax(280px,1fr) minmax(280px,2fr);gap:20px;align-items:start">
-      <!-- LEFT -->
-      <div style="display:flex;flex-direction:column;gap:14px">
+    <style>
+      #t1 .dna3{display:grid;grid-template-columns:1fr;gap:16px;align-items:start}
+      @media(min-width:980px){ #t1 .dna3{grid-template-columns:0.9fr 1.1fr 1fr} }
+      #t1 .dna-col{display:flex;flex-direction:column;gap:14px}
+      #t1 .dna-ct{font-family:'Fira Code',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--em);margin-bottom:2px}
+    </style>
+    <div class="dna3">
+      <!-- COL 1: UPLOAD REFERENCE -->
+      <div class="dna-col">
+        <div class="dna-ct">① อัปโหลดรูปอ้างอิง</div>
         <div class="t1-card">
           <div class="t1-label">📤 Source Engine</div>
           <label style="display:block;cursor:pointer">
@@ -1122,44 +1129,24 @@ html.light ::-webkit-scrollbar-thumb { background: #9fc4a8; }
         </div>
       </div>
 
-      <!-- RIGHT -->
-      <div style="display:flex;flex-direction:column;gap:14px">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
-          <!-- Simulation -->
-          <div class="t1-card" style="min-height:300px;display:flex;flex-direction:column">
-            <div class="t1-label">🎭 Style Simulation</div>
-            <div id="t1-simBox" style="flex:1;background:#000;border-radius:12px;border:1px solid #1a1a1a;overflow:hidden;display:flex;align-items:center;justify-content:center;min-height:230px">
-              <div id="t1-simPlaceholder" style="text-align:center;opacity:0.12;color:#fff">
-                <div style="font-size:44px;margin-bottom:6px">🖼️</div>
-                <p style="font-size:8px;font-family:'Fira Code',monospace;letter-spacing:2px;text-transform:uppercase">Awaiting Simulation</p>
-              </div>
-              <div id="t1-simLoader" style="display:none;text-align:center;color:#22c55e">
-                <div style="font-size:28px;margin-bottom:6px;animation:t1pulse 1s infinite">⏳</div>
-                <p style="font-size:8px;font-family:'Fira Code',monospace;letter-spacing:2px;text-transform:uppercase">Rendering...</p>
-              </div>
-              <img id="t1-simImg" src="" style="display:none;width:100%;height:100%;object-fit:cover">
+      <!-- COL 2: ANALYSIS RESULT -->
+      <div class="dna-col">
+        <div class="dna-ct">② ผลวิเคราะห์ DNA</div>
+        <div class="t1-card" style="min-height:300px;display:flex;flex-direction:column;background:#000">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+            <div style="display:flex;gap:5px">
+              <div style="width:7px;height:7px;border-radius:50%;background:rgba(34,197,94,0.4);animation:t1pulse 2s infinite"></div>
+              <div style="width:7px;height:7px;border-radius:50%;background:#1a1a1a"></div>
             </div>
-            <button id="t1-regenBtn" onclick="t1Regen()" style="display:none;margin-top:8px;background:none;border:none;cursor:pointer;font-size:9px;color:#22c55e;text-align:right;text-transform:uppercase;letter-spacing:2px;font-family:'Fira Code',monospace">🔄 RE-GENERATE</button>
+            <button id="t1-copyJson" onclick="t1CopyJson()" style="display:none;background:none;border:none;cursor:pointer;font-size:9px;color:#22c55e;font-family:'Fira Code',monospace;text-transform:uppercase;letter-spacing:1px">📋 COPY_DNA_JSON</button>
           </div>
-
-          <!-- JSON Output -->
-          <div class="t1-card" style="min-height:300px;display:flex;flex-direction:column;background:#000">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-              <div style="display:flex;gap:5px">
-                <div style="width:7px;height:7px;border-radius:50%;background:rgba(34,197,94,0.4);animation:t1pulse 2s infinite"></div>
-                <div style="width:7px;height:7px;border-radius:50%;background:#1a1a1a"></div>
-              </div>
-              <button id="t1-copyJson" onclick="t1CopyJson()" style="display:none;background:none;border:none;cursor:pointer;font-size:9px;color:#22c55e;font-family:'Fira Code',monospace;text-transform:uppercase;letter-spacing:1px">📋 COPY_DNA_JSON</button>
-            </div>
-            <div id="t1-jsonOut" style="flex:1;overflow-y:auto;max-height:240px">
-              <pre id="t1-jsonPre" style="font-size:9px;font-family:'Fira Code',monospace;color:rgba(74,222,128,0.75);line-height:1.5;white-space:pre-wrap;word-break:break-all;display:none"></pre>
-              <div id="t1-jsonStandby" style="height:100%;display:flex;align-items:center;justify-content:center;color:#1a1a1a;font-family:'Fira Code',monospace;font-size:8px;letter-spacing:4px;font-style:italic">// SYSTEM_STANDBY</div>
-            </div>
+          <div id="t1-jsonOut" style="flex:1;overflow-y:auto;max-height:300px">
+            <pre id="t1-jsonPre" style="font-size:9px;font-family:'Fira Code',monospace;color:rgba(74,222,128,0.75);line-height:1.5;white-space:pre-wrap;word-break:break-all;display:none"></pre>
+            <div id="t1-jsonStandby" style="height:100%;display:flex;align-items:center;justify-content:center;color:#1a1a1a;font-family:'Fira Code',monospace;font-size:8px;letter-spacing:4px;font-style:italic">// SYSTEM_STANDBY</div>
           </div>
         </div>
 
-        <!-- Color / Style cards -->
-        <div id="t1-cards" style="display:none;grid-template-columns:1fr 1fr 1fr;gap:12px">
+        <div id="t1-cards" style="display:none;grid-template-columns:1fr;gap:12px">
           <div class="t1-small-card">
             <div class="t1-label" style="margin-bottom:10px">🎨 Color Tone</div>
             <div id="t1-colors" style="display:flex;flex-wrap:wrap;gap:6px"></div>
@@ -1173,6 +1160,26 @@ html.light ::-webkit-scrollbar-thumb { background: #9fc4a8; }
             <div class="t1-label" style="margin-bottom:10px">🎭 Art Technique</div>
             <p id="t1-art" style="font-size:10px;font-family:'Fira Code',monospace;color:#9aa39c;line-height:1.6;border-left:2px solid rgba(34,197,94,0.2);padding-left:8px;margin:0"></p>
           </div>
+        </div>
+      </div>
+
+      <!-- COL 3: STYLE DNA PREVIEW -->
+      <div class="dna-col">
+        <div class="dna-ct">③ ตัวอย่างสไตล์</div>
+        <div class="t1-card" style="min-height:300px;display:flex;flex-direction:column">
+          <div class="t1-label">🎭 Style Simulation</div>
+          <div id="t1-simBox" style="flex:1;background:#000;border-radius:12px;border:1px solid #1a1a1a;overflow:hidden;display:flex;align-items:center;justify-content:center;min-height:280px">
+            <div id="t1-simPlaceholder" style="text-align:center;opacity:0.12;color:#fff">
+              <div style="font-size:44px;margin-bottom:6px">🖼️</div>
+              <p style="font-size:8px;font-family:'Fira Code',monospace;letter-spacing:2px;text-transform:uppercase">Awaiting Simulation</p>
+            </div>
+            <div id="t1-simLoader" style="display:none;text-align:center;color:#22c55e">
+              <div style="font-size:28px;margin-bottom:6px;animation:t1pulse 1s infinite">⏳</div>
+              <p style="font-size:8px;font-family:'Fira Code',monospace;letter-spacing:2px;text-transform:uppercase">Rendering...</p>
+            </div>
+            <img id="t1-simImg" src="" style="display:none;width:100%;height:100%;object-fit:cover">
+          </div>
+          <button id="t1-regenBtn" onclick="t1Regen()" style="display:none;margin-top:8px;background:none;border:none;cursor:pointer;font-size:9px;color:#22c55e;text-align:right;text-transform:uppercase;letter-spacing:2px;font-family:'Fira Code',monospace">🔄 RE-GENERATE</button>
         </div>
       </div>
     </div>
