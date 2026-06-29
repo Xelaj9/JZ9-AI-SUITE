@@ -30,7 +30,7 @@
       canvas.style.width = window.innerWidth + "px";
       canvas.style.height = window.innerHeight + "px";
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      ctx.fillStyle = "#050807";
+      ctx.fillStyle = "#050B07";
       ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
       cols = Math.ceil(window.innerWidth / FONT);
       drops = [];
@@ -51,9 +51,9 @@
       ctx.textBaseline = "top";
       for (var i = 0; i < cols; i++) {
         var x = i * FONT, y = drops[i] * FONT;
-        ctx.fillStyle = "rgba(184,255,0,0.38)";
+        ctx.fillStyle = "rgba(83,230,109,0.34)";
         ctx.fillText(glyphs[(Math.random() * glyphs.length) | 0], x, y);
-        ctx.fillStyle = "rgba(122,180,0,0.10)";
+        ctx.fillStyle = "rgba(47,174,71,0.10)";
         ctx.fillText(glyphs[(Math.random() * glyphs.length) | 0], x, y - FONT);
         if (y > window.innerHeight && Math.random() > 0.975) drops[i] = Math.random() * -20;
         drops[i] += 1;
