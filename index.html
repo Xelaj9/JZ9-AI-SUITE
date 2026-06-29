@@ -49,8 +49,9 @@
       <a class="jz-logo" href="/"><span class="jz-logo-badge">JZ9</span> JZ9suite</a>
       <div class="jz-row">
         <a class="jz-btn jz-btn-ghost" href="#features">ฟีเจอร์</a>
-        <a class="jz-btn jz-btn-ghost" href="/studio">🎨 Studio</a>
-        <a class="jz-btn jz-btn-primary" id="navCta" href="/login">เข้าสู่ระบบ</a>
+        <a class="jz-btn jz-btn-ghost" id="navStudio" href="/studio" style="display:none">🎨 Studio</a>
+        <a class="jz-btn jz-btn-ghost" id="navLogin" href="/login">เข้าสู่ระบบ</a>
+        <a class="jz-btn jz-btn-primary" id="navCta" href="/login?signup">สมัครสมาชิก</a>
       </div>
     </div>
   </nav>
@@ -63,9 +64,10 @@
       <h1>จัดการ <span class="grad">Prompt และไอเดียงานครีเอทีฟ</span> ของคุณในที่เดียว</h1>
       <p>สร้าง เก็บ ค้นหา แนบรูป และนำ Prompt กลับมาใช้ซ้ำได้อย่างเป็นระบบ — เหมาะกับงานโฆษณา ร้านอาหาร เกม โปรโมชัน และโซเชียลมีเดีย</p>
       <div class="hero-cta">
-        <a class="jz-btn jz-btn-primary" id="heroCta" href="/login">🚀 เริ่มใช้งานฟรี</a>
-        <a class="jz-btn" href="/studio">ลองใช้ Studio</a>
+        <a class="jz-btn jz-btn-primary" id="heroCta" href="/login?signup">🚀 สมัครสมาชิกฟรี</a>
+        <a class="jz-btn" id="heroLogin" href="/login">เข้าสู่ระบบ</a>
       </div>
+      <p style="font-size:13px;margin-top:14px;color:var(--jz-text-mute)">ต้องเข้าสู่ระบบก่อนจึงจะใช้เครื่องมือและคลัง Prompt ได้</p>
     </div>
   </header>
 
@@ -138,17 +140,24 @@
   <script src="/assets/js/supabase.js"></script>
   <script src="/assets/js/auth.js"></script>
   <script>
-    // make CTAs auth-aware: logged in → dashboard, else → login
+    // make CTAs auth-aware
     (async function(){
       try {
         var session = await window.JZ9.auth.getSession();
+        function set(id, txt, href){ var el=document.getElementById(id); if(el){ el.textContent=txt; el.href=href; } }
+        function show(id, on){ var el=document.getElementById(id); if(el) el.style.display = on ? "" : "none"; }
         if (session) {
-          ["navCta","heroCta","bottomCta"].forEach(function(id){
-            var el = document.getElementById(id); if (!el) return;
-            el.href = "/app/dashboard";
-            if (id==="navCta") el.textContent = "📊 Dashboard";
-            else el.textContent = "ไปที่ Dashboard →";
-          });
+          // logged in: show Studio + Dashboard, hide login/signup
+          show("navStudio", true);
+          show("navLogin", false);
+          set("navCta", "📊 Dashboard", "/app/dashboard");
+          set("heroCta", "เปิด Studio", "/studio");
+          set("heroLogin", "ไปที่ Dashboard →", "/app/dashboard");
+          set("bottomCta", "ไปที่ Dashboard →", "/app/dashboard");
+        } else {
+          // logged out: keep login/signup CTAs
+          show("navStudio", false);
+          set("bottomCta", "🚀 สมัครสมาชิกฟรี", "/login?signup");
         }
       } catch(e){}
     })();
