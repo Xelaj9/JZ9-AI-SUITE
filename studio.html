@@ -1023,13 +1023,16 @@ html.light ::-webkit-scrollbar-thumb { background: #9fc4a8; }
 <style>
   #t0 .hub-wrap{max-width:1080px;margin:0 auto;padding:6px 0 20px}
   #t0 .hub-hero{text-align:center;margin-bottom:30px}
-  #t0 .hub-grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
-  #t0 .hub-card{background:var(--surface-glass);border:1px solid var(--border);border-radius:16px;padding:22px;display:flex;flex-direction:column;gap:10px;cursor:pointer;transition:all .18s;backdrop-filter:blur(8px)}
-  #t0 .hub-card:hover{border-color:var(--em);transform:translateY(-3px);box-shadow:var(--em-glow)}
-  #t0 .hub-ic{font-size:30px}
-  #t0 .hub-name{font-size:17px;font-weight:800;color:var(--paper);font-family:'Kanit',sans-serif}
-  #t0 .hub-desc{font-size:13px;color:var(--paper-dim);line-height:1.6;flex:1}
-  #t0 .hub-go{align-self:flex-start;background:var(--em);color:#052B10;font-weight:800;font-family:'Fira Code',monospace;font-size:11px;letter-spacing:1px;padding:9px 16px;border-radius:10px;border:none;cursor:pointer}
+  #t0 .hub-grid{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+  #t0 .hub-card{background:linear-gradient(160deg,rgba(16,29,20,0.85),rgba(8,16,11,0.85));border:1px solid var(--border);border-radius:22px;padding:26px 24px;display:flex;flex-direction:column;gap:14px;cursor:pointer;transition:all .2s;backdrop-filter:blur(8px);position:relative;overflow:hidden}
+  #t0 .hub-card::after{content:"";position:absolute;inset:0;border-radius:22px;box-shadow:inset 0 0 60px rgba(83,230,109,0.05);pointer-events:none}
+  #t0 .hub-card:hover{border-color:var(--em);transform:translateY(-5px);box-shadow:0 0 0 1px var(--em),0 18px 46px rgba(83,230,109,0.28)}
+  #t0 .hub-ic{width:60px;height:60px;color:var(--em);filter:drop-shadow(0 0 12px rgba(83,230,109,0.5))}
+  #t0 .hub-ic svg{width:100%;height:100%;display:block}
+  #t0 .hub-name{font-size:20px;font-weight:800;color:var(--paper);font-family:'Kanit',sans-serif}
+  #t0 .hub-desc{font-size:13.5px;color:var(--paper-dim);line-height:1.65;flex:1}
+  #t0 .hub-go{align-self:stretch;text-align:center;background:rgba(83,230,109,0.10);color:var(--em-bright);font-weight:800;font-family:'Kanit',sans-serif;font-size:14px;letter-spacing:0.5px;padding:11px 16px;border-radius:999px;border:1px solid var(--border-em);cursor:pointer;transition:all .18s;margin-top:4px}
+  #t0 .hub-go:hover{background:var(--em);color:#052B10;box-shadow:0 0 24px rgba(83,230,109,0.4)}
   #t0 .hub-tpl{background:rgba(0,0,0,0.25);border:1px solid var(--border);border-radius:12px;padding:12px 14px;font-size:12px;color:var(--paper-dim);font-family:'Fira Code',monospace}
 </style>
 <div class="sec on" id="t0" data-num="00">
@@ -1040,11 +1043,11 @@ html.light ::-webkit-scrollbar-thumb { background: #9fc4a8; }
       <p style="color:var(--paper-dim);font-size:15px">สร้าง วิเคราะห์ จัดเก็บ และนำ Prompt งานกราฟิกกลับมาใช้ซ้ำได้ในที่เดียว</p>
     </div>
     <div class="hub-grid">
-      <div class="hub-card" onclick="switchTool(1)"><div class="hub-ic">🧬</div><div class="hub-name">Visual DNA</div><div class="hub-desc">สกัดสไตล์จากรูปอ้างอิง — สี โทน ฟอนต์ องค์ประกอบ เป็น Prompt components</div><button class="hub-go" onclick="event.stopPropagation();switchTool(1)">เปิดเครื่องมือ →</button></div>
-      <div class="hub-card" onclick="switchTool(3)"><div class="hub-ic">🎨</div><div class="hub-name">Graphic Builder</div><div class="hub-desc">สร้าง Prompt งานกราฟิก/โฆษณาแบบครบ พร้อมพรีวิว</div><button class="hub-go" onclick="event.stopPropagation();switchTool(3)">เปิดเครื่องมือ →</button></div>
-      <div class="hub-card" onclick="switchTool(4)"><div class="hub-ic">📐</div><div class="hub-name">Smart Resize</div><div class="hub-desc">กำหนดขนาดใหม่ + สร้าง Prompt จัดวางองค์ประกอบให้พอดี</div><button class="hub-go" onclick="event.stopPropagation();switchTool(4)">เปิดเครื่องมือ →</button></div>
-      <div class="hub-card" onclick="switchTool(2)"><div class="hub-ic">⌨️</div><div class="hub-name">Prompt Editor</div><div class="hub-desc">แปลง/แก้ Prompt JSON ↔ ภาษาไทย และจัดรูปแบบ</div><button class="hub-go" onclick="event.stopPropagation();switchTool(2)">เปิดเครื่องมือ →</button></div>
-      <div class="hub-card" onclick="switchTool(5)"><div class="hub-ic">🧠</div><div class="hub-name">Prompt Builder</div><div class="hub-desc">แนบรูป → วิเคราะห์ → กรอกฟอร์ม → ได้ Prompt อัตโนมัติ</div><button class="hub-go" onclick="event.stopPropagation();switchTool(5)">เปิดเครื่องมือ →</button></div>
+      <div class="hub-card" onclick="switchTool(1)"><div class="hub-ic"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M22 8c0 14 20 14 20 24S22 46 22 56"/><path d="M42 8c0 14-20 14-20 24s20 10 20 24"/><path d="M24 15h16M22 24h20M22 40h20M24 49h16"/></svg></div><div class="hub-name">Visual DNA</div><div class="hub-desc">สกัดสไตล์จากรูปอ้างอิง — สี โทน ฟอนต์ องค์ประกอบ เป็น Prompt components</div><button class="hub-go" onclick="event.stopPropagation();switchTool(1)">เปิดเครื่องมือ →</button></div>
+      <div class="hub-card" onclick="switchTool(3)"><div class="hub-ic"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round"><path d="M32 9C19 9 9 18 9 30c0 9 7 15 15 15 4 0 5-3 8-3s3 4 9 4c10 0 14-8 14-17C55 17 45 9 32 9Z"/><circle cx="21" cy="27" r="2.4" fill="currentColor" stroke="none"/><circle cx="29" cy="20" r="2.4" fill="currentColor" stroke="none"/><circle cx="40" cy="21" r="2.4" fill="currentColor" stroke="none"/><circle cx="45" cy="31" r="2.4" fill="currentColor" stroke="none"/></svg></div><div class="hub-name">Graphic Builder</div><div class="hub-desc">สร้าง Prompt งานกราฟิก/โฆษณาแบบครบ พร้อมพรีวิว</div><button class="hub-go" onclick="event.stopPropagation();switchTool(3)">เปิดเครื่องมือ →</button></div>
+      <div class="hub-card" onclick="switchTool(4)"><div class="hub-ic"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"><path d="M14 12v38h38z"/><path d="M14 24h7M14 33h7M14 42h7"/></svg></div><div class="hub-name">Smart Resize</div><div class="hub-desc">กำหนดขนาดใหม่ + สร้าง Prompt จัดวางองค์ประกอบให้พอดี</div><button class="hub-go" onclick="event.stopPropagation();switchTool(4)">เปิดเครื่องมือ →</button></div>
+      <div class="hub-card" onclick="switchTool(2)"><div class="hub-ic"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="18" width="50" height="28" rx="5"/><path d="M15 27h2M23 27h2M31 27h2M39 27h2M47 27h2M15 35h2M23 35h2M39 35h2M47 35h2M23 41h18"/></svg></div><div class="hub-name">Prompt Editor</div><div class="hub-desc">แปลง/แก้ Prompt JSON ↔ ภาษาไทย และจัดรูปแบบ</div><button class="hub-go" onclick="event.stopPropagation();switchTool(2)">เปิดเครื่องมือ →</button></div>
+      <div class="hub-card" onclick="switchTool(5)"><div class="hub-ic"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M32 13c-4-3-11-2-12 5-6 1-7 8-3 11-3 4 0 10 5 10 0 5 7 7 10 3 3 4 10 2 10-3 5 0 8-6 5-10 4-3 3-10-3-11-1-7-8-8-12-5Z"/><path d="M32 13v37"/><path d="M20 29h6M38 29h6M24 40h4"/></svg></div><div class="hub-name">Prompt Builder</div><div class="hub-desc">แนบรูป → วิเคราะห์ → กรอกฟอร์ม → ได้ Prompt อัตโนมัติ</div><button class="hub-go" onclick="event.stopPropagation();switchTool(5)">เปิดเครื่องมือ →</button></div>
     </div>
     <div style="margin-top:24px">
       <div class="t1-tag" style="margin-bottom:10px">📋 DEMO TEMPLATES</div>
