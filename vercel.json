@@ -3,5 +3,8 @@
   "trailingSlash": false,
   "functions": {
     "api/proxy.js": { "maxDuration": 60 }
-  }
+  },
+  "rewrites": [
+    { "source": "/demo", "destination": "/studio" }
+  ]
 }
