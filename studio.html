@@ -7,8 +7,9 @@
    on the Supabase session token; full validation happens in auth.js below. */
 (function(){
   try{
+    var demo = location.pathname.indexOf('/demo') === 0;   // public demo, no login required
     var authed = Object.keys(localStorage).some(function(k){ return /^sb-.+-auth-token$/.test(k) && localStorage.getItem(k); });
-    if(!authed){ location.replace('/login'); }
+    if(!authed && !demo){ location.replace('/login'); }
   }catch(e){}
 })();
 </script>
@@ -3262,7 +3263,9 @@ document.getElementById('t3-execBtn').addEventListener('click', async () => {
     if (!acct) return;
     try {
       var session = await window.JZ9.auth.getSession();
+      var demo = location.pathname.indexOf('/demo') === 0;
       if (session) { acct.textContent = '📊 Dashboard'; acct.href = '/app/dashboard'; }
+      else if (demo) { acct.textContent = '✨ สมัครฟรีเพื่อบันทึกงาน'; acct.href = '/login'; }
       else { location.replace('/login'); }   // enforce login (handles stale token)
     } catch(e){}
   })();
