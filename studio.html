@@ -1640,6 +1640,29 @@ html.light ::-webkit-scrollbar-thumb { background: #9fc4a8; }
 
     <div id="t5-error" style="display:none;margin-bottom:16px;padding:14px;background:rgba(127,29,29,0.25);border:1px solid rgba(239,68,68,0.35);color:#f87171;border-radius:14px;font-size:11px;font-family:'Fira Code',monospace"></div>
 
+    <!-- STEPPER -->
+    <style>
+      #t5 .t5-stepper{display:flex;flex-wrap:wrap;gap:6px;background:var(--surface-glass);border:1px solid var(--border);border-radius:14px;padding:10px;margin-bottom:16px;backdrop-filter:blur(8px)}
+      #t5 .t5-step{flex:1;min-width:120px;display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:10px;cursor:pointer;transition:all .15s;background:rgba(0,0,0,0.2);border:1px solid transparent}
+      #t5 .t5-step:hover{border-color:var(--em);background:var(--em-soft)}
+      #t5 .t5-step .num{width:22px;height:22px;flex-shrink:0;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--em);color:#052B10;font-weight:800;font-family:'Fira Code',monospace;font-size:11px}
+      #t5 .t5-step .lbl{font-size:11px;font-weight:700;font-family:'Kanit',sans-serif;color:var(--paper);line-height:1.1}
+      #t5 .t5-step .sub{font-size:9px;color:var(--paper-mute);font-family:'Fira Code',monospace}
+      @media(max-width:760px){ #t5 .t5-step .sub{display:none} #t5 .t5-step{min-width:0;flex-basis:30%} }
+    </style>
+    <div class="t5-stepper">
+      <div class="t5-step" onclick="t5Step('t5-styleDrop')"><span class="num">1</span><div><div class="lbl">แนบรูป</div><div class="sub">Reference</div></div></div>
+      <div class="t5-step" onclick="t5Step('t5-analyzeBtn')"><span class="num">2</span><div><div class="lbl">วิเคราะห์</div><div class="sub">Analyze</div></div></div>
+      <div class="t5-step" onclick="t5Step('t5-presetSel')"><span class="num">3</span><div><div class="lbl">เลือก Preset</div><div class="sub">Preset</div></div></div>
+      <div class="t5-step" onclick="t5Step('t5-projectType')"><span class="num">4</span><div><div class="lbl">กรอกข้อมูล</div><div class="sub">Content</div></div></div>
+      <div class="t5-step" onclick="t5Step('gen')"><span class="num">5</span><div><div class="lbl">สร้าง Prompt</div><div class="sub">Generate</div></div></div>
+      <div class="t5-step" onclick="t5Step('t5-outputCard')"><span class="num">6</span><div><div class="lbl">บันทึก/คัดลอก</div><div class="sub">Save/Copy</div></div></div>
+    </div>
+    <script>
+      function t5Step(t){ var el; if(t==='gen'){ el=document.querySelector('#t5 [onclick="t5GeneratePrompt()"]'); } else { el=document.getElementById(t); }
+        if(el){ el.scrollIntoView({behavior:'smooth',block:'center'}); if(/INPUT|SELECT|TEXTAREA/.test(el.tagName)){ try{el.focus({preventScroll:true});}catch(e){} } } }
+    </script>
+
     <!-- HOW TO USE -->
     <div class="t1-card" style="margin-bottom:16px;border-color:rgba(34,197,94,0.25)">
       <div style="display:flex;justify-content:space-between;align-items:center;cursor:pointer" onclick="t5ToggleHelp()">
