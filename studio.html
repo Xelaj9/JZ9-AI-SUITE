@@ -1072,6 +1072,12 @@ html.light ::-webkit-scrollbar-thumb { background: #9fc4a8; }
   .tool-head .th-info{flex:1;min-width:0}
   .tool-head .th-name{font-family:'Kanit',sans-serif;font-weight:800;font-size:16px;color:var(--paper)}
   .tool-head .th-ic{width:26px;height:26px;object-fit:contain;vertical-align:-7px;margin-right:6px;filter:drop-shadow(0 0 5px rgba(83,230,109,0.4))}
+  .tool-hero{text-align:center;max-width:780px;margin:0 auto 28px;padding-bottom:24px;border-bottom:1px solid var(--border)}
+  .tool-hero-ic{width:84px;height:84px;object-fit:contain;margin:0 auto 12px;display:block;filter:drop-shadow(0 0 16px rgba(83,230,109,0.5))}
+  .tool-hero-tag{display:inline-block;padding:3px 14px;background:var(--em-soft);color:var(--em-bright);border:1px solid var(--border-em);border-radius:999px;font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;font-family:'Fira Code',monospace;margin-bottom:10px}
+  .tool-hero-h1{font-size:clamp(26px,5vw,44px);font-weight:900;background:linear-gradient(to right,var(--em-bright),var(--em),var(--em-deep));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-1px;margin:0 0 8px;font-family:'Kanit',sans-serif}
+  .tool-hero-sub{color:var(--paper-dim);font-size:14px;margin:0;font-style:italic;max-width:620px;margin-left:auto;margin-right:auto}
+  .tool-hero-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:16px}
   .tool-head .th-desc{font-size:12px;color:var(--paper-dim)}
   .tool-head .th-badge{background:var(--em-dim);color:var(--em-bright);border:1px solid var(--border-em);border-radius:999px;padding:4px 12px;font-family:'Fira Code',monospace;font-size:10px;letter-spacing:1px;white-space:nowrap}
   @media(max-width:600px){ .tool-head .th-desc{display:none} }
@@ -1080,11 +1086,11 @@ html.light ::-webkit-scrollbar-thumb { background: #9fc4a8; }
   <div class="tool-head"><button class="th-back" onclick="switchTool(0)">← Hub</button><div class="th-info"><div class="th-name"><img class="th-ic" src="/assets/icons/dna.png" alt="">Visual DNA</div><div class="th-desc">สกัดสไตล์จากรูปอ้างอิง เป็น Prompt components</div></div><span class="th-badge">DEMO MODE</span></div>
   <div style="max-width:1400px;margin:0 auto">
     <!-- Header -->
-    <div style="text-align:center;margin-bottom:28px">
-      <img src="/assets/icons/dna.png" alt="Visual DNA" style="width:84px;height:84px;object-fit:contain;margin:0 auto 10px;display:block;filter:drop-shadow(0 0 14px rgba(83,230,109,0.5))">
-      <div class="t1-tag" style="margin-bottom:10px">JZ9 Visual DNA Protocol</div>
-      <h1 style="font-size:clamp(24px,5vw,44px);font-weight:900;background:linear-gradient(to right,#4ade80,#22c55e,#16a34a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-1px;margin-bottom:6px">JZ9 Visual DNA Extractor</h1>
-      <p style="color:#9aa39c;font-size:14px;font-style:italic">สกัด DNA สไตล์ภาพ เพื่อสร้าง Prompt Components ที่สมบูรณ์แบบ</p>
+    <div class="tool-hero">
+      <img class="tool-hero-ic" src="/assets/icons/dna.png" alt="">
+      <div class="tool-hero-tag">JZ9 Visual DNA</div>
+      <h1 class="tool-hero-h1">Visual DNA</h1>
+      <p class="tool-hero-sub">สกัด DNA สไตล์ภาพ เพื่อสร้าง Prompt Components ที่สมบูรณ์แบบ</p>
     </div>
 
     <div id="t1-error" style="display:none;margin-bottom:16px;padding:14px;background:rgba(127,29,29,0.25);border:1px solid rgba(239,68,68,0.35);color:#f87171;border-radius:14px;font-size:11px;font-family:'Fira Code',monospace"></div>
@@ -1185,18 +1191,12 @@ html.light ::-webkit-scrollbar-thumb { background: #9fc4a8; }
   <div class="tool-head"><button class="th-back" onclick="switchTool(0)">← Hub</button><div class="th-info"><div class="th-name"><img class="th-ic" src="/assets/icons/editor.png" alt="">Prompt Editor</div><div class="th-desc">แปลง/แก้ Prompt JSON ↔ ภาษาไทย และจัดรูปแบบ</div></div><span class="th-badge">DEMO MODE</span></div>
   <div style="max-width:1600px;margin:0 auto">
     <!-- Header -->
-    <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;margin-bottom:28px;border-bottom:1px solid rgba(34,197,94,0.15);padding-bottom:24px;gap:16px">
-      <div style="display:flex;align-items:center;gap:16px">
-        <img src="/assets/icons/editor.png" alt="" style="width:64px;height:64px;object-fit:contain;filter:drop-shadow(0 0 12px rgba(83,230,109,0.5))">
-        <div>
-          <h1 style="font-size:clamp(22px,4vw,40px);font-weight:900;letter-spacing:-2px;color:#4ade80;font-family:'Kanit',sans-serif">JZ9 PROMPT EDITOR</h1>
-          <div style="display:flex;align-items:center;gap:8px;margin-top:4px">
-            <span style="font-size:8px;background:rgba(34,197,94,0.15);color:#22c55e;padding:2px 8px;border-radius:5px;border:1px solid rgba(34,197,94,0.25);font-weight:700;letter-spacing:3px;text-transform:uppercase">Learning AI Bridge</span>
-            <span style="width:7px;height:7px;background:#22c55e;border-radius:50%;display:inline-block;animation:t1pulse 2s infinite"></span>
-          </div>
-        </div>
-      </div>
-      <div style="display:flex;flex-wrap:wrap;gap:10px">
+    <div class="tool-hero">
+      <img class="tool-hero-ic" src="/assets/icons/editor.png" alt="">
+      <div class="tool-hero-tag">JZ9 Prompt Editor</div>
+      <h1 class="tool-hero-h1">Prompt Editor</h1>
+      <p class="tool-hero-sub">แปลง/แก้ Prompt JSON ↔ ภาษาไทย และจัดรูปแบบ</p>
+      <div class="tool-hero-actions">
         <button class="t2-btn green" id="t2-thaiBtn" onclick="t2TranslateThai()" disabled>🌏 1. แปลเป็นไทย</button>
         <button class="t2-btn blue" id="t2-backBtn" onclick="t2TranslateBack()" disabled>📤 2. แปลกลับ (AI)</button>
       </div>
@@ -1260,24 +1260,17 @@ html.light ::-webkit-scrollbar-thumb { background: #9fc4a8; }
     <div id="t3-err"></div>
 
     <!-- Header -->
-    <header style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;margin-bottom:28px;border-bottom:1px solid #21262d;padding-bottom:20px;gap:14px">
-      <div style="display:flex;align-items:center;gap:16px;animation:t3float 4s ease-in-out infinite">
-        <img src="/assets/icons/graphic.png" alt="Graphic Builder" style="width:64px;height:64px;object-fit:contain;display:block;filter:drop-shadow(0 0 12px rgba(83,230,109,0.5))">
-        <div>
-          <h1 style="font-size:clamp(28px,5vw,54px);font-weight:900;font-family:'Kanit',sans-serif;color:#fff;letter-spacing:-2px">JZ9<span style="color:#53E66D">_</span>GRAPHIC</h1>
-          <div style="display:flex;align-items:center;gap:10px;margin-top:4px">
-            <div style="height:3px;width:50px;background:#53E66D;border-radius:99px;box-shadow:0 0 8px #53E66D"></div>
-            <p style="font-size:9px;color:#9ca9b8;font-family:'Fira Code',monospace;text-transform:uppercase;letter-spacing:4px;font-weight:700">Visual Master Engine v10.1</p>
-            <span class="t3-badge">GPT-4o + GPT-Image-1</span>
-          </div>
-        </div>
-      </div>
-      <div style="display:flex;gap:10px">
+    <div class="tool-hero">
+      <img class="tool-hero-ic" src="/assets/icons/graphic.png" alt="">
+      <div class="tool-hero-tag">JZ9 Graphic Engine · GPT-4o + GPT-Image-1</div>
+      <h1 class="tool-hero-h1">Graphic Builder</h1>
+      <p class="tool-hero-sub">สร้าง Prompt งานกราฟิก/โฆษณาแบบครบ พร้อมพรีวิว</p>
+      <div class="tool-hero-actions">
         <button onclick="t3ExportCSV()" class="t3-btn-s" style="padding:10px 18px;border-radius:10px;font-size:10px;font-weight:900">SAVE_CSV</button>
         <button onclick="document.getElementById('t3-csvIn').click()" class="t3-btn-s" style="padding:10px 18px;border-radius:10px;font-size:10px;font-weight:900">LOAD_CSV</button>
         <input type="file" id="t3-csvIn" accept=".csv" style="display:none" onchange="t3ImportCSV(this)">
       </div>
-    </header>
+    </div>
 
     <div style="display:grid;grid-template-columns:minmax(300px,8fr) minmax(260px,4fr);gap:20px">
       <!-- LEFT -->
@@ -1537,6 +1530,12 @@ html.light ::-webkit-scrollbar-thumb { background: #9fc4a8; }
     #t4 .t4-in:focus{outline:none;border-color:var(--em)}
     #t4 .t4-fl{font-size:9px;color:var(--paper-mute);text-transform:uppercase;letter-spacing:1px;font-family:'Fira Code',monospace}
   </style>
+  <div class="tool-hero">
+    <img class="tool-hero-ic" src="/assets/icons/resize.png" alt="">
+    <div class="tool-hero-tag">JZ9 Smart Resize</div>
+    <h1 class="tool-hero-h1">Smart Resize</h1>
+    <p class="tool-hero-sub">กำหนดขนาดใหม่ + สร้าง Prompt จัดวางองค์ประกอบให้พอดี</p>
+  </div>
   <div id="t4-error" style="display:none;max-width:1400px;margin:0 auto 16px;padding:14px;background:rgba(127,29,29,0.25);border:1px solid rgba(239,68,68,0.35);color:#f87171;border-radius:14px;font-size:11px;font-family:'Fira Code',monospace"></div>
 
   <div class="t4-grid">
@@ -1620,11 +1619,11 @@ html.light ::-webkit-scrollbar-thumb { background: #9fc4a8; }
   <div class="tool-head"><button class="th-back" onclick="switchTool(0)">← Hub</button><div class="th-info"><div class="th-name"><img class="th-ic" src="/assets/icons/builder.png" alt="">Prompt Builder</div><div class="th-desc">แนบรูป → วิเคราะห์ → กรอกฟอร์ม → ได้ Prompt อัตโนมัติ</div></div><span class="th-badge">DEMO MODE</span></div>
   <div style="max-width:1400px;margin:0 auto">
     <!-- Header -->
-    <div style="text-align:center;margin-bottom:24px">
-      <div style="margin-bottom:8px"><img src="/assets/icons/builder.png" alt="Prompt Builder" style="width:84px;height:84px;object-fit:contain;display:inline-block;filter:drop-shadow(0 0 14px rgba(83,230,109,0.5))"></div>
-      <div class="t1-tag" style="margin-bottom:10px">JZ9 Universal Graphic Prompt Builder</div>
-      <h1 style="font-size:clamp(24px,5vw,44px);font-weight:900;background:linear-gradient(to right,#4ade80,#22c55e,#16a34a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-1px;margin-bottom:6px">Prompt Builder</h1>
-      <p style="color:#9aa39c;font-size:14px;font-style:italic">แนบรูป Reference → AI วิเคราะห์สไตล์ → กรอกฟอร์มง่าย ๆ → ได้ JSON Prompt + final_prompt พร้อมใช้ (ครอบคลุมงานกราฟิกทุกประเภท)</p>
+    <div class="tool-hero">
+      <img class="tool-hero-ic" src="/assets/icons/builder.png" alt="">
+      <div class="tool-hero-tag">JZ9 Prompt Builder</div>
+      <h1 class="tool-hero-h1">Prompt Builder</h1>
+      <p class="tool-hero-sub">แนบรูป Reference → AI วิเคราะห์สไตล์ → กรอกฟอร์มง่าย ๆ → ได้ JSON Prompt + final_prompt พร้อมใช้</p>
     </div>
 
     <div id="t5-error" style="display:none;margin-bottom:16px;padding:14px;background:rgba(127,29,29,0.25);border:1px solid rgba(239,68,68,0.35);color:#f87171;border-radius:14px;font-size:11px;font-family:'Fira Code',monospace"></div>
