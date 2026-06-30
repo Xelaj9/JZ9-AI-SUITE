@@ -1013,6 +1013,11 @@ html.light ::-webkit-scrollbar-thumb { background: #9fc4a8; }
     <span class="s-num">[05]</span>
     <span>BUILDER</span>
   </button>
+  <button class="side-tab" onclick="switchTool(6)" id="stab6">
+    <span class="s-icon" style="font-size:22px">🎬</span>
+    <span class="s-num">[06]</span>
+    <span>VIDEO</span>
+  </button>
   <div class="sb-links">
     <a href="/app/library"><span style="font-size:16px">📚</span> Prompt Library</a>
     <a href="/app/gallery"><span style="font-size:16px">🖼</span> Gallery</a>
@@ -1050,6 +1055,7 @@ html.light ::-webkit-scrollbar-thumb { background: #9fc4a8; }
       <div class="hub-card" onclick="switchTool(4)"><div class="hub-ic"><img src="/assets/icons/resize.png" alt="Smart Resize"></div><div class="hub-name">Smart Resize</div><div class="hub-desc">กำหนดขนาดใหม่ + สร้าง Prompt จัดวางองค์ประกอบให้พอดี</div><button class="hub-go" onclick="event.stopPropagation();switchTool(4)">เปิดเครื่องมือ →</button></div>
       <div class="hub-card" onclick="switchTool(2)"><div class="hub-ic"><img src="/assets/icons/editor.png" alt="Prompt Editor"></div><div class="hub-name">Prompt Editor</div><div class="hub-desc">แปลง/แก้ Prompt JSON ↔ ภาษาไทย และจัดรูปแบบ</div><button class="hub-go" onclick="event.stopPropagation();switchTool(2)">เปิดเครื่องมือ →</button></div>
       <div class="hub-card" onclick="switchTool(5)"><div class="hub-ic"><img src="/assets/icons/builder.png" alt="Prompt Builder"></div><div class="hub-name">Prompt Builder</div><div class="hub-desc">แนบรูป → วิเคราะห์ → กรอกฟอร์ม → ได้ Prompt อัตโนมัติ</div><button class="hub-go" onclick="event.stopPropagation();switchTool(5)">เปิดเครื่องมือ →</button></div>
+      <div class="hub-card" onclick="switchTool(6)"><div class="hub-ic" style="display:flex;align-items:center;justify-content:center;font-size:52px">🎬</div><div class="hub-name">Video Watermark Remover</div><div class="hub-desc">ลบลายน้ำวิดีโอด้วย AI (ProPainter) — ลากกรอบคลุมลายน้ำ แล้วให้ AI เติมพื้นหลัง</div><button class="hub-go" onclick="event.stopPropagation();switchTool(6)">เปิดเครื่องมือ →</button></div>
     </div>
     <div style="margin-top:24px">
       <div class="t1-tag" style="margin-bottom:10px">📋 DEMO TEMPLATES</div>
@@ -1888,6 +1894,177 @@ html.light ::-webkit-scrollbar-thumb { background: #9fc4a8; }
   </div>
 </div>
 
+<!-- ══ TOOL 6: VIDEO WATERMARK REMOVER (Replicate · ProPainter) ══ -->
+<div class="sec" id="t6" data-num="06">
+  <div class="tool-head"><button class="th-back" onclick="switchTool(0)">← Hub</button><div class="th-info"><div class="th-name"><span style="font-size:22px;margin-right:6px;vertical-align:-3px">🎬</span>Video Watermark Remover</div><div class="th-desc">ลบลายน้ำวิดีโอด้วย AI (ProPainter)</div></div><span class="th-badge">DEMO MODE</span></div>
+  <style>
+    #t6 .t6-wrap{max-width:1100px;margin:0 auto}
+    #t6 .t6-grid{display:grid;grid-template-columns:1fr;gap:16px}
+    @media(min-width:900px){ #t6 .t6-grid{grid-template-columns:1.1fr 1fr} }
+    #t6 .t6-fl{font-size:9px;color:var(--paper-mute);text-transform:uppercase;letter-spacing:1px;font-family:'Fira Code',monospace}
+    #t6 .t6-in{width:100%;margin-top:4px;background:rgba(0,0,0,0.4);border:1px solid var(--border);border-radius:8px;padding:10px 12px;color:var(--paper);font-family:'Fira Code',monospace;font-size:13px}
+    #t6 .t6-in:focus{outline:none;border-color:var(--em)}
+    #t6 .t6-stage{position:relative;background:#000;border:1px solid var(--border);border-radius:12px;overflow:hidden;min-height:200px;display:flex;align-items:center;justify-content:center}
+    #t6 .t6-stage video{display:block;width:100%}
+    #t6 #t6-overlay{position:absolute;inset:0;cursor:crosshair}
+    #t6 .t6-consent{display:flex;gap:10px;align-items:flex-start;background:rgba(255,193,7,0.06);border:1px solid rgba(255,193,7,0.25);border-radius:10px;padding:12px;font-size:12px;color:var(--paper-dim);line-height:1.6}
+    #t6 .t6-status{font-family:'Fira Code',monospace;font-size:12px;color:var(--paper-dim)}
+    #t6 .t6-seg{display:flex;gap:6px;background:rgba(0,0,0,0.3);padding:4px;border-radius:10px;margin-bottom:10px}
+    #t6 .t6-seg button{flex:1;border:none;background:transparent;color:var(--paper-dim);padding:8px;border-radius:7px;cursor:pointer;font-family:'Fira Code',monospace;font-size:11px}
+    #t6 .t6-seg button.on{background:var(--em);color:#052B10;font-weight:700}
+  </style>
+
+  <div class="tool-hero">
+    <div class="tool-hero-ic" style="display:flex;align-items:center;justify-content:center;font-size:64px">🎬</div>
+    <div class="tool-hero-tag">JZ9 Video AI · ProPainter</div>
+    <h1 class="tool-hero-h1">Video Watermark Remover</h1>
+    <p class="tool-hero-sub">ลากกรอบคลุมลายน้ำ แล้วให้ AI เติมพื้นหลังแทน (สำหรับวิดีโอที่คุณมีสิทธิ์เท่านั้น)</p>
+  </div>
+
+  <div class="t6-wrap">
+    <div class="t6-consent" style="margin-bottom:16px">
+      <input type="checkbox" id="t6-consent" style="margin-top:2px">
+      <label for="t6-consent">ยืนยันว่าวิดีโอนี้เป็นของฉัน หรือฉันมีสิทธิ์ลบลายน้ำอย่างถูกต้องตามกฎหมาย (ไม่ใช้ลบลายน้ำ/เครดิตของผู้อื่น)</label>
+    </div>
+
+    <div class="t6-grid">
+      <!-- LEFT: input + mask -->
+      <div class="jz-card" style="display:flex;flex-direction:column;gap:12px">
+        <div class="t1-label">① เลือกวิดีโอ</div>
+        <div class="t6-seg" id="t6-srcSeg">
+          <button class="on" data-m="url" type="button">วาง URL (แนะนำ)</button>
+          <button data-m="file" type="button">อัปโหลด (≤4MB)</button>
+        </div>
+        <div id="t6-urlWrap">
+          <label class="t6-fl">URL วิดีโอ (เข้าถึงได้สาธารณะ)</label>
+          <input id="t6-url" class="t6-in" placeholder="https://.../video.mp4">
+        </div>
+        <div id="t6-fileWrap" style="display:none">
+          <label class="t6-fl">ไฟล์วิดีโอสั้นๆ (≤4MB)</label>
+          <input id="t6-file" type="file" accept="video/*" class="t6-in">
+        </div>
+        <button class="jz-btn" id="t6-loadBtn" type="button">โหลดวิดีโอเพื่อเลือกกรอบ</button>
+
+        <div class="t1-label" style="margin-top:6px">② ลากกรอบคลุมลายน้ำ</div>
+        <div class="t6-stage" id="t6-stage">
+          <video id="t6-vid" playsinline muted></video>
+          <canvas id="t6-overlay"></canvas>
+          <div id="t6-ph" style="color:var(--paper-mute);font-size:12px;font-family:'Fira Code',monospace;padding:30px">// โหลดวิดีโอก่อน แล้วลากกรอบบนภาพ</div>
+        </div>
+        <div class="jz-row" style="gap:8px">
+          <button class="jz-btn" id="t6-clearBox" type="button" style="flex:1">ล้างกรอบ</button>
+          <button class="jz-btn jz-btn-primary" id="t6-runBtn" type="button" style="flex:2" disabled>🚀 ลบลายน้ำ</button>
+        </div>
+        <div class="t6-status" id="t6-status"></div>
+      </div>
+
+      <!-- RIGHT: result -->
+      <div class="jz-card" style="display:flex;flex-direction:column;gap:12px">
+        <div class="t1-label">③ ผลลัพธ์</div>
+        <div class="t6-stage" id="t6-resultStage" style="min-height:240px">
+          <div id="t6-resultPh" style="color:var(--paper-mute);font-size:12px;font-family:'Fira Code',monospace;padding:30px;text-align:center">// ผลลัพธ์จะแสดงที่นี่หลังประมวลผลเสร็จ</div>
+          <video id="t6-resultVid" controls style="display:none"></video>
+        </div>
+        <a id="t6-dl" class="jz-btn jz-btn-primary" style="display:none" download="dewatermarked.mp4">⬇ ดาวน์โหลดวิดีโอ</a>
+        <div class="t6-status" style="color:var(--paper-mute)">หมายเหตุ: ใช้โมเดล ProPainter ผ่าน Replicate — เวลาประมวลผลขึ้นกับความยาว/ความละเอียดวิดีโอ</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  (function(){
+    var box=null, dragging=false, sx=0, sy=0, vid, ov, octx, poll=null, mode='url';
+    function $(id){ return document.getElementById(id); }
+    function st(m){ var s=$('t6-status'); if(s) s.textContent=m||''; }
+    function ready(){
+      var ok = $('t6-consent').checked && box && (mode==='url'? $('t6-url').value.trim() : (window._t6file));
+      $('t6-runBtn').disabled = !ok;
+    }
+    function initOnce(){
+      if (vid) return;
+      vid=$('t6-vid'); ov=$('t6-overlay'); octx=ov.getContext('2d');
+      $('t6-consent').addEventListener('change', ready);
+      $('t6-url').addEventListener('input', ready);
+      $('t6-srcSeg').addEventListener('click', function(e){ var b=e.target.closest('button'); if(!b)return;
+        mode=b.getAttribute('data-m'); [].forEach.call(this.children,function(c){c.classList.toggle('on',c===b);});
+        $('t6-urlWrap').style.display = mode==='url'?'':'none'; $('t6-fileWrap').style.display = mode==='file'?'':'none'; ready(); });
+      $('t6-file').addEventListener('change', function(){ var f=this.files[0]; if(!f) return;
+        if(f.size>4*1024*1024){ alert('ไฟล์เกิน 4MB — แนะนำใช้ URL แทน'); this.value=''; return; }
+        var r=new FileReader(); r.onload=function(){ window._t6file=r.result; ready(); }; r.readAsDataURL(f); });
+      $('t6-loadBtn').addEventListener('click', loadVideo);
+      $('t6-clearBox').addEventListener('click', function(){ box=null; draw(); ready(); });
+      $('t6-runBtn').addEventListener('click', run);
+      // drag to draw rect
+      ov.addEventListener('mousedown', function(e){ var r=ov.getBoundingClientRect(); dragging=true; sx=e.clientX-r.left; sy=e.clientY-r.top; });
+      ov.addEventListener('mousemove', function(e){ if(!dragging)return; var r=ov.getBoundingClientRect(); var x=e.clientX-r.left,y=e.clientY-r.top;
+        box={x:Math.min(sx,x),y:Math.min(sy,y),w:Math.abs(x-sx),h:Math.abs(y-sy)}; draw(); });
+      window.addEventListener('mouseup', function(){ if(dragging){ dragging=false; ready(); } });
+    }
+    function syncOverlay(){ ov.width=vid.clientWidth; ov.height=vid.clientHeight; ov.style.width=vid.clientWidth+'px'; ov.style.height=vid.clientHeight+'px'; draw(); }
+    function draw(){ if(!octx)return; octx.clearRect(0,0,ov.width,ov.height); if(box){ octx.strokeStyle='#53E66D'; octx.lineWidth=2; octx.fillStyle='rgba(83,230,109,0.18)'; octx.fillRect(box.x,box.y,box.w,box.h); octx.strokeRect(box.x,box.y,box.w,box.h); } }
+    function loadVideo(){
+      initOnce();
+      var src = mode==='url' ? $('t6-url').value.trim() : window._t6file;
+      if(!src){ alert('ใส่ URL หรือเลือกไฟล์ก่อน'); return; }
+      $('t6-ph').style.display='none';
+      vid.src=src; vid.style.display='block';
+      vid.addEventListener('loadeddata', function once(){ vid.removeEventListener('loadeddata',once); try{vid.currentTime=Math.min(0.1,(vid.duration||1)/2);}catch(e){} setTimeout(syncOverlay,80); });
+      vid.load();
+    }
+    window.addEventListener('resize', function(){ if(vid&&vid.clientWidth) syncOverlay(); });
+
+    function buildMask(){
+      // mask at native video resolution: black bg + white box
+      var vw=vid.videoWidth, vh=vid.videoHeight;
+      var sxr=vw/ov.width, syr=vh/ov.height;
+      var c=document.createElement('canvas'); c.width=vw; c.height=vh;
+      var cx=c.getContext('2d'); cx.fillStyle='#000'; cx.fillRect(0,0,vw,vh);
+      cx.fillStyle='#fff'; cx.fillRect(box.x*sxr, box.y*syr, box.w*sxr, box.h*syr);
+      return c.toDataURL('image/png');
+    }
+    async function run(){
+      if(!$('t6-consent').checked){ alert('กรุณายืนยันสิทธิ์ก่อน'); return; }
+      if(!box){ alert('ลากกรอบคลุมลายน้ำก่อน'); return; }
+      var video = mode==='url' ? $('t6-url').value.trim() : window._t6file;
+      var mask = buildMask();
+      $('t6-runBtn').disabled=true; st('⏳ กำลังส่งงานไปยัง ProPainter…');
+      try{
+        var r = await fetch('/api/video-watermark',{method:'POST',headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({action:'create',input:{video:video, mask:mask}})});
+        var j = await r.json();
+        if(!r.ok || j.error){ throw new Error(j.error||('HTTP '+r.status)); }
+        if(j.status==='succeeded'){ return showResult(j); }
+        st('⏳ กำลังประมวลผล… (id '+(j.id||'').slice(0,8)+')'); pollStatus(j.id);
+      }catch(e){ st('❌ ผิดพลาด: '+(e.message||e)); $('t6-runBtn').disabled=false; }
+    }
+    function pollStatus(id){
+      clearInterval(poll);
+      poll=setInterval(async function(){
+        try{
+          var r=await fetch('/api/video-watermark',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'status',id:id})});
+          var j=await r.json();
+          if(j.status==='succeeded'){ clearInterval(poll); showResult(j); }
+          else if(j.status==='failed'||j.status==='canceled'){ clearInterval(poll); st('❌ ล้มเหลว: '+(j.error||j.status)); $('t6-runBtn').disabled=false; }
+          else { st('⏳ สถานะ: '+j.status+'…'); }
+        }catch(e){ /* keep polling */ }
+      }, 3500);
+    }
+    function showResult(j){
+      $('t6-runBtn').disabled=false;
+      var out = j.output; if(Array.isArray(out)) out=out[out.length-1];
+      if(!out){ st('⚠️ ไม่พบไฟล์ผลลัพธ์ใน output'); return; }
+      st('✅ เสร็จแล้ว');
+      $('t6-resultPh').style.display='none';
+      var rv=$('t6-resultVid'); rv.src=out; rv.style.display='block';
+      var dl=$('t6-dl'); dl.href=out; dl.style.display='';
+    }
+    // init when section first shown
+    var obs=new MutationObserver(function(){ if($('t6').classList.contains('on')) initOnce(); });
+    obs.observe($('t6'),{attributes:true,attributeFilter:['class']});
+  })();
+  </script>
+</div>
+
 <!-- TOAST -->
 <div id="toast">SYSTEM_READY</div>
 
@@ -1897,7 +2074,7 @@ html.light ::-webkit-scrollbar-thumb { background: #9fc4a8; }
 
 // ── NAV ──
 function switchTool(n) {
-  [0,1,2,3,4,5].forEach(i => {
+  [0,1,2,3,4,5,6].forEach(i => {
     const st = document.getElementById('stab'+i);
     if(st) st.classList.toggle('on', i===n);
     const sec = document.getElementById('t'+i);
