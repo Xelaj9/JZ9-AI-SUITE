@@ -19,7 +19,9 @@ const TOOLS = {
   restore:  { model: "microsoft/bringing-old-photos-back-to-life", envModel: "REPLICATE_MODEL_RESTORE", envVersion: "REPLICATE_VERSION_RESTORE" },
   colorize: { model: "arielreplicate/deoldify_image", envModel: "REPLICATE_MODEL_COLORIZE", envVersion: "REPLICATE_VERSION_COLORIZE",
     // deoldify takes input_image (not image) — remap the uniform client shape
-    map: (input) => ({ input_image: input.image, model_name: input.mode || "Artistic", render_factor: input.render_factor || 35 }) }
+    map: (input) => ({ input_image: input.image, model_name: input.mode || "Artistic", render_factor: input.render_factor || 35 }) },
+  faceenhance: { model: "sczhou/codeformer", envModel: "REPLICATE_MODEL_FACEENHANCE", envVersion: "REPLICATE_VERSION_FACEENHANCE",
+    map: (input) => ({ image: input.image, codeformer_fidelity: input.fidelity == null ? 0.7 : input.fidelity, background_enhance: true, face_upsample: true, upscale: input.upscale || 2 }) }
 };
 
 export default async function handler(req, res) {
