@@ -15,7 +15,11 @@ export const config = {
 const TOOLS = {
   removebg: { model: "851-labs/background-remover", envModel: "REPLICATE_MODEL_REMOVEBG", envVersion: "REPLICATE_VERSION_REMOVEBG" },
   upscale:  { model: "nightmareai/real-esrgan",     envModel: "REPLICATE_MODEL_UPSCALE",  envVersion: "REPLICATE_VERSION_UPSCALE" },
-  eraser:   { model: "allenhooo/lama",              envModel: "REPLICATE_MODEL_ERASER",   envVersion: "REPLICATE_VERSION_ERASER" }
+  eraser:   { model: "allenhooo/lama",              envModel: "REPLICATE_MODEL_ERASER",   envVersion: "REPLICATE_VERSION_ERASER" },
+  restore:  { model: "microsoft/bringing-old-photos-back-to-life", envModel: "REPLICATE_MODEL_RESTORE", envVersion: "REPLICATE_VERSION_RESTORE" },
+  colorize: { model: "arielreplicate/deoldify_image", envModel: "REPLICATE_MODEL_COLORIZE", envVersion: "REPLICATE_VERSION_COLORIZE",
+    // deoldify takes input_image (not image) — remap the uniform client shape
+    map: (input) => ({ input_image: input.image, model_name: input.mode || "Artistic", render_factor: input.render_factor || 35 }) }
 };
 
 export default async function handler(req, res) {
@@ -47,9 +51,10 @@ export default async function handler(req, res) {
 
       const version = process.env[t.envVersion];
       const model = process.env[t.envModel] || t.model;
+      const finalInput = t.map ? t.map(input) : input;
       let url, body;
-      if (version) { url = "https://api.replicate.com/v1/predictions"; body = { version: version, input: input }; }
-      else { url = "https://api.replicate.com/v1/models/" + model + "/predictions"; body = { input: input }; }
+      if (version) { url = "https://api.replicate.com/v1/predictions"; body = { version: version, input: finalInput }; }
+      else { url = "https://api.replicate.com/v1/models/" + model + "/predictions"; body = { input: finalInput }; }
 
       const r = await fetch(url, {
         method: "POST",
